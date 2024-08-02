@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model classes {
+  classId   String @id @default(uuid())
+  className String @default("none")
+  classSlug String @default("none")
+
+  @@index([className])
+}
+
+model students {
+  studentId         String   @id @default(uuid())
+  studentName       String   @default("none")
+  fatherName        String   @default("none")
+  bform             String   @default("0000-0000000-0")
+  cnic              String   @default("0000-0000000-0")
+  dob               String   @default("none")
+  doa               String   @default("none")
+  gender            Gender   @default(CUSTOM)
+  religion          Religion @default(MUSLIM)
+  tribe             String   @default("none")
+  occupation        String   @default("none")
+  address           String   @default("none")
+  permanentAddress  String   @default("none")
+  contact           String   @default("none")
+  additionalContact String   @default("none")
+}
+
+model users {
+  userId   String @id @default(uuid())
+  email    String @unique
+  password String
+  role     Role
+
+  @@index([email])
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  CUSTOM
+}
+
+enum Religion {
+  MUSLIM
+  CHRISTIAN
+  OTHERS
+}
+
+enum Role {
+  ADMIN
+  TEACHER
+  CLERK
+}
