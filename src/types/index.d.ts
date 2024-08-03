@@ -11,6 +11,7 @@ type ClassProps = {
 
 
 type StudentProps = {
+    studentId: string
     studentName: string
     fatherName: string
     bform: string

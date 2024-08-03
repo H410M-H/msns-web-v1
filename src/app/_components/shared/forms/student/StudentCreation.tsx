@@ -32,6 +32,7 @@ import {
 import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
 import dayjs from 'dayjs'
+import { toast } from "~/components/ui/use-toast";
 
 const formSchema = z.object({
   doa: z.date({ required_error: "Field is required." }),
@@ -85,7 +86,7 @@ const formSchema = z.object({
   ),
 });
 
-export const StudentCreation = () => {
+export const StudentCreationDialog = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -116,8 +117,22 @@ export const StudentCreation = () => {
     },
   ];
 
-  const createStudent = api.student.createStudent.useMutation();
-
+  const createStudent = api.student.createStudent.useMutation({
+    onSuccess: () => {
+      toast({
+        title: "Success",
+        description: "Student created successfully",
+      });
+      form.reset();
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
   const formSubmitted = (data: z.infer<typeof formSchema>) => {
     createStudent.mutate({
       studentName: data.studentName,

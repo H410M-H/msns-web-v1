@@ -1,12 +1,26 @@
-import { TRPCClientError } from "@trpc/client";
-import { createTRPCRouter, publicProcedure } from "../trpc";
-import { TRPCError } from "@trpc/server";
-import { z } from "zod";
+import { TRPCClientError } from "@trpc/client"
+import { createTRPCRouter, publicProcedure } from "../trpc"
+import { z } from "zod"
+import { TRPCError } from "@trpc/server"
 
 
 
 
 export const StudentRouter = createTRPCRouter({
+
+    getStudents: publicProcedure.query(async ({ ctx }) => {
+        try {
+            const students: StudentProps[] = await ctx.db.students.findMany();
+            return students;
+        } catch (error) {
+            if (error instanceof TRPCClientError) {
+                console.error(error.message);
+                throw new Error(error.message);
+            }
+            console.error(error);
+            throw new Error("Something went wrong.");
+        }
+    }),
 
     createStudent: publicProcedure
         .input(z.object({
@@ -55,11 +69,34 @@ export const StudentRouter = createTRPCRouter({
                         message: error.message
                     })
                 }
-                console.error(error)
+                console.error(error);
                 throw new TRPCError({
-                    code: 'NOT_FOUND',
-                    message: 'Something went wrong'
-                })
-            }
-        })
-})
+                  code: 'INTERNAL_SERVER_ERROR',
+                  message: 'Something went wrong'
+                });
+              }
+            }),
+                
+            deleteStudentsByIds: publicProcedure
+            .input(z.object({
+                studentIds: z.string().array(),
+            }))
+            .mutation(async ({ ctx, input }) => {
+                try {
+                    await ctx.db.students.deleteMany({
+                        where: {
+                            studentId: {
+                                in: input.studentIds,
+                            },
+                        },
+                    });
+                } catch (error) {
+                    if (error instanceof TRPCClientError) {
+                        console.error(error.message);
+                        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: error.message });
+                    }
+                    console.error(error);
+                    throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: "Something went wrong." });
+                }
+            }),
+});
