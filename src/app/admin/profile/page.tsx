@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "~/components/ui/card";
 
@@ -23,7 +24,9 @@ export default function AdminProfile() {
               </CardDescription>
             </CardHeader>
             <CardFooter>
-              <Button>Profile Settings</Button>
+            <Button>
+            <Link href="/admin/settings/account/profile">Profile Settings</Link>
+            </Button>
             </CardFooter>
           </Card>
     </main>

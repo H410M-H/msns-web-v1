@@ -20,7 +20,7 @@ export const HorizontalMenu = () => {
           href="/admin/dashboard"
           className="text-muted-foreground transition-colors hover:text-foreground"
         >
-          
+          Dashboard          
         </Link>
         <Link
           href="/admin/alumni"
@@ -41,7 +41,7 @@ export const HorizontalMenu = () => {
           Registration
         </Link>
         <Link
-          href="/admin/settings"
+          href="/admin/settings/account/profile"
           className="text-foreground transition-colors hover:text-foreground"
         >
           Settings
@@ -64,30 +64,30 @@ export const HorizontalMenu = () => {
               <span className="sr-only">Acme Inc</span>
             </Link>
             <Link
-              href="#"
+              href="/admin/dashboard"
               className="text-muted-foreground hover:text-foreground"
             >
               Dashboard
             </Link>
             <Link
-              href="#"
+              href="/admin/alumni"
               className="text-muted-foreground hover:text-foreground"
             >
-              Orders
+              Alumni
             </Link>
             <Link
-              href="#"
+              href="/admin/academics"
               className="text-muted-foreground hover:text-foreground"
             >
-              Products
+              Academics
             </Link>
             <Link
-              href="#"
+              href="/registration/portal"
               className="text-muted-foreground hover:text-foreground"
             >
-              Customers
+              Registration
             </Link>
-            <Link href="#" className="hover:text-foreground">
+            <Link href="/admin/settings/account/profile" className="hover:text-foreground">
               Settings
             </Link>
           </nav>
@@ -106,7 +106,7 @@ export const HorizontalMenu = () => {
           </form>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="rounded-full">
+              <Button variant="secondary" size="icon" className="rounded-full bg-green-800">
                 <CircleUser className="h-5 w-5" />
                 <span className="sr-only">Toggle user menu</span>
               </Button>

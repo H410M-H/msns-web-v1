@@ -68,3 +68,51 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom styles for animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes rotateIn {
+  from {
+    opacity: 0;
+    transform: rotateX(90deg);
+  }
+  to {
+    opacity: 1;
+    transform: rotateX(0deg);
+  }
+}
+
+.transition-container {
+  animation: slideIn 1s ease-out, rotateIn 1s ease-out;
+}
+
+@keyframes rotateIn3D {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) rotateX(-90deg);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(0);
+  }
+}
+
+.transition-container {
+  animation: rotateIn3D 1s ease-out;
+  transform-origin: center bottom;
+}
+
+.text-3d {
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  perspective: 1000px;
+}
