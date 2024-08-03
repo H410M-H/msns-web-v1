@@ -12,7 +12,7 @@ import {
 import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
 
-export default function AdminSettings() {
+export default function AccountSecurity() {
   return (
     <div className="flex min-h-screen w-full flex-col">
       <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
@@ -24,11 +24,9 @@ export default function AdminSettings() {
             className="grid gap-4 text-sm text-muted-foreground"
             x-chunk="dashboard-04-chunk-0"
           >
-            <Link href="#" className="font-semibold text-primary">
-              General
-            </Link>
-            <Link href="#">Security</Link>
-            <Link href="#">Integrations</Link>
+            <Link href="/admin/settings/account/profile">General</Link>
+            <Link href="/admin/settings/account/security" className="font-semibold text-primary">Security</Link>
+            <Link href="/admin/settings/account/notifications">Notifications</Link>
             <Link href="#">Support</Link>
             <Link href="#">Organizations</Link>
             <Link href="#">Advanced</Link>
