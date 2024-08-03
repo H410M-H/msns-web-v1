@@ -46,12 +46,6 @@ const columns: ColumnDef<StudentProps>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "studentId",
-    header: "Student ID",
-    cell: ({ row }) => <div>{row.getValue("studentId")}</div>,
-  },
-
-  {
     accessorKey: "studentName",
     header: "Student Name",
     cell: ({ row }) => <div className="capitalize">{row.getValue("studentName")}</div>,
@@ -62,29 +56,29 @@ const columns: ColumnDef<StudentProps>[] = [
     cell: ({ row }) => <div className="capitalize">{row.getValue("fatherName")}</div>,
   },
   {
-    accessorKey: "studentBFormNumber",
-    header: "Student B-Form #",
-    cell: ({ row }) => <div>{row.getValue("studentBFormNumber")}</div>,
-  },
-  {
-    accessorKey: "fatherCNIC",
-    header: "Father CNIC",
-    cell: ({ row }) => <div>{row.getValue("fatherCNIC")}</div>,
-  },
-  {
     accessorKey: "gender",
     header: "Gender",
     cell: ({ row }) => <div>{row.getValue("gender")}</div>,
   },
   {
-    accessorKey: "dateOfBirthNumbers",
+    accessorKey: "dob",
     header: "Date of Birth",
-    cell: ({ row }) => <div>{row.getValue("dateOfBirthNumbers")}</div>,
+    cell: ({ row }) => <div>{row.getValue("dob")}</div>,
   },
   {
-    accessorKey: "mobileNo",
-    header: "Mobile No",
-    cell: ({ row }) => <div>{row.getValue("mobileNo")}</div>,
+    accessorKey: "doa",
+    header: "Session",
+    cell: ({ row }) => <div>{row.getValue("doa")}</div>,
+  },
+  {
+    accessorKey: "bform",
+    header: "Student B-Form #",
+    cell: ({ row }) => <div>{row.getValue("bform")}</div>,
+  },
+  {
+    accessorKey: "cnic",
+    header: "Father CNIC",
+    cell: ({ row }) => <div>{row.getValue("cnic")}</div>,
   },
   {
     accessorKey: "religion",
@@ -92,14 +86,9 @@ const columns: ColumnDef<StudentProps>[] = [
     cell: ({ row }) => <div>{row.getValue("religion")}</div>,
   },
   {
-    accessorKey: "grade",
-    header: "Grade",
-    cell: ({ row }) => <div>{row.getValue("grade")}</div>,
-  },
-  {
-    accessorKey: "session",
-    header: "Session",
-    cell: ({ row }) => <div>{row.getValue("session")}</div>,
+    accessorKey: "contact",
+    header: "Mobile No",
+    cell: ({ row }) => <div>{row.getValue("contact")}</div>,
   },
   {
     id: "actions",

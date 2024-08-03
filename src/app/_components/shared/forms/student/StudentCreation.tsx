@@ -33,6 +33,7 @@ import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
 import dayjs from 'dayjs'
 import { toast } from "~/components/ui/use-toast";
+import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "~/components/ui/input-otp";
 
 const formSchema = z.object({
   doa: z.date({ required_error: "Field is required." }),
@@ -45,18 +46,8 @@ const formSchema = z.object({
     .string()
     .min(2, "Father's name must be at least 2 characters")
     .max(100, "Father's name must not exceed 100 characters"),
-  studentBForm: z
-    .string()
-    .regex(
-      /^\d{4}-\d{7}-\d{1}$/,
-      "Invalid Student B-Form format (0000-0000000-0)",
-    ),
-  fatherCNIC: z
-    .string()
-    .regex(
-      /^\d{4}-\d{7}-\d{1}$/,
-      "Invalid Father CNIC format (0000-0000000-0)",
-    ),
+  studentBForm: z.string({ required_error: "Invalid Student B-Form format (0000-0000000-0)"}),
+  fatherCNIC: z.string({ required_error: "Invalid Father CNIC format (0000-0000000-0)"}),
   gender: z.string({required_error:'Field is required.'}),
   caste: z.optional(z.string()),
   occupation: z
@@ -200,40 +191,78 @@ export const StudentCreationDialog = () => {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="studentBForm"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Student B-Form #*</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="0000-0000000-0"
-                        {...field}
-                        value={field.value ?? ""}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="fatherCNIC"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Father CNIC #*</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="0000-0000000-0"
-                        {...field}
-                        value={field.value ?? ""}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+<FormField
+  control={form.control}
+  name="studentBForm"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Student B-Form #*</FormLabel>
+      <FormControl>
+        <InputOTP maxLength={13} {...field} value={field.value ?? ""}>
+          <InputOTPGroup>
+            <InputOTPSlot index={0} />
+            <InputOTPSlot index={1} />
+            <InputOTPSlot index={2} />
+            <InputOTPSlot index={3} />
+            <InputOTPSlot index={4} />
+
+          </InputOTPGroup>
+          <InputOTPSeparator />
+          <InputOTPGroup>
+            <InputOTPSlot index={5} />
+            <InputOTPSlot index={6} />
+            <InputOTPSlot index={7} />
+            <InputOTPSlot index={8} />
+            <InputOTPSlot index={9} />
+            <InputOTPSlot index={10} />
+            <InputOTPSlot index={11} />
+          </InputOTPGroup>
+          <InputOTPSeparator />
+          <InputOTPGroup>
+            <InputOTPSlot index={12} />
+          </InputOTPGroup>
+        </InputOTP>
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+<FormField
+  control={form.control}
+  name="fatherCNIC"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Father CNIC*</FormLabel>
+      <FormControl>
+        <InputOTP maxLength={13} {...field} value={field.value ?? ""}>
+          <InputOTPGroup>
+          <InputOTPSlot index={0} />
+            <InputOTPSlot index={1} />
+            <InputOTPSlot index={2} />
+            <InputOTPSlot index={3} />
+            <InputOTPSlot index={4} />
+
+          </InputOTPGroup>
+          <InputOTPSeparator />
+          <InputOTPGroup>
+            <InputOTPSlot index={5} />
+            <InputOTPSlot index={6} />
+            <InputOTPSlot index={7} />
+            <InputOTPSlot index={8} />
+            <InputOTPSlot index={9} />
+            <InputOTPSlot index={10} />
+            <InputOTPSlot index={11} />
+          </InputOTPGroup>
+          <InputOTPSeparator />
+          <InputOTPGroup>
+            <InputOTPSlot index={12} />
+          </InputOTPGroup>
+        </InputOTP>
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
               <FormField
                 control={form.control}
                 name="dob"

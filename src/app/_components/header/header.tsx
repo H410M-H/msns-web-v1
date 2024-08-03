@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 export const Header = () => {
   return (
-    <header className="flex items-center justify-between p-5 bg-gradient-to-r from-yellow-200 to-pink-200 shadow-inner rounded-t-xl">
+    <header className="flex items-center justify-between p-5 bg-gradient-to-r from-green-400 to-emerald-100  transition-all duration-300 shadow-inner rounded-t-xl">
       <div className="logo">
         <Image src="/logo/logo.png" width={36} height={16} alt="Company Logo" />
       </div>
