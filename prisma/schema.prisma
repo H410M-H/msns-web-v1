@@ -33,6 +33,24 @@ model students {
   additionalContact String   @default("none")
 }
 
+model employees {
+  employeeId         String   @id @default(uuid())
+  employeeName       String   @default("none")
+  fatherName        String   @default("none")
+  cnic             String   @default("0000-0000000-0")
+  fcnic              String   @default("0000-0000000-0")
+  dob               String   @default("none")
+  doj               String   @default("none")
+  gender            Gender   @default(CUSTOM)
+  religion          Religion @default(MUSLIM)
+  education        String   @default("none")
+  address           String   @default("none")
+  permanentAddress  String   @default("none")
+  contact           String   @default("none")
+  additionalContact String   @default("none")
+}
+
+
 model users {
   userId   String @id @default(uuid())
   email    String @unique

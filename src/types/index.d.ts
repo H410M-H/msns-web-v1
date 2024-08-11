@@ -1,8 +1,5 @@
 
 
-
-
-
 type ClassProps = {
     classId: string
     className: string
@@ -22,6 +19,23 @@ type StudentProps = {
     religion: string
     tribe: zstring
     occupation: string
+    address: string
+    permanentAddress: string
+    contact: string
+    additionalContact: z.string
+}
+
+type EmployeeProps = {
+    employeeId: string
+    employeeName: string
+    fatherName: string
+    cnic: string
+    fcnic: string,
+    dob: string
+    doj: string
+    gender: string
+    religion: string
+    education: string
     address: string
     permanentAddress: string
     contact: string

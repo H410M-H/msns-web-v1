@@ -1,6 +1,6 @@
 import { EmployeeTable } from "~/app/_components/shared/tables/EmployeeTable";
 
-export default function FacultyView(){
+export default function EmployeesTable(){
 
     return (
         <section className="grid mx-10">
