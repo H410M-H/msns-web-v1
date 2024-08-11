@@ -12,7 +12,7 @@ import {
         description:
           "Easily enroll new students and manage their financial records.",
         icon: <LayersIcon className="mb-4 h-12 w-12 text-green-500" />,
-        href: "/admin/academics/classwiseDetail",
+        href: "/student/academics",
       },
       {
         title: "Attendance Management",

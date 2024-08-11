@@ -36,6 +36,7 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { ClassCreationDialog } from "~/app/_components/shared/forms/class/ClassCreation";
 import { ClassDeletionDialog } from "~/app/_components/shared/forms/class/ClassDeletion";
+import { ClassesCard } from "../cards/ClassesCard";
 
 const columns: ColumnDef<ClassProps>[] = [
   {
@@ -147,6 +148,7 @@ export const ClassTable = () => {
           <ClassDeletionDialog  classIds={table.getSelectedRowModel().rows.map(row=>row.original.classId)}/>
         </div>
       </div>
+      <ClassesCard />
       <div className="rounded-md border">
         <Table>
           <TableHeader>

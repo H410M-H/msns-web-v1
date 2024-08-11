@@ -1,7 +1,7 @@
 import { ClassTable } from "~/app/_components/shared/tables/ClassTable";
 
 
-export default function classwiseDetail() {
+export default function Classes() {
     return (
       <main className="min-h-screen sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3 bg-yellow-100/50">
             <div className="container mx-auto p-4">
