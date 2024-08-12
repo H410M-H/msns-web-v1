@@ -8,48 +8,50 @@ datasource db {
 }
 
 model classes {
-  classId   String @id @default(uuid())
-  className String @default("none")
-  classSlug String @default("none")
+  classId      String         @id @default(uuid())
+  className    String         @default("none")
+  classSlug    String         @default("none")
+  StudentClass StudentClass[]
 
   @@index([className])
 }
 
 model students {
-  studentId         String   @id @default(uuid())
-  studentName       String   @default("none")
-  fatherName        String   @default("none")
-  bform             String   @default("0000-0000000-0")
-  cnic              String   @default("0000-0000000-0")
-  dob               String   @default("none")
-  doa               String   @default("none")
-  gender            Gender   @default(CUSTOM)
-  religion          Religion @default(MUSLIM)
-  tribe             String   @default("none")
-  occupation        String   @default("none")
-  address           String   @default("none")
-  permanentAddress  String   @default("none")
-  contact           String   @default("none")
-  additionalContact String   @default("none")
+  studentId         String         @id @default(uuid())
+  studentName       String         @default("none")
+  fatherName        String         @default("none")
+  bform             String         @default("0000-0000000-0")
+  cnic              String         @default("0000-0000000-0")
+  dob               String         @default("none")
+  doa               String         @default("none")
+  gender            Gender         @default(CUSTOM)
+  religion          Religion       @default(MUSLIM)
+  tribe             String         @default("none")
+  occupation        String         @default("none")
+  address           String         @default("none")
+  permanentAddress  String         @default("none")
+  contact           String         @default("none")
+  additionalContact String         @default("none")
+  isAssign          Boolean        @default(false)
+  StudentClass      StudentClass[]
 }
 
 model employees {
-  employeeId         String   @id @default(uuid())
-  employeeName       String   @default("none")
+  employeeId        String   @id @default(uuid())
+  employeeName      String   @default("none")
   fatherName        String   @default("none")
-  cnic             String   @default("0000-0000000-0")
-  fcnic              String   @default("0000-0000000-0")
+  cnic              String   @default("0000-0000000-0")
+  fcnic             String   @default("0000-0000000-0")
   dob               String   @default("none")
   doj               String   @default("none")
   gender            Gender   @default(CUSTOM)
   religion          Religion @default(MUSLIM)
-  education        String   @default("none")
+  education         String   @default("none")
   address           String   @default("none")
   permanentAddress  String   @default("none")
   contact           String   @default("none")
   additionalContact String   @default("none")
 }
-
 
 model users {
   userId   String @id @default(uuid())
@@ -58,6 +60,14 @@ model users {
   role     Role
 
   @@index([email])
+}
+
+model StudentClass {
+  scId      String   @id @default(uuid())
+  studentId String
+  classId   String
+  student   students @relation(fields: [studentId], references: [studentId])
+  class     classes  @relation(fields: [classId], references: [classId])
 }
 
 enum Gender {

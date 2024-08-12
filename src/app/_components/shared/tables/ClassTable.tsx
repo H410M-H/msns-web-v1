@@ -148,7 +148,6 @@ export const ClassTable = () => {
           <ClassDeletionDialog  classIds={table.getSelectedRowModel().rows.map(row=>row.original.classId)}/>
         </div>
       </div>
-      <ClassesCard />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
