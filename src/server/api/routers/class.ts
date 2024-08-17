@@ -19,6 +19,34 @@ export const ClassRouter = createTRPCRouter({
         }
     }),
 
+    getGroupedClasses: publicProcedure.query(async ({ ctx }) => {
+        try {
+            const classes: ClassProps[] = await ctx.db.classes.findMany()
+            const groupedClasses = new Map<string,ClassProps[]>()
+
+            classes.forEach((classData)=>{
+                const key = groupedClasses.has(classData.category)
+                const data = groupedClasses.get(classData.category)
+                if(key && data  && data.length!=0) {
+                    data.push(classData)
+                    groupedClasses.set(classData.category,data)
+                }else{
+                    groupedClasses.set(classData.category,[classData])
+                }
+
+            })  
+            const groupedArray = Array.from(groupedClasses,(([key,value])=>({category:key,classes:value})))
+            return groupedArray
+        } catch (error) {
+            if (error instanceof TRPCClientError) {
+                console.error(error.message)
+                throw new Error(error.message)
+            }
+            console.error(error)
+            throw new Error("Something went wrong.")
+        }
+    }),
+
     createClass: publicProcedure
     .input(z.object({
       className: z.string(),

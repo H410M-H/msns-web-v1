@@ -11,7 +11,7 @@ model classes {
   classId      String         @id @default(uuid())
   className    String         @default("none")
   classSlug    String         @default("none")
-  category  String         @default("none")
+  category     String         @default("category")
   StudentClass StudentClass[]
 
   @@index([className])
@@ -67,8 +67,8 @@ model StudentClass {
   scId      String   @id @default(uuid())
   studentId String
   classId   String
-  student   students @relation(fields: [studentId], references: [studentId])
   class     classes  @relation(fields: [classId], references: [classId])
+  student   students @relation(fields: [studentId], references: [studentId])
 }
 
 enum Gender {
