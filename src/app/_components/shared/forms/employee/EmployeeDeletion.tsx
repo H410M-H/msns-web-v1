@@ -19,28 +19,22 @@ export const EmployeeDeletionDialog = ({ employeeIds }: { employeeIds: string[] 
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <Button variant="destructive" disabled={employeeIds.length === 0}>
-                    Delete selected
-                </Button>
+                <Button variant="destructive" disabled={employeeIds.length == 0}>Delete selected</Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                     <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete the selected
-                        employee(s) and remove their data from our servers.
+                        This action cannot be undone. This will permanently delete your
+                        account and remove your data from our servers.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction asChild>
-                        <Button 
-                            variant="destructive"
+                    <AlertDialogAction  asChild>
+                        <Button variant="destructive"
                             onClick={() => deleteEmployees.mutate({ employeeIds: employeeIds })}
-                            disabled={deleteEmployees.isPending}
-                        >
-                            {deleteEmployees.isPending ? "Deleting..." : "Confirm"}
-                        </Button>
+                            disabled={deleteEmployees.isPending}>Confirm</Button>
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
