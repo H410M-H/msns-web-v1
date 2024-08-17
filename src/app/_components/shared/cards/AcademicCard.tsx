@@ -1,5 +1,4 @@
 import {
-    BarChartIcon,
     LayersIcon,
   } from "@radix-ui/react-icons";
   import { BookCheckIcon, CircleFadingPlusIcon, FileStackIcon, FileTextIcon, UserPlusIcon } from "lucide-react";
@@ -39,12 +38,6 @@ import {
         title: "Exams & Results",
         description: "Create and manage new classes or courses for the school.",
         icon: <FileTextIcon className="mb-4 h-12 w-12 text-indigo-500" />,
-        href: "",
-      },
-      {
-        title: "Financial Reporting",
-        description: "Generate comprehensive financial reports and analytics.",
-        icon: <BarChartIcon className="mb-4 h-12 w-12 text-purple-500" />,
         href: "",
       },
       {

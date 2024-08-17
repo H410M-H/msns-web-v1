@@ -1,4 +1,4 @@
-import { EmployeeCreationDialog } from "~/app/_components/shared/forms/employee/EmployeeCreation";
+import { EmployeeCreationDialog } from "~/app/_components/shared/forms/employee/employeeCreation";
 
 export default function EmployeeRegistration() {
   return (

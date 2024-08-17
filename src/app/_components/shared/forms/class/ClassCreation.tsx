@@ -1,6 +1,6 @@
 "use client";
 
-import {  ReloadIcon } from "@radix-ui/react-icons";
+import { ReloadIcon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
 import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
@@ -27,7 +27,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~
 
 const formSchema = z.object({
   className: z.string({ required_error: "Field is required" }),
-  classSlug: z.string({ required_error: "Field is required" }),
+  classSlug: z.enum(["ROSE", "TULIP"], {
+    required_error: "Category is required",
+  }),
   category: z.enum(["Montessori", "Primary", "Middle", "SSC-I", "SSC-II"], {
     required_error: "Category is required",
   }),
@@ -90,42 +92,46 @@ export const ClassCreationDialog = () => {
               name="classSlug"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Class slug</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="ROSE/ TULIP"
-                      {...field}
-                      value={field.value ?? ""}
-                    />
-                  </FormControl>
+                  <FormLabel>Section</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="ROSE">ROSE</SelectItem>
+                      <SelectItem value="TULIP">TULIP</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
             />
-                      <FormField
-            control={form.control}
-            name="category"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Category</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a category" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="Montessori">Montessori (Nursery and Prep)</SelectItem>
-                    <SelectItem value="Primary">Primary (One to Five)</SelectItem>
-                    <SelectItem value="Middle">Middle (Six and Seven)</SelectItem>
-                    <SelectItem value="SSC-I">SSC-I</SelectItem>
-                    <SelectItem value="SSC-II">SSC-II</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Category</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="Montessori">Montessori (Nursery and Prep)</SelectItem>
+                      <SelectItem value="Primary">Primary (One to Five)</SelectItem>
+                      <SelectItem value="Middle">Middle (Six and Seven)</SelectItem>
+                      <SelectItem value="SSC-I">SSC-I</SelectItem>
+                      <SelectItem value="SSC-II">SSC-II</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <Button
               type="submit"
               disabled={createClass.isPending}

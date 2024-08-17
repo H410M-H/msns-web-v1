@@ -1,6 +1,7 @@
 
 
 type ClassProps = {
+    [x: string]: ReactNode
     classId: string
     className: string
     classSlug: string

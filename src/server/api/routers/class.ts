@@ -50,7 +50,7 @@ export const ClassRouter = createTRPCRouter({
     createClass: publicProcedure
     .input(z.object({
       className: z.string(),
-      classSlug: z.string(),
+      classSlug: z.enum(["ROSE", "TULIP"]),
       category: z.enum(["Montessori", "Primary", "Middle", "SSC-I", "SSC-II"]),
     }))
     .mutation(async ({ ctx, input }) => {

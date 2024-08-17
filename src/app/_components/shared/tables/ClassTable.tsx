@@ -4,7 +4,6 @@
 import {
   type ColumnDef,
   type SortingState,
-  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -15,14 +14,6 @@ import { useMemo, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "~/components/ui/table";
 import { api } from "~/trpc/react";
 import Link from "next/link";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
@@ -132,100 +123,110 @@ export const ClassTable = () => {
   });
 
   return (
-    <div className="w-full">
-      <div className="flex items-center justify-between gap-2 py-4">
-        <Input
-          placeholder="Search name"
-          value={
-            (table.getColumn("className")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn("className")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        <div className="flex items-center gap-2">
-          <ClassCreationDialog />
-          <Button variant={'outline'} type="button" onClick={() => classesData.refetch()}>
-            Refresh
-          </Button>
-          <ClassDeletionDialog  classIds={table.getSelectedRowModel().rows.map(row=>row.original.classId)}/>
-        </div>
-      </div>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
+<div className="w-full">
+  <div className="flex items-center justify-between gap-2 py-4">
+    <div className="flex items-center gap-2">
+      <Button
+        onClick={() => table.toggleAllRowsSelected()}
+        variant="outline"
+        className="bg-purple-500 text-white hover:bg-purple-600"
+      >
+        {table.getIsAllRowsSelected() ? "Deselect All" : "Select All"}
+      </Button>
+      <Input
+        placeholder="Search name"
+        value={(table.getColumn("className")?.getFilterValue() as string) ?? ""}
+        onChange={(event) =>
+          table.getColumn("className")?.setFilterValue(event.target.value)
+        }
+        className="max-w-sm border-blue-500"
+      />
     </div>
+    <div className="flex items-center gap-2">
+      <ClassCreationDialog />
+      <Button
+        variant="outline"
+        className="bg-blue-500 text-white hover:bg-blue-600"
+        onClick={() => classesData.refetch()}
+      >
+        Refresh
+      </Button>
+      <ClassDeletionDialog
+        classIds={table.getSelectedRowModel().rows.map(
+          (row) => row.original.classId
+        )}
+      />
+    </div>
+  </div>
+
+
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+  {table.getRowModel().rows?.length ? (
+    table.getRowModel().rows.map((row) => (
+      <div 
+        key={row.id} 
+        className="p-4 border rounded-md shadow-md flex flex-col justify-between bg-gradient-to-r from-blue-200 to-purple-200 hover:shadow-lg transition-shadow"
+        data-state={row.getIsSelected() && "selected"}
+      >
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <Checkbox
+              checked={row.getIsSelected()}
+              onCheckedChange={(value) => row.toggleSelected(!!value)}
+              aria-label="Select row"
+            />
+            <h3 className="text-lg font-semibold text-gray-800">
+              {row.original.className}
+            </h3>
+          </div>
+          <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded-md">
+            {row.original.classSlug}
+          </span>
+        </div>
+        <p className="text-sm text-gray-600">
+          {row.original.category}
+        </p>
+        <div className="mt-2 flex justify-between gap-2">
+          <Button variant="outline" size="sm" className="bg-green-500 text-white hover:bg-green-600">View Details</Button>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" className="bg-yellow-500 text-white hover:bg-yellow-600">Edit</Button>
+            <Button variant="destructive" size="sm" className="bg-red-500 text-white hover:bg-red-600">Delete</Button>
+          </div>
+        </div>
+      </div>
+    ))
+  ) : (
+    <div className="col-span-full text-center py-4">
+      No results.
+    </div>
+  )}
+</div>
+  <div className="flex items-center justify-end space-x-2 py-4">
+    <div className="flex-1 text-sm text-gray-600">
+      {table.getFilteredSelectedRowModel().rows.length} of{" "}
+      {table.getFilteredRowModel().rows.length} row(s) selected.
+    </div>
+    <div className="space-x-2">
+      <Button
+        variant="outline"
+        size="sm"
+        className="bg-indigo-500 text-white hover:bg-indigo-600"
+        onClick={() => table.previousPage()}
+        disabled={!table.getCanPreviousPage()}
+      >
+        Previous
+      </Button>
+      <Button
+        variant="outline"
+        size="sm"
+        className="bg-indigo-500 text-white hover:bg-indigo-600"
+        onClick={() => table.nextPage()}
+        disabled={!table.getCanNextPage()}
+      >
+        Next
+      </Button>
+    </div>
+  </div>
+</div>
   );
 };
