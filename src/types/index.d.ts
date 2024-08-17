@@ -4,8 +4,8 @@ type ClassProps = {
     classId: string
     className: string
     classSlug: string
+    category: string
 }
-
 
 type StudentProps = {
     studentId: string

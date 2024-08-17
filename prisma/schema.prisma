@@ -11,6 +11,7 @@ model classes {
   classId      String         @id @default(uuid())
   className    String         @default("none")
   classSlug    String         @default("none")
+  category  String         @default("none")
   StudentClass StudentClass[]
 
   @@index([className])

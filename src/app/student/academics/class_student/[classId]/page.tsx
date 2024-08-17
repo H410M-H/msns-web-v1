@@ -1,4 +1,3 @@
-import { ClassesCard } from "~/app/_components/shared/cards/ClassesCard";
 
 type ParamProps = {
   classId: string;

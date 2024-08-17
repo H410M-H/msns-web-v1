@@ -23,10 +23,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 
 const formSchema = z.object({
   className: z.string({ required_error: "Field is required" }),
   classSlug: z.string({ required_error: "Field is required" }),
+  category: z.enum(["Montessori", "Primary", "Middle", "SSC-I", "SSC-II"], {
+    required_error: "Category is required",
+  }),
 });
 
 export const ClassCreationDialog = () => {
@@ -44,6 +48,7 @@ export const ClassCreationDialog = () => {
     createClass.mutate({
       className: values.className ?? "none",
       classSlug: values.classSlug ?? "none",
+      category: values.category ?? "none"
     });
   };
 
@@ -97,6 +102,30 @@ export const ClassCreationDialog = () => {
                 </FormItem>
               )}
             />
+                      <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Category</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a category" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="Montessori">Montessori (Nursery and Prep)</SelectItem>
+                    <SelectItem value="Primary">Primary (One to Five)</SelectItem>
+                    <SelectItem value="Middle">Middle (Six and Seven)</SelectItem>
+                    <SelectItem value="SSC-I">SSC-I</SelectItem>
+                    <SelectItem value="SSC-II">SSC-II</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
             <Button
               type="submit"
               disabled={createClass.isPending}

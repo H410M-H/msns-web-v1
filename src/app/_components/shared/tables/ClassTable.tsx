@@ -36,7 +36,6 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { ClassCreationDialog } from "~/app/_components/shared/forms/class/ClassCreation";
 import { ClassDeletionDialog } from "~/app/_components/shared/forms/class/ClassDeletion";
-import { ClassesCard } from "../cards/ClassesCard";
 
 const columns: ColumnDef<ClassProps>[] = [
   {
@@ -72,6 +71,11 @@ const columns: ColumnDef<ClassProps>[] = [
     accessorKey: "classSlug",
     header: "Name",
     cell: ({ row }) => <div>{row.getValue("classSlug")}</div>,
+  },
+  {
+    accessorKey: "category",
+    header: "Name",
+    cell: ({ row }) => <div>{row.getValue("category")}</div>,
   },
   {
     id: "actions",

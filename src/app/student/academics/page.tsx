@@ -12,6 +12,7 @@ export default function Classes() {
           </h1>
           <div className="absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 transform bg-gradient-to-r from-green-600 to-yellow-500 transition-transform duration-300 group-hover:scale-x-100"></div>
         </div>
+        
       </div>
       <ClassesCard />
     </main>

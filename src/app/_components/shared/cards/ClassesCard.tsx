@@ -5,7 +5,6 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-  CardContent,
   CardFooter,
 } from "~/components/ui/card";
 import Link from "next/link";
@@ -22,13 +21,7 @@ export const ClassesCard = async () => {
             <CardTitle>{classProps.className}</CardTitle>
             <CardDescription>{classProps.classSlug}</CardDescription>
           </CardHeader>
-          <CardContent>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Est
-              tempore, odio unde magnam autem soluta neque asperiores doloribus
-              consectetur quas.
-            </p>
-          </CardContent>
+
           <CardFooter>
             <Button className="w-full" asChild>
               <Link

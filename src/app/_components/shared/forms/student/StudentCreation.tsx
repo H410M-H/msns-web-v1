@@ -144,371 +144,408 @@ export const StudentCreationDialog = () => {
   };
 
   return (
-    <Card className="mx-auto w-full max-w-4xl">
-      <CardHeader>
-        <CardTitle className="font-serif text-4xl font-medium text-green-800">
-          Student Registration Form
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(formSubmitted)}
-            className="space-y-6"
-          >
-            <div className="grid grid-cols-1 gap-6 font-sans font-normal md:grid-cols-2">
-              <FormField
-                control={form.control}
-                name="studentName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Student Name:*</FormLabel>
+<Card className="mx-auto w-full max-w-4xl p-6 bg-white shadow-lg rounded-xl">
+  <CardHeader>
+    <CardTitle className="font-serif text-4xl font-medium text-green-800 text-center mb-4">
+      Student Registration Form
+    </CardTitle>
+  </CardHeader>
+  <CardContent>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(formSubmitted)}
+        className="space-y-8"
+      >
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+          <FormField
+            control={form.control}
+            name="studentName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm text-gray-600">Student Name:*</FormLabel>
+                <FormControl>
+                  <Input
+                    className="peer w-full bg-gray-50 text-gray-900 border border-gray-300 focus:border-teal-500 focus:ring-teal-500 rounded-lg p-4 transition-shadow duration-300 shadow-sm focus:shadow-lg"
+                    placeholder="Student's name"
+                    {...field}
+                    value={field.value ?? ""}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="fatherName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm text-gray-600">Father Name:*</FormLabel>
+                <FormControl>
+                  <Input
+                    className="peer w-full bg-gray-50 text-gray-900 border border-gray-300 focus:border-teal-500 focus:ring-teal-500 rounded-lg p-4 transition-shadow duration-300 shadow-sm focus:shadow-lg"
+                    placeholder="Father's name"
+                    {...field}
+                    value={field.value ?? ""}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="studentBForm"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm text-gray-600">Student B-Form #*</FormLabel>
+                <FormControl>
+                  <InputOTP maxLength={13} {...field} value={field.value ?? ""}>
+                    <InputOTPGroup>
+                      <InputOTPSlot index={0} />
+                      <InputOTPSlot index={1} />
+                      <InputOTPSlot index={2} />
+                      <InputOTPSlot index={3} />
+                      <InputOTPSlot index={4} />
+                    </InputOTPGroup>
+                    <InputOTPSeparator />
+                    <InputOTPGroup>
+                      <InputOTPSlot index={5} />
+                      <InputOTPSlot index={6} />
+                      <InputOTPSlot index={7} />
+                      <InputOTPSlot index={8} />
+                      <InputOTPSlot index={9} />
+                      <InputOTPSlot index={10} />
+                      <InputOTPSlot index={11} />
+                    </InputOTPGroup>
+                    <InputOTPSeparator />
+                    <InputOTPGroup>
+                      <InputOTPSlot index={12} />
+                    </InputOTPGroup>
+                  </InputOTP>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="fatherCNIC"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm text-gray-600">Father CNIC*</FormLabel>
+                <FormControl>
+                  <InputOTP maxLength={13} {...field} value={field.value ?? ""}>
+                    <InputOTPGroup>
+                      <InputOTPSlot index={0} />
+                      <InputOTPSlot index={1} />
+                      <InputOTPSlot index={2} />
+                      <InputOTPSlot index={3} />
+                      <InputOTPSlot index={4} />
+                    </InputOTPGroup>
+                    <InputOTPSeparator />
+                    <InputOTPGroup>
+                      <InputOTPSlot index={5} />
+                      <InputOTPSlot index={6} />
+                      <InputOTPSlot index={7} />
+                      <InputOTPSlot index={8} />
+                      <InputOTPSlot index={9} />
+                      <InputOTPSlot index={10} />
+                      <InputOTPSlot index={11} />
+                    </InputOTPGroup>
+                    <InputOTPSeparator />
+                    <InputOTPGroup>
+                      <InputOTPSlot index={12} />
+                    </InputOTPGroup>
+                  </InputOTP>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="dob"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel className="text-sm text-gray-600">Date of Birth:*</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
                     <FormControl>
-                      <Input
-                        placeholder="Student's name"
-                        {...field}
-                        value={field.value ?? ""}
-                      />
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full pl-3 text-left font-normal rounded-lg border-gray-300",
+                          !field.value && "text-gray-400",
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="fatherName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Father Name:*</FormLabel>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) =>
+                        date > new Date() || date < new Date("1900-01-01")
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="doa"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel className="text-sm text-gray-600">Date of Admission:</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
                     <FormControl>
-                      <Input
-                        placeholder="Father's name"
-                        {...field}
-                        value={field.value ?? ""}
-                      />
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full pl-3 text-left font-normal rounded-lg border-gray-300",
+                          !field.value && "text-gray-400",
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-<FormField
-  control={form.control}
-  name="studentBForm"
-  render={({ field }) => (
-    <FormItem>
-      <FormLabel>Student B-Form #*</FormLabel>
-      <FormControl>
-        <InputOTP maxLength={13} {...field} value={field.value ?? ""}>
-          <InputOTPGroup>
-            <InputOTPSlot index={0} />
-            <InputOTPSlot index={1} />
-            <InputOTPSlot index={2} />
-            <InputOTPSlot index={3} />
-            <InputOTPSlot index={4} />
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) => date < new Date("1900-01-01")}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="gender"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm text-gray-600">Gender:</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger className="rounded-lg border-gray-300">
+                      <SelectValue placeholder="Select Gender" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {genderClasses.map((value, index) => (
+                      <SelectItem key={index} value={value.value}>
+                        {value.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="religion"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm text-gray-600">Select Religion:</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger className="rounded-lg border-gray-300">
+                      <SelectValue placeholder="Religion" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {religion.map((value, index) => (
+                      <SelectItem key={index} value={value.value}>
+                        {value.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="caste"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm text-gray-600">Tribe/ Caste:</FormLabel>
+                <FormControl>
+                  <Input
+                    className="peer w-full bg-gray-50 text-gray-900 border border-gray-300 focus:border-teal-500 focus:ring-teal-500 rounded-lg p-4 transition-shadow duration-300 shadow-sm focus:shadow-lg"
+                    placeholder="Enter tribe or caste"
+                    {...field}
+                    value={field.value ?? ""}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="occupation"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm text-gray-600">Guardian Occupation:</FormLabel>
+                <FormControl>
+                  <Input
+                    className="peer w-full bg-gray-50 text-gray-900 border border-gray-300 focus:border-teal-500 focus:ring-teal-500 rounded-lg p-4 transition-shadow duration-300 shadow-sm focus:shadow-lg"
+                    placeholder="Enter guardian's occupation"
+                    {...field}
+                    value={field.value ?? ""}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="residence"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm text-gray-600">Residential Address:*</FormLabel>
+                <FormControl>
+                  <Input
+                    className="peer w-full bg-gray-50 text-gray-900 border border-gray-300 focus:border-teal-500 focus:ring-teal-500 rounded-lg p-4 transition-shadow duration-300 shadow-sm focus:shadow-lg"
+                    placeholder="Enter residential address"
+                    {...field}
+                    value={field.value ?? ""}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="residence2"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm text-gray-600">Permanent Address:</FormLabel>
+                <FormControl>
+                  <Input
+                    className="peer w-full bg-gray-50 text-gray-900 border border-gray-300 focus:border-teal-500 focus:ring-teal-500 rounded-lg p-4 transition-shadow duration-300 shadow-sm focus:shadow-lg"
+                    placeholder="Permanent Address (optional)"
+                    {...field}
+                    value={field.value ?? ""}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="contact1"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm text-gray-600">Contact #:</FormLabel>
+                <FormControl>
+                  <Input
+                    className="peer w-full bg-gray-50 text-gray-900 border border-gray-300 focus:border-teal-500 focus:ring-teal-500 rounded-lg p-4 transition-shadow duration-300 shadow-sm focus:shadow-lg"
+                    placeholder="Enter Mobile #"
+                    {...field}
+                    value={field.value ?? ""}
+                  />
+                </FormControl>
 
-          </InputOTPGroup>
-          <InputOTPSeparator />
-          <InputOTPGroup>
-            <InputOTPSlot index={5} />
-            <InputOTPSlot index={6} />
-            <InputOTPSlot index={7} />
-            <InputOTPSlot index={8} />
-            <InputOTPSlot index={9} />
-            <InputOTPSlot index={10} />
-            <InputOTPSlot index={11} />
-          </InputOTPGroup>
-          <InputOTPSeparator />
-          <InputOTPGroup>
-            <InputOTPSlot index={12} />
-          </InputOTPGroup>
-        </InputOTP>
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
-<FormField
-  control={form.control}
-  name="fatherCNIC"
-  render={({ field }) => (
-    <FormItem>
-      <FormLabel>Father CNIC*</FormLabel>
-      <FormControl>
-        <InputOTP maxLength={13} {...field} value={field.value ?? ""}>
-          <InputOTPGroup>
-          <InputOTPSlot index={0} />
-            <InputOTPSlot index={1} />
-            <InputOTPSlot index={2} />
-            <InputOTPSlot index={3} />
-            <InputOTPSlot index={4} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="contact2"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm text-gray-600">Additional Contact #:(Optional)</FormLabel>
+                <FormControl>
+                  <Input
+                    className="peer w-full bg-gray-50 text-gray-900 border border-gray-300 focus:border-teal-300 focus:ring-teal-100 rounded-lg p-4 transition-shadow duration-300 shadow-sm focus:shadow-lg"
+                    placeholder="Enter contact numbers"
+                    {...field}
+                    value={field.value ?? ""}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+<div className="flex justify-center">
+  <Button
+    type="submit"
+    className="w-full sm:w-auto bg-teal-500 hover:bg-teal-600 text-green-800 font-bold py-3 px-6 rounded-lg transition-transform transform hover:scale-105 flex items-center justify-center"
+    disabled={createStudent.isPending}
+  >
+    {createStudent.isPending ? (
+      <>
+        <svg
+          className="animate-spin h-5 w-5 text-white mr-2"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          ></circle>
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+          ></path>
+        </svg>
+        Please wait
+      </>
+    ) : (
+      'Register Student'
+    )}
+  </Button>
+</div>
+      </form>
+    </Form>
+  </CardContent>
+</Card>
 
-          </InputOTPGroup>
-          <InputOTPSeparator />
-          <InputOTPGroup>
-            <InputOTPSlot index={5} />
-            <InputOTPSlot index={6} />
-            <InputOTPSlot index={7} />
-            <InputOTPSlot index={8} />
-            <InputOTPSlot index={9} />
-            <InputOTPSlot index={10} />
-            <InputOTPSlot index={11} />
-          </InputOTPGroup>
-          <InputOTPSeparator />
-          <InputOTPGroup>
-            <InputOTPSlot index={12} />
-          </InputOTPGroup>
-        </InputOTP>
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
-              <FormField
-                control={form.control}
-                name="dob"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Date of Birth:*</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant="outline"
-                            className={cn(
-                              "w-full pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground",
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(date) =>
-                            date > new Date() || date < new Date("1900-01-01")
-                          }
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="doa"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Date of Admission:</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant="outline"
-                            className={cn(
-                              "w-full pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground",
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(date) => date < new Date("1900-01-01")}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="gender"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Gender:</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Gender" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {genderClasses.map((value, index) => (
-                          <SelectItem key={index} value={value.value}>
-                            {value.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="religion"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Select Religion:</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Religion" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {religion.map((value, index) => (
-                          <SelectItem key={index} value={value.value}>
-                            {value.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="caste"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Tribe/ Caste:</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter tribe or caste"
-                        {...field}
-                        value={field.value ?? ""}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="occupation"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Guardian Occupation:</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter guardian's occupation"
-                        {...field}
-                        value={field.value ?? ""}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="residence"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Residential Address:*</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter residential address"
-                        {...field}
-                        value={field.value ?? ""}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="residence2"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Permanent Address:</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Permanent Address (optional)"
-                        {...field}
-                        value={field.value ?? ""}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="contact1"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Contact #:</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter Mobile #"
-                        {...field}
-                        value={field.value ?? ""}
-                      />
-                    </FormControl>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="contact2"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Additional Contact #:(Optional)</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter contact numbers"
-                        {...field}
-                        value={field.value ?? ""}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex justify-center">
-              <Button type="submit" className="w-full sm:w-auto" disabled={createStudent.isPending}>
-                {createStudent.isPending ? 'Please wait':'Register Student'}
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
   );
 };

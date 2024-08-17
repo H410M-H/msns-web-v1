@@ -4,7 +4,7 @@ import { Header } from "../_components/header/header";
 import { HorizontalMenu } from "../_components/menubar/menubar";
 
 export const metadata = {
-  title: "MSNS-WEB | Revenue",
+  title: "MSNS-WEB",
   description: "Clerk Dashbaord",
   icons: [{ rel: "icon", url: "/logo/logo-white.png" }],
 };

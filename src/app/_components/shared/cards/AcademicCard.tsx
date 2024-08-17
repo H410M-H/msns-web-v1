@@ -2,7 +2,7 @@ import {
     BarChartIcon,
     LayersIcon,
   } from "@radix-ui/react-icons";
-  import { BookCheckIcon, CircleFadingPlusIcon, FileStackIcon, FileTextIcon } from "lucide-react";
+  import { BookCheckIcon, CircleFadingPlusIcon, FileStackIcon, FileTextIcon, UserPlusIcon } from "lucide-react";
   import Link from "next/link";
   
   export const AcademicCards = () => {
@@ -13,6 +13,13 @@ import {
           "Easily enroll new students and manage their financial records.",
         icon: <LayersIcon className="mb-4 h-12 w-12 text-green-500" />,
         href: "/student/academics",
+      },
+      {
+        title: "Classes Allottment",
+        description:
+          "Easily enroll new Employees and manage their financial records.",
+        icon: <UserPlusIcon className="mb-4 h-12 w-12 text-green-500" />,
+        href: "/admin/academics/classwiseDetail",
       },
       {
         title: "Attendance Management",
