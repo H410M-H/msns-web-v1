@@ -1,24 +1,17 @@
 import {
     LayersIcon,
   } from "@radix-ui/react-icons";
-  import { BookCheckIcon, CircleFadingPlusIcon, FileStackIcon, FileTextIcon, UserPlusIcon } from "lucide-react";
+  import { BookCheckIcon, FileStackIcon } from "lucide-react";
   import Link from "next/link";
   
-  export const AcademicCards = () => {
+  export const SessionCards = () => {
     const services = [
       {
-        title: "Section & Class Management",
+        title: "Create New Session",
         description:
           "Easily enroll new students and manage their financial records.",
         icon: <LayersIcon className="mb-4 h-12 w-12 text-green-500" />,
-        href: "/student/academics",
-      },
-      {
-        title: "Classes Allottment",
-        description:
-          "Easily enroll new Employees and manage their financial records.",
-        icon: <UserPlusIcon className="mb-4 h-12 w-12 text-green-500" />,
-        href: "/admin/academics/classwiseDetail",
+        href: "/admin/academics/annualSession/create",
       },
       {
         title: "Session Management",
@@ -28,22 +21,10 @@ import {
         href: "/admin/academics/annualSession/sessionalDetails",
       },
       {
-        title: "Time Table/ Datesheet",
+        title: "Sessional Reports",
         description:
           "Easily enroll new students and manage their financial records.",
         icon: <FileStackIcon className="mb-4 h-12 w-12 text-blue-500" />,
-        href: "",
-      },
-      {
-        title: "Exams & Results",
-        description: "Create and manage new classes or courses for the school.",
-        icon: <FileTextIcon className="mb-4 h-12 w-12 text-indigo-500" />,
-        href: "",
-      },
-      {
-        title: "Events & Activities",
-        description: "Customize payment plans and automate recurring payments.",
-        icon: <CircleFadingPlusIcon className="mb-4 h-12 w-12 text-red-500" />,
         href: "",
       },
     ];

@@ -54,6 +54,15 @@ model employees {
   additionalContact String   @default("none")
 }
 
+model sessions {
+  sessionId        String   @id @default(uuid())
+  sessionName      String   @default("none")
+  sessionFrom               String   @default("none")
+  sessionTo               String   @default("none")
+    StudentClass      StudentClass[]
+
+}
+
 model users {
   userId   String @id @default(uuid())
   email    String @unique
@@ -68,6 +77,8 @@ model StudentClass {
   studentId String
   classId   String
   class     classes  @relation(fields: [classId], references: [classId])
+  sessionId   String
+  session     sessions  @relation(fields: [sessionId], references: [sessionId])
   student   students @relation(fields: [studentId], references: [studentId])
 }
 

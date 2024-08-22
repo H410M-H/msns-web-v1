@@ -1,7 +1,6 @@
 
 
 type ClassProps = {
-    [x: string]: ReactNode
     classId: string
     className: string
     classSlug: string
@@ -28,6 +27,7 @@ type StudentProps = {
 
 type EmployeeProps = {
     employeeId: string
+    employeeId: string
     employeeName: string
     fatherName: string
     cnic: string
@@ -41,4 +41,11 @@ type EmployeeProps = {
     permanentAddress: string
     contact: string
     additionalContact: z.string
+}
+
+type SessionProps = {
+    sessionId: string
+    sessionName: string
+    sessionFrom: string
+    sessionTo: string
 }
