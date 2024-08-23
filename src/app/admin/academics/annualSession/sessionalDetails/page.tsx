@@ -1,3 +1,4 @@
+import { SessionCards } from "~/app/_components/shared/cards/SessionCard";
 import { SessionTable } from "~/app/_components/shared/tables/SessionTable";
 import { Separator } from "~/components/ui/separator";
 
@@ -19,6 +20,7 @@ export default function sessionalDetail() {
             <Separator className="bg-green-900"/>
           <SessionTable />
           <Separator className="bg-green-900"/>
+          <SessionCards />
     </main>
     )
 }

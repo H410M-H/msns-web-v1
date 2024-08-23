@@ -1,31 +1,21 @@
-import {
-    LayersIcon,
-  } from "@radix-ui/react-icons";
-  import { BookCheckIcon, CircleFadingPlusIcon, FileStackIcon, FileTextIcon, UserPlusIcon } from "lucide-react";
+  import { CalendarCog, CircleFadingPlusIcon, FileStackIcon, FileTextIcon, PlusCircleIcon } from "lucide-react";
   import Link from "next/link";
   
   export const AcademicCards = () => {
     const services = [
       {
-        title: "Section & Class Management",
-        description:
-          "Easily enroll new students and manage their financial records.",
-        icon: <LayersIcon className="mb-4 h-12 w-12 text-green-500" />,
-        href: "/student/academics",
-      },
-      {
-        title: "Classes Allottment",
-        description:
-          "Easily enroll new Employees and manage their financial records.",
-        icon: <UserPlusIcon className="mb-4 h-12 w-12 text-green-500" />,
-        href: "/admin/academics/classwiseDetail",
-      },
-      {
         title: "Session Management",
         description:
           "Easily enroll new students and manage their financial records.",
-        icon: <BookCheckIcon className="mb-4 h-12 w-12 text-green-500" />,
+        icon: <CalendarCog className="mb-4 h-12 w-12 text-green-500" />,
         href: "/admin/academics/annualSession/sessionalDetails",
+      },
+      {
+        title: "User Management",
+        description:
+          "Easily enroll new students and manage their financial records.",
+        icon: <PlusCircleIcon className="mb-4 h-12 w-12 text-blue-500" />,
+        href: "/registration/portal",
       },
       {
         title: "Time Table/ Datesheet",

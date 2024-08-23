@@ -1,4 +1,5 @@
 import { RegistrationCards } from "~/app/_components/shared/cards/RegistrationCard";
+import { LogoCloud } from "~/app/_components/shared/elements/LogoCloud";
 import { Separator } from "~/components/ui/separator";
 
 
@@ -19,6 +20,7 @@ export default function RegistrationPage() {
     <Separator className="bg-green-900"/>
   <RegistrationCards />
   <Separator className="bg-green-900"/>
+  <LogoCloud />
   </main>
     );
   }

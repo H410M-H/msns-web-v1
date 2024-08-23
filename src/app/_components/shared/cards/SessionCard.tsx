@@ -1,24 +1,21 @@
-import {
-    LayersIcon,
-  } from "@radix-ui/react-icons";
-  import { BookCheckIcon, FileStackIcon } from "lucide-react";
+  import { Boxes, FileStackIcon, UserPlusIcon } from "lucide-react";
   import Link from "next/link";
   
   export const SessionCards = () => {
     const services = [
       {
-        title: "Create New Session",
+        title: "Classes Allottment",
         description:
-          "Easily enroll new students and manage their financial records.",
-        icon: <LayersIcon className="mb-4 h-12 w-12 text-green-500" />,
-        href: "/admin/academics/annualSession/create",
+          "Easily enroll new Employees and manage their financial records.",
+        icon: <UserPlusIcon className="mb-4 h-12 w-12 text-green-500" />,
+        href: "/admin/academics/classwiseDetail",
       },
       {
-        title: "Session Management",
+        title: "Section & Class Management",
         description:
           "Easily enroll new students and manage their financial records.",
-        icon: <BookCheckIcon className="mb-4 h-12 w-12 text-green-500" />,
-        href: "/admin/academics/annualSession/sessionalDetails",
+        icon: <Boxes className="mb-4 h-12 w-12 text-green-500" />,
+        href: "/student/academics",
       },
       {
         title: "Sessional Reports",

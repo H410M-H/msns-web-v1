@@ -116,3 +116,24 @@
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
   perspective: 1000px;
 }
+.logo-cloud-wrapper {
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.logo-cloud {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scroll 20s linear infinite;
+}
+
+@keyframes scroll {
+  from {
+      transform: translateX(0%);
+  }
+  to {
+      transform: translateX(-100%);
+  }
+}
