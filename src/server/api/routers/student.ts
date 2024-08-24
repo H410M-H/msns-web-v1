@@ -22,6 +22,24 @@ export const StudentRouter = createTRPCRouter({
         }
     }),
 
+    getUnAllocateStudents: publicProcedure.query(async ({ ctx }) => {
+        try {
+            const students: StudentProps[] = await ctx.db.students.findMany({
+                where: {
+                    isAssign: false
+                }
+            });
+            return students;
+        } catch (error) {
+            if (error instanceof TRPCClientError) {
+                console.error(error.message);
+                throw new Error(error.message);
+            }
+            console.error(error);
+            throw new Error("Something went wrong.");
+        }
+    }),
+
     createStudent: publicProcedure
         .input(z.object({
             studentName: z.string(),
@@ -41,7 +59,7 @@ export const StudentRouter = createTRPCRouter({
         }))
         .mutation(async ({ ctx, input }) => {
             try {
-                
+
                 await ctx.db.students.create({
                     data: {
                         studentName: input.studentName,
@@ -51,7 +69,7 @@ export const StudentRouter = createTRPCRouter({
                         dob: input.dob,
                         doa: input.doa,
                         gender: input.gender === 'M' ? "MALE" : "FEMALE",
-                        religion: input.religion ==='M' ? "MUSLIM" : input.religion ==='C' ? "CHRISTIAN":"OTHERS" ,
+                        religion: input.religion === 'M' ? "MUSLIM" : input.religion === 'C' ? "CHRISTIAN" : "OTHERS",
                         tribe: input.tribe,
                         occupation: input.occupation,
                         address: input.address,
@@ -71,32 +89,32 @@ export const StudentRouter = createTRPCRouter({
                 }
                 console.error(error);
                 throw new TRPCError({
-                  code: 'INTERNAL_SERVER_ERROR',
-                  message: 'Something went wrong'
+                    code: 'INTERNAL_SERVER_ERROR',
+                    message: 'Something went wrong'
                 });
-              }
-            }),
-                
-            deleteStudentsByIds: publicProcedure
-            .input(z.object({
-                studentIds: z.string().array(),
-            }))
-            .mutation(async ({ ctx, input }) => {
-                try {
-                    await ctx.db.students.deleteMany({
-                        where: {
-                            studentId: {
-                                in: input.studentIds,
-                            },
+            }
+        }),
+
+    deleteStudentsByIds: publicProcedure
+        .input(z.object({
+            studentIds: z.string().array(),
+        }))
+        .mutation(async ({ ctx, input }) => {
+            try {
+                await ctx.db.students.deleteMany({
+                    where: {
+                        studentId: {
+                            in: input.studentIds,
                         },
-                    });
-                } catch (error) {
-                    if (error instanceof TRPCClientError) {
-                        console.error(error.message);
-                        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: error.message });
-                    }
-                    console.error(error);
-                    throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: "Something went wrong." });
+                    },
+                });
+            } catch (error) {
+                if (error instanceof TRPCClientError) {
+                    console.error(error.message);
+                    throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: error.message });
                 }
-            }),
+                console.error(error);
+                throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: "Something went wrong." });
+            }
+        }),
 });

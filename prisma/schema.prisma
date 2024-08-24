@@ -55,12 +55,11 @@ model employees {
 }
 
 model sessions {
-  sessionId        String   @id @default(uuid())
-  sessionName      String   @default("none")
-  sessionFrom               String   @default("none")
-  sessionTo               String   @default("none")
-    StudentClass      StudentClass[]
-
+  sessionId    String         @id @default(uuid())
+  sessionName  String         @default("none")
+  sessionFrom  String         @default("none")
+  sessionTo    String         @default("none")
+  StudentClass StudentClass[]
 }
 
 model users {
@@ -76,9 +75,9 @@ model StudentClass {
   scId      String   @id @default(uuid())
   studentId String
   classId   String
+  sessionId String
   class     classes  @relation(fields: [classId], references: [classId])
-  sessionId   String
-  session     sessions  @relation(fields: [sessionId], references: [sessionId])
+  session   sessions @relation(fields: [sessionId], references: [sessionId])
   student   students @relation(fields: [studentId], references: [studentId])
 }
 

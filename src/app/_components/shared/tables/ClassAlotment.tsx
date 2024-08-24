@@ -15,19 +15,10 @@ import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
 import { api } from "~/trpc/react";
 import Link from "next/link";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
-import { SessionDeletionDialog } from "../forms/annualSession/SessionDeletion";
-import { SessionCreationDialog } from "../forms/annualSession/SessionCreation";
+import { ClassDeletionDialog } from "~/app/_components/shared/forms/class/ClassDeletion";
+import { StudentAllotmentDialog } from "~/app/_components/shared/forms/class/StudentAlotment";
 
-const columns: ColumnDef<SessionProps>[] = [
+const columns: ColumnDef<ClassStudentProps>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -51,62 +42,22 @@ const columns: ColumnDef<SessionProps>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "sessionName",
-    header: "Session Name",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("sessionName")}</div>
-    ),
-  },
-  {
-    accessorKey: "SessionFrom",
-    header: "Session Start Date",
-    cell: ({ row }) => <div>{row.getValue("sessionFrom")}</div>,
-  },
-  {
-    accessorKey: "sessionTo",
-    header: "Session End Date",
-    cell: ({ row }) => <div>{row.getValue("sessionTo")}</div>,
-  },
-  {
-    id: "actions",
-    header: "Actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link
-                href={`/dashboard/bicycle/product/${row.original.sessionId}`}
-              >
-                Edit
-              </Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    accessorKey: "className",
+    header: "Class",
+    cell: ({ row }) => <div>{row.getValue("className")}</div>,
   },
 ];
 
-export const SessionTable = () => {
+export const ClassAlotmentTable = ({classId}:{classId:string}) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
-  const [data, setData] = useState<SessionProps[]>([]);
+  const [data, setData] = useState<ClassStudentProps[]>([]);
 
-  const sessionsData = api.session.getSessions.useQuery();
+  const students = api.alotment.getStudentsInClass.useQuery({classId:classId});
 
   useMemo(() => {
-    if (sessionsData.data) setData(sessionsData.data);
-  }, [sessionsData.data]);
+    if (students.data) setData(students.data);
+  }, [students.data]);
 
   const table = useReactTable({
     data,
@@ -146,18 +97,18 @@ export const SessionTable = () => {
           />
         </div>
         <div className="flex items-center gap-2">
-          <SessionCreationDialog />
+          <StudentAllotmentDialog classId={classId}  />
           <Button
             variant="outline"
             className="bg-blue-500 text-white hover:bg-blue-600"
-            onClick={() => sessionsData.refetch()}
+            onClick={() => students.refetch()}
           >
             Refresh
           </Button>
-          <SessionDeletionDialog
-            sessionIds={table
+          <ClassDeletionDialog
+            classIds={table
               .getSelectedRowModel()
-              .rows.map((row) => row.original.sessionId)}
+              .rows.map((row) => row.original.classId)}
           />
         </div>
       </div>
@@ -178,21 +129,22 @@ export const SessionTable = () => {
                     aria-label="Select row"
                   />
                   <h3 className="text-lg font-semibold text-gray-800">
-                    {row.original.sessionName}
+                    {row.original.student.studentName} | {row.original.student.fatherName}
                   </h3>
                 </div>
                 <span className="rounded-md bg-blue-500 px-2 py-1 text-xs text-white">
-                  {row.original.sessionFrom}
+                  {row.original.class.className}
                 </span>
               </div>
-              <p className="text-sm text-gray-600">{row.original.sessionTo}</p>
+              <p className="text-sm text-gray-600">{row.original.session.sessionName}</p>
               <div className="mt-2 flex justify-between gap-2">
                 <Button
                   variant="outline"
                   size="sm"
                   className="bg-green-500 text-white hover:bg-green-600"
+                  asChild
                 >
-                  View Details
+                  <Link href={`/admin/academics/classwiseDetail/${row.original.classId}`}>View Details</Link>
                 </Button>
                 <div className="flex gap-2">
                   <Button
