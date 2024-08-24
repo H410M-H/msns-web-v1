@@ -49,3 +49,14 @@ type SessionProps = {
     sessionFrom: string
     sessionTo: string
 }
+
+
+type ClassStudentProps = {
+    scId: string
+    studentId: string
+    classId: string
+    sessionId: string
+    class : ClassProps
+    student:StudentProps
+    session:SessionProps
+}

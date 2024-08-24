@@ -1,4 +1,5 @@
 import { AcademicCards } from "~/app/_components/shared/cards/AcademicCard";
+import { SessionCards } from "~/app/_components/shared/cards/SessionCard";
 import { Separator } from "~/components/ui/separator";
 
 export default function AcademicsPage() {
@@ -18,6 +19,7 @@ export default function AcademicsPage() {
           <Separator className="bg-green-900"/>
           <AcademicCards />
           <Separator className="bg-green-900"/>
+          <SessionCards />
     </main>
     )
 }
