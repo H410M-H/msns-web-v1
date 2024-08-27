@@ -1,3 +1,5 @@
+import { FeeTable } from "~/app/_components/shared/tables/FeeTable";
+import { Separator } from "~/components/ui/separator";
 
 export default function Fee() {
   return (
@@ -6,12 +8,15 @@ export default function Fee() {
     <div className="relative overflow-hidden">
       <h1 className="text-center text-5xl font-serif font-bold tracking-tight p-2">
         <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-yellow-500 hover:from-orange-400 hover:to-green-500 transition-all duration-300">
-          Fee Collection
+          Fee Management
         </span>
       </h1>
       <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-green-600 to-yellow-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
     </div>
   </div>
+  <Separator className="bg-green-900" />
+      <FeeTable />
+      <Separator className="bg-green-900" />
 </main>
   );
 }

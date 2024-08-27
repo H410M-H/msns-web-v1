@@ -50,6 +50,13 @@ type SessionProps = {
     sessionTo: string
 }
 
+type FeeProps = {
+    feeId: string
+    feeName: string
+    createdAt: string
+    updatedAt: string
+}
+
 
 type ClassStudentProps = {
     scId: string
@@ -60,3 +67,15 @@ type ClassStudentProps = {
     student:StudentProps
     session:SessionProps
 }
+
+type ClassFeeProps = {
+    scId: string
+    feeId: string
+    classId: string
+    sessionId: string
+    class : ClassProps
+    fee:FeeProps
+    session:SessionProps
+}
+
+

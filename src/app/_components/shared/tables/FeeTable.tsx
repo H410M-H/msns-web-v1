@@ -15,18 +15,19 @@ import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
 import { api } from "~/trpc/react";
 import Link from "next/link";
-import { ClassCreationDialog } from "~/app/_components/shared/forms/class/ClassCreation";
-import { ClassDeletionDialog } from "~/app/_components/shared/forms/class/ClassDeletion";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+import { FeeCreationDialog } from "../forms/fee/FeeCreation";
+import { FeeDeletionDialog } from "../forms/fee/FeeDeletion";
 
-const categoryColors: Record<string, string> = {
-  Montessori: "bg-red-200 text-red-800",
-  Primary: "bg-blue-200 text-blue-800",
-  Middle: "bg-green-200 text-green-800",
-  "SSC-I": "bg-yellow-200 text-yellow-800",
-  "SSC-II": "bg-purple-200 text-purple-800",
-};
-
-const columns: ColumnDef<ClassProps>[] = [
+const columns: ColumnDef<FeeProps>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -50,40 +51,62 @@ const columns: ColumnDef<ClassProps>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "className",
-    header: "Class",
-    cell: ({ row }) => <div>{row.getValue("className")}</div>,
+    accessorKey: "feeName",
+    header: "Fee Name",
+    cell: ({ row }) => (
+      <div>{row.getValue("feeName")}</div>
+    ),
   },
   {
-    accessorKey: "classSlug",
-    header: "Name",
-    cell: ({ row }) => <div>{row.getValue("classSlug")}</div>,
+    accessorKey: "createdAt",
+    header: "Fee Creation Date",
+    cell: ({ row }) => <div>{row.getValue("createdAt")}</div>,
   },
   {
-    accessorKey: "category",
-    header: "Category",
+    accessorKey: "updatedAt",
+    header: "Fee Modification Date",
+    cell: ({ row }) => <div>{row.getValue("updatedAt")}</div>,
+  },
+  {
+    id: "actions",
+    header: "Actions",
+    enableHiding: false,
     cell: ({ row }) => {
-      const category = row.getValue<string>("category");
-      const colorClasses = categoryColors[category] ?? "bg-gray-200 text-gray-800";
       return (
-        <span className={`rounded-full px-2 py-1 text-xs ${colorClasses}`}>
-          {category}
-        </span>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <DotsHorizontalIcon className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link
+                href={`/dashboard/bicycle/product/${row.original.feeId}`}
+              >
+                Edit
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       );
     },
   },
 ];
 
-export const ClassTable = () => {
+export const FeeTable = () => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
-  const [data, setData] = useState<ClassProps[]>([]);
+  const [data, setData] = useState<FeeProps[]>([]);
 
-  const classesData = api.class.getClasses.useQuery();
+  const feesData = api.fee.getFees.useQuery();
 
   useMemo(() => {
-    if (classesData.data) setData(classesData.data);
-  }, [classesData.data]);
+    if (feesData.data) setData(feesData.data);
+  }, [feesData.data]);
 
   const table = useReactTable({
     data,
@@ -94,17 +117,11 @@ export const ClassTable = () => {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onRowSelectionChange: setRowSelection,
-    initialState: {
-      pagination: {
-        pageSize: 20, // Set the default page size to 20
-      },
-    },
     state: {
       sorting,
       rowSelection,
     },
   });
-  
 
   return (
     <div className="w-full">
@@ -120,32 +137,32 @@ export const ClassTable = () => {
           <Input
             placeholder="Search name"
             value={
-              (table.getColumn("className")?.getFilterValue() as string) ?? ""
+              (table.getColumn("feeName")?.getFilterValue() as string) ?? ""
             }
             onChange={(event) =>
-              table.getColumn("className")?.setFilterValue(event.target.value)
+              table.getColumn("feeName")?.setFilterValue(event.target.value)
             }
             className="max-w-sm border-blue-500"
           />
         </div>
         <div className="flex items-center gap-2">
-          <ClassCreationDialog />
+          <FeeCreationDialog />
           <Button
             variant="outline"
             className="bg-blue-500 text-white hover:bg-blue-600"
-            onClick={() => classesData.refetch()}
+            onClick={() => feesData.refetch()}
           >
             Refresh
           </Button>
-          <ClassDeletionDialog
-            classIds={table
+          <FeeDeletionDialog
+            feeIds={table
               .getSelectedRowModel()
-              .rows.map((row) => row.original.classId)}
+              .rows.map((row) => row.original.feeId)}
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {table.getRowModel().rows?.length ? (
           table.getRowModel().rows.map((row) => (
             <div
@@ -161,24 +178,21 @@ export const ClassTable = () => {
                     aria-label="Select row"
                   />
                   <h3 className="text-lg font-semibold text-gray-800">
-                    {row.original.className}
+                    {row.original.feeName}
                   </h3>
                 </div>
                 <span className="rounded-md bg-blue-500 px-2 py-1 text-xs text-white">
-                  {row.original.classSlug}
+                  {row.original.createdAt}
                 </span>
               </div>
-              <p className={`text-sm ${categoryColors[row.original.category] ?? "text-gray-800"}`}>
-                {row.original.category}
-              </p>
+              <p className="text-sm text-gray-600">{row.original.updatedAt}</p>
               <div className="mt-2 flex justify-between gap-2">
                 <Button
                   variant="outline"
                   size="sm"
                   className="bg-green-500 text-white hover:bg-green-600"
-                  asChild
                 >
-                  <Link href={`/admin/academics/classwiseDetail/${row.original.classId}`}>View Details</Link>
+                  View Details
                 </Button>
                 <div className="flex gap-2">
                   <Button

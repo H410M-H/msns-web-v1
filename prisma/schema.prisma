@@ -54,21 +54,19 @@ model employees {
   additionalContact String   @default("none")
 }
 
-model FeeStructure {
-  id            Int      @id @default(autoincrement())
-  tuitionFee    Float
-  paperfundFee  Float
-  category3Fee  Float
-  category4Fee  Float
-  createdAt     DateTime @default(now())
-}
-
 model sessions {
   sessionId    String         @id @default(uuid())
   sessionName  String         @default("none")
   sessionFrom  String         @default("none")
   sessionTo    String         @default("none")
   StudentClass StudentClass[]
+}
+
+model fees {
+  feeId    String         @id @default(uuid())
+  feeName  String         @default("none")
+  createdAt  String         @default("none")
+  updatedAt    String         @default("none")
 }
 
 model users {

@@ -15,18 +15,10 @@ import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
 import { api } from "~/trpc/react";
 import Link from "next/link";
-import { ClassCreationDialog } from "~/app/_components/shared/forms/class/ClassCreation";
 import { ClassDeletionDialog } from "~/app/_components/shared/forms/class/ClassDeletion";
+import { StudentAllotmentDialog } from "~/app/_components/shared/forms/class/StudentAlotment";
 
-const categoryColors: Record<string, string> = {
-  Montessori: "bg-red-200 text-red-800",
-  Primary: "bg-blue-200 text-blue-800",
-  Middle: "bg-green-200 text-green-800",
-  "SSC-I": "bg-yellow-200 text-yellow-800",
-  "SSC-II": "bg-purple-200 text-purple-800",
-};
-
-const columns: ColumnDef<ClassProps>[] = [
+const columns: ColumnDef<ClassStudentProps>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -54,36 +46,18 @@ const columns: ColumnDef<ClassProps>[] = [
     header: "Class",
     cell: ({ row }) => <div>{row.getValue("className")}</div>,
   },
-  {
-    accessorKey: "classSlug",
-    header: "Name",
-    cell: ({ row }) => <div>{row.getValue("classSlug")}</div>,
-  },
-  {
-    accessorKey: "category",
-    header: "Category",
-    cell: ({ row }) => {
-      const category = row.getValue<string>("category");
-      const colorClasses = categoryColors[category] ?? "bg-gray-200 text-gray-800";
-      return (
-        <span className={`rounded-full px-2 py-1 text-xs ${colorClasses}`}>
-          {category}
-        </span>
-      );
-    },
-  },
 ];
 
-export const ClassTable = () => {
+export const ClassAlotmentTable = ({classId}:{classId:string}) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
-  const [data, setData] = useState<ClassProps[]>([]);
+  const [data, setData] = useState<ClassStudentProps[]>([]);
 
-  const classesData = api.class.getClasses.useQuery();
+  const students = api.alotment.getStudentsInClass.useQuery({classId:classId});
 
   useMemo(() => {
-    if (classesData.data) setData(classesData.data);
-  }, [classesData.data]);
+    if (students.data) setData(students.data);
+  }, [students.data]);
 
   const table = useReactTable({
     data,
@@ -94,17 +68,11 @@ export const ClassTable = () => {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onRowSelectionChange: setRowSelection,
-    initialState: {
-      pagination: {
-        pageSize: 20, // Set the default page size to 20
-      },
-    },
     state: {
       sorting,
       rowSelection,
     },
   });
-  
 
   return (
     <div className="w-full">
@@ -129,11 +97,11 @@ export const ClassTable = () => {
           />
         </div>
         <div className="flex items-center gap-2">
-          <ClassCreationDialog />
+          <StudentAllotmentDialog classId={classId}  />
           <Button
             variant="outline"
             className="bg-blue-500 text-white hover:bg-blue-600"
-            onClick={() => classesData.refetch()}
+            onClick={() => students.refetch()}
           >
             Refresh
           </Button>
@@ -145,7 +113,7 @@ export const ClassTable = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {table.getRowModel().rows?.length ? (
           table.getRowModel().rows.map((row) => (
             <div
@@ -161,16 +129,14 @@ export const ClassTable = () => {
                     aria-label="Select row"
                   />
                   <h3 className="text-lg font-semibold text-gray-800">
-                    {row.original.className}
+                    {row.original.student.studentName} | {row.original.student.fatherName}
                   </h3>
                 </div>
                 <span className="rounded-md bg-blue-500 px-2 py-1 text-xs text-white">
-                  {row.original.classSlug}
+                  {row.original.class.className}
                 </span>
               </div>
-              <p className={`text-sm ${categoryColors[row.original.category] ?? "text-gray-800"}`}>
-                {row.original.category}
-              </p>
+              <p className="text-sm text-gray-600">{row.original.session.sessionName}</p>
               <div className="mt-2 flex justify-between gap-2">
                 <Button
                   variant="outline"
