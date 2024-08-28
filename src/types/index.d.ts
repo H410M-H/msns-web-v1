@@ -53,9 +53,15 @@ type SessionProps = {
 type FeeProps = {
     feeId: string
     feeName: string
+    feeTuition: number
+    feePaper: number
+    feeSport: number
+    feeIdcard: number
+    feeComm: number
     createdAt: string
     updatedAt: string
-}
+  };
+  
 
 
 type ClassStudentProps = {

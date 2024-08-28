@@ -11,8 +11,8 @@ interface AdminDashboardLayoutProps {
 const AdminDashboardLayout: React.FC<AdminDashboardLayoutProps> = ({ children }) => {
   return (
     <body>
-    <Header />
       <ScrollArea className="rounded-lg shadow-md">
+        <Header />
       <HorizontalMenu />
       {children}
     </ScrollArea>
