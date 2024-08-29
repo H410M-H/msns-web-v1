@@ -87,8 +87,21 @@ export const FeeCreationDialog: React.FC = () => {
                   <FormItem>
                     <FormLabel>{feeField.replace('fee', '').charAt(0).toUpperCase() + feeField.slice(1)} Fee</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder="0" {...field} />
-                    </FormControl>
+                      <Input
+                        placeholder="Enter room price"
+                        {...field}
+                        value={field.value ?? ""}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          if (
+                            value === "" ||
+                            (/^\d+$/.test(value) && parseInt(value) > 0)
+                          ) {
+                            field.onChange(value === "" ? "" : parseInt(value));
+                          }
+                        }}
+                      />
+                      </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -114,7 +127,6 @@ export const FeeCreationDialog: React.FC = () => {
                       <PopoverContent className="w-auto p-0" align="start">
                         <Calendar
                           mode="single"
-                          selected={field.value}
                           onSelect={field.onChange}
                           disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
                           initialFocus

@@ -70,8 +70,8 @@ model fees {
   feeSport   Int                         // Sports fund amount
   feeIdcard  Int                         // ID card fee amount
   feeComm    Int                         // INFO & CALLS fee amount
-  createdAt  String     // Date the fee was created, defaults to the current time
-  updatedAt  String          // Date the fee was last updated, automatically updated
+  createdAt  String         @default("none")
+  updatedAt  String         @default("none")
 }
 
 model users {
