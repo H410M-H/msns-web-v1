@@ -26,6 +26,7 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { SessionDeletionDialog } from "../forms/annualSession/SessionDeletion";
 import { SessionCreationDialog } from "../forms/annualSession/SessionCreation";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog";
 
 const columns: ColumnDef<SessionProps>[] = [
   {
@@ -170,46 +171,44 @@ export const SessionTable = () => {
               className="flex flex-col justify-between rounded-md border bg-gradient-to-r from-blue-200 to-purple-200 p-4 shadow-md transition-shadow hover:shadow-lg"
               data-state={row.getIsSelected() && "selected"}
             >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
+              <div className="flex flex-col md:flex-row items-center justify-between bg-white p-4 rounded-md shadow-lg space-y-4 md:space-y-0 md:space-x-4 transition duration-300 ease-in-out hover:shadow-xl">
+                <div className="flex items-center gap-3">
                   <Checkbox
                     checked={row.getIsSelected()}
                     onCheckedChange={(value) => row.toggleSelected(!!value)}
                     aria-label="Select row"
+                    className="border-gray-300 rounded text-green-600 focus:ring-green-500"
                   />
                   <h3 className="text-lg font-semibold text-gray-800">
-                    {row.original.sessionName}
+                    Session - {row.original.sessionName}
                   </h3>
                 </div>
-                <span className="rounded-md bg-blue-500 px-2 py-1 text-xs text-white">
-                  {row.original.sessionFrom}
-                </span>
-              </div>
-              <p className="text-sm text-gray-600">{row.original.sessionTo}</p>
-              <div className="mt-2 flex justify-between gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="bg-green-500 text-white hover:bg-green-600"
-                >
-                  View Details
-                </Button>
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="bg-yellow-500 text-white hover:bg-yellow-600"
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    className="bg-red-500 text-white hover:bg-red-600"
-                  >
-                    Delete
-                  </Button>
+
+                <div className="flex space-x-2">
+                  <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-600 shadow-inner">
+                    {row.original.sessionFrom}
+                  </span>
+                  <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-600 shadow-inner">
+                    {row.original.sessionTo}
+                  </span>
                 </div>
+
+                <Dialog>
+        <DialogTrigger asChild>
+          <Button
+            variant="outline"
+            size="sm"
+            className="bg-green-500 text-white hover:bg-green-600 rounded-md px-4 py-2 shadow-sm hover:shadow-md transition duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+          >
+            View Details
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="bg-white p-6 rounded-md shadow-lg max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-semibold text-gray-800 mb-4">Session Details</DialogTitle>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
               </div>
             </div>
           ))

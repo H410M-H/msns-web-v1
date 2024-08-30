@@ -48,7 +48,7 @@ const columns: ColumnDef<ClassStudentProps>[] = [
   },
 ];
 
-export const ClassAlotmentTable = ({classId}:{classId:string}) => {
+export const ClassFeeTable = ({classId}:{classId:string}) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
   const [data, setData] = useState<ClassStudentProps[]>([]);

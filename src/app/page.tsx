@@ -4,7 +4,7 @@ export default function Home() {
     {
       title: "Enroll Now →",
       description: "M.S. Naz High School® - Web Portal",
-      href: "/admin/dashboard",
+      href: "/signup",
     },
     {
       title: "Our Socials →",
