@@ -2,6 +2,13 @@
 type ParamProps = {
   classId: string;
 };
+
+/**
+ * 
+ * @deprecated
+ * @param param
+ * @returns 
+ */
 export default function Classes({ params }: { params: ParamProps }) {
   return (
     <section className="h-screen text-gray-800">
