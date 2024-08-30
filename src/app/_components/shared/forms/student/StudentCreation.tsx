@@ -1,39 +1,11 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "~/components/ui/button";
-import { Calendar } from "~/components/ui/calendar";
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "~/components/ui/form";
-import { Input } from "~/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "~/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "~/components/ui/select";
-import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
 import dayjs from 'dayjs'
 import { toast } from "~/components/ui/use-toast";
-import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "~/components/ui/input-otp";
 
 const formSchema = z.object({
   doa: z.date({ required_error: "Field is required." }),
@@ -144,408 +116,241 @@ export const StudentCreationDialog = () => {
   };
 
   return (
-<Card className="mx-auto w-full max-w-4xl p-6 bg-white shadow-lg rounded-xl">
-  <CardHeader>
-    <CardTitle className="font-serif text-4xl font-medium text-green-800 text-center mb-4">
-      Student Registration Form
-    </CardTitle>
-  </CardHeader>
-  <CardContent>
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(formSubmitted)}
-        className="space-y-8"
-      >
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-          <FormField
-            control={form.control}
-            name="studentName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm text-gray-600">Student Name:*</FormLabel>
-                <FormControl>
-                  <Input
-                    className="peer w-full bg-gray-50 text-gray-900 border border-gray-300 focus:border-teal-500 focus:ring-teal-500 rounded-lg p-4 transition-shadow duration-300 shadow-sm focus:shadow-lg"
-                    placeholder="Student's name"
-                    {...field}
-                    value={field.value ?? ""}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="fatherName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm text-gray-600">Father Name:*</FormLabel>
-                <FormControl>
-                  <Input
-                    className="peer w-full bg-gray-50 text-gray-900 border border-gray-300 focus:border-teal-500 focus:ring-teal-500 rounded-lg p-4 transition-shadow duration-300 shadow-sm focus:shadow-lg"
-                    placeholder="Father's name"
-                    {...field}
-                    value={field.value ?? ""}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="studentBForm"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm text-gray-600">Student B-Form #*</FormLabel>
-                <FormControl>
-                  <InputOTP maxLength={13} {...field} value={field.value ?? ""}>
-                    <InputOTPGroup>
-                      <InputOTPSlot index={0} />
-                      <InputOTPSlot index={1} />
-                      <InputOTPSlot index={2} />
-                      <InputOTPSlot index={3} />
-                      <InputOTPSlot index={4} />
-                    </InputOTPGroup>
-                    <InputOTPSeparator />
-                    <InputOTPGroup>
-                      <InputOTPSlot index={5} />
-                      <InputOTPSlot index={6} />
-                      <InputOTPSlot index={7} />
-                      <InputOTPSlot index={8} />
-                      <InputOTPSlot index={9} />
-                      <InputOTPSlot index={10} />
-                      <InputOTPSlot index={11} />
-                    </InputOTPGroup>
-                    <InputOTPSeparator />
-                    <InputOTPGroup>
-                      <InputOTPSlot index={12} />
-                    </InputOTPGroup>
-                  </InputOTP>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="fatherCNIC"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm text-gray-600">Father CNIC*</FormLabel>
-                <FormControl>
-                  <InputOTP maxLength={13} {...field} value={field.value ?? ""}>
-                    <InputOTPGroup>
-                      <InputOTPSlot index={0} />
-                      <InputOTPSlot index={1} />
-                      <InputOTPSlot index={2} />
-                      <InputOTPSlot index={3} />
-                      <InputOTPSlot index={4} />
-                    </InputOTPGroup>
-                    <InputOTPSeparator />
-                    <InputOTPGroup>
-                      <InputOTPSlot index={5} />
-                      <InputOTPSlot index={6} />
-                      <InputOTPSlot index={7} />
-                      <InputOTPSlot index={8} />
-                      <InputOTPSlot index={9} />
-                      <InputOTPSlot index={10} />
-                      <InputOTPSlot index={11} />
-                    </InputOTPGroup>
-                    <InputOTPSeparator />
-                    <InputOTPGroup>
-                      <InputOTPSlot index={12} />
-                    </InputOTPGroup>
-                  </InputOTP>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="dob"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel className="text-sm text-gray-600">Date of Birth:*</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant="outline"
-                        className={cn(
-                          "w-full pl-3 text-left font-normal rounded-lg border-gray-300",
-                          !field.value && "text-gray-400",
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
-                      }
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="doa"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel className="text-sm text-gray-600">Date of Admission:</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant="outline"
-                        className={cn(
-                          "w-full pl-3 text-left font-normal rounded-lg border-gray-300",
-                          !field.value && "text-gray-400",
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) => date < new Date("1900-01-01")}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="gender"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm text-gray-600">Gender:</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className="rounded-lg border-gray-300">
-                      <SelectValue placeholder="Select Gender" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {genderClasses.map((value, index) => (
-                      <SelectItem key={index} value={value.value}>
-                        {value.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="religion"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm text-gray-600">Select Religion:</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className="rounded-lg border-gray-300">
-                      <SelectValue placeholder="Religion" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {religion.map((value, index) => (
-                      <SelectItem key={index} value={value.value}>
-                        {value.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="caste"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm text-gray-600">Tribe/ Caste:</FormLabel>
-                <FormControl>
-                  <Input
-                    className="peer w-full bg-gray-50 text-gray-900 border border-gray-300 focus:border-teal-500 focus:ring-teal-500 rounded-lg p-4 transition-shadow duration-300 shadow-sm focus:shadow-lg"
-                    placeholder="Enter tribe or caste"
-                    {...field}
-                    value={field.value ?? ""}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="occupation"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm text-gray-600">Guardian Occupation:</FormLabel>
-                <FormControl>
-                  <Input
-                    className="peer w-full bg-gray-50 text-gray-900 border border-gray-300 focus:border-teal-500 focus:ring-teal-500 rounded-lg p-4 transition-shadow duration-300 shadow-sm focus:shadow-lg"
-                    placeholder="Enter guardian's occupation"
-                    {...field}
-                    value={field.value ?? ""}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="residence"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm text-gray-600">Residential Address:*</FormLabel>
-                <FormControl>
-                  <Input
-                    className="peer w-full bg-gray-50 text-gray-900 border border-gray-300 focus:border-teal-500 focus:ring-teal-500 rounded-lg p-4 transition-shadow duration-300 shadow-sm focus:shadow-lg"
-                    placeholder="Enter residential address"
-                    {...field}
-                    value={field.value ?? ""}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="residence2"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm text-gray-600">Permanent Address:</FormLabel>
-                <FormControl>
-                  <Input
-                    className="peer w-full bg-gray-50 text-gray-900 border border-gray-300 focus:border-teal-500 focus:ring-teal-500 rounded-lg p-4 transition-shadow duration-300 shadow-sm focus:shadow-lg"
-                    placeholder="Permanent Address (optional)"
-                    {...field}
-                    value={field.value ?? ""}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="contact1"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm text-gray-600">Contact #:</FormLabel>
-                <FormControl>
-                  <Input
-                    className="peer w-full bg-gray-50 text-gray-900 border border-gray-300 focus:border-teal-500 focus:ring-teal-500 rounded-lg p-4 transition-shadow duration-300 shadow-sm focus:shadow-lg"
-                    placeholder="Enter Mobile #"
-                    {...field}
-                    value={field.value ?? ""}
-                  />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="contact2"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm text-gray-600">Additional Contact #:(Optional)</FormLabel>
-                <FormControl>
-                  <Input
-                    className="peer w-full bg-gray-50 text-gray-900 border border-gray-300 focus:border-teal-300 focus:ring-teal-100 rounded-lg p-4 transition-shadow duration-300 shadow-sm focus:shadow-lg"
-                    placeholder="Enter contact numbers"
-                    {...field}
-                    value={field.value ?? ""}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-<div className="flex justify-center">
-  <Button
-    type="submit"
-    className="w-full sm:w-auto bg-teal-500 hover:bg-teal-600 text-green-800 font-bold py-3 px-6 rounded-lg transition-transform transform hover:scale-105 flex items-center justify-center"
-    disabled={createStudent.isPending}
-  >
-    {createStudent.isPending ? (
-      <>
-        <svg
-          className="animate-spin h-5 w-5 text-white mr-2"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <circle
-            className="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            strokeWidth="4"
-          ></circle>
-          <path
-            className="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-          ></path>
-        </svg>
-        Please wait
-      </>
-    ) : (
-      'Register Student'
-    )}
-  </Button>
+<div className="min-h-screen bg-[url('/jpg/Schoolview.jpg')] bg-cover backdrop-blur-3xl sm:py-12 animate-fade-in">
+  <div className="relative sm:max-w-4xl sm:mx-auto animate-slide-in-up">
+    <div className="relative bg-green-100/40 backdrop-blur-sm shadow-lg sm:rounded-3xl sm:p-20 animate-fade-in-up">
+      <div className="w-full">
+        <h1 className="text-3xl font-serif font-bold text-amber-500 mb-4 transition duration-300 transform hover:scale-105">
+          Create Student
+        </h1>
+        <form onSubmit={form.handleSubmit(formSubmitted)} className="grid grid-cols-1 gap-y-8 gap-10 sm:grid-col lg:grid-cols-2 xl:grid-cols-3">
+          <div className="relative">
+            <input
+              autoComplete="off"
+              id="studentName"
+              {...form.register("studentName")}
+              type="text"
+              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
+              placeholder="Student Name"
+            />
+            <label
+              htmlFor="studentName"
+              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+            >
+              Student Name
+            </label>
+          </div>
+          <div className="relative">
+            <input
+              autoComplete="off"
+              id="fatherName"
+              {...form.register("fatherName")}
+              type="text"
+              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
+              placeholder="Father's Name"
+            />
+            <label
+              htmlFor="fatherName"
+              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+            >
+              Father Name
+            </label>
+          </div>
+          <div className="relative">
+            <input
+              autoComplete="off"
+              id="studentBForm"
+              {...form.register("studentBForm")}
+              type="text"
+              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
+              placeholder="Student B-Form"
+            />
+            <label
+              htmlFor="studentBForm"
+              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+            >
+              Student B-Form
+            </label>
+          </div>
+          <div className="relative">
+            <input
+              autoComplete="off"
+              id="fatherCNIC"
+              {...form.register("fatherCNIC")}
+              type="text"
+              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
+              placeholder="Father CNIC"
+            />
+            <label
+              htmlFor="fatherCNIC"
+              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+            >
+              Father CNIC
+            </label>
+          </div>
+          <div className="relative">
+            <input
+              autoComplete="off"
+              id="dob"
+              type="date"
+              {...form.register("dob")}
+              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
+            />
+            <label
+              htmlFor="dob"
+              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+            >
+              Date of Birth
+            </label>
+          </div>
+          <div className="relative">
+            <input
+              autoComplete="off"
+              id="doa"
+              type="date"
+              {...form.register("doa")}
+              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
+            />
+            <label
+              htmlFor="doa"
+              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+            >
+              Date of Admission
+            </label>
+          </div>
+          <div className="relative">
+            <select
+              id="gender"
+              {...form.register("gender")}
+              className="peer h-10 w-full border-b-2 border-gray-300 text-gray-900 bg-transparent focus:outline-none focus:border-green-600 transition duration-200 ease-in-out"
+            >
+              <option value="" disabled>Select Gender</option>
+              {genderClasses.map((gender) => (
+                <option key={gender.value} value={gender.value}>
+                  {gender.label}
+                </option>
+              ))}
+            </select>
+            <label
+              htmlFor="gender"
+              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+            >
+              Gender
+            </label>
+          </div>
+          <div className="relative">
+            <select
+              id="religion"
+              {...form.register("religion")}
+              className="peer h-10 w-full border-b-2 border-gray-300 text-gray-900 bg-transparent focus:outline-none focus:border-green-600 transition duration-200 ease-in-out"
+            >
+              <option value="" disabled>Select Religion</option>
+              {religion.map((rel) => (
+                <option key={rel.value} value={rel.value}>
+                  {rel.label}
+                </option>
+              ))}
+            </select>
+            <label
+              htmlFor="religion"
+              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+            >
+              Religion
+            </label>
+          </div>
+          <div className="relative">
+            <input
+              autoComplete="off"
+              id="occupation"
+              {...form.register("occupation")}
+              type="text"
+              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
+              placeholder="Occupation"
+            />
+            <label
+              htmlFor="occupation"
+              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+            >
+              Occupation
+            </label>
+          </div>
+          <div className="relative">
+            <input
+              autoComplete="off"
+              id="residence"
+              {...form.register("residence")}
+              type="text"
+              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
+              placeholder="Residence"
+            />
+            <label
+              htmlFor="residence"
+              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+            >
+              Residence
+            </label>
+          </div>
+          <div className="relative">
+            <input
+              autoComplete="off"
+              id="residence2"
+              {...form.register("residence2")}
+              type="text"
+              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
+              placeholder="Permanent Residence (Optional)"
+            />
+            <label
+              htmlFor="residence2"
+              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+            >
+              Permanent Residence (Optional)
+            </label>
+          </div>
+          <div className="relative">
+            <input
+              autoComplete="off"
+              id="contact1"
+              {...form.register("contact1")}
+              type="text"
+              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
+              placeholder="Contact Number 1"
+            />
+            <label
+              htmlFor="contact1"
+              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+            >
+              Contact Number 1
+            </label>
+          </div>
+          <div className="relative">
+            <input
+              autoComplete="off"
+              id="contact2"
+              {...form.register("contact2")}
+              type="text"
+              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
+              placeholder="Contact Number 2 (Optional)"
+            />
+            <label
+              htmlFor="contact2"
+              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+            >
+              Contact Number 2 (Optional)
+            </label>
+          </div>
+          <div className="relative col-span-full">
+            <button
+              type="submit"
+              className="bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-600 transition duration-300 transform hover:scale-105"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
-      </form>
-    </Form>
-  </CardContent>
-</Card>
+    );
+}
 
-  );
-};
