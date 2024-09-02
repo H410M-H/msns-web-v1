@@ -27,19 +27,12 @@ import {
 import { SessionDeletionDialog } from "../forms/annualSession/SessionDeletion";
 import { SessionCreationDialog } from "../forms/annualSession/SessionCreation";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "~/components/ui/dialog";
-import { SessionDialog } from "../dialogs/SessionDetailDialog";
-import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "~/components/ui/accordion";
+import { SessionDialog } from "../dialogs/SessionDetailDialog";
 
 const columns: ColumnDef<SessionProps>[] = [
   {
@@ -196,7 +189,7 @@ export const SessionTable = () => {
                   </span>
                 </AccordionTrigger>
                 <AccordionContent className="bg-white">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis magni aliquam similique eius iste molestiae sunt excepturi quisquam distinctio ex quia architecto, dolores nemo, reprehenderit dolorum quod consequuntur reiciendis? Deleniti quisquam expedita, explicabo at accusamus id ducimus hic minus architecto.
+                  <SessionDialog />
                 </AccordionContent>
               </AccordionItem>
             </Accordion>

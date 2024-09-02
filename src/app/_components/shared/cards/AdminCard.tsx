@@ -35,21 +35,27 @@ import {
     ];
   
     return (
-      <section className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2 lg:grid-cols-4">
+<div className="bg-[url('/jpg/Schoolview.jpg')] bg-cover bg-center flex items-center justify-center animate-fade-in">
+      <div className="grid grid-cols-1 p-8 gap-8 sm:grid-cols-2 max-w-4xl w-full animate-slide-in-up">
         {services.map((service, index) => (
           <Link
             href={service.href}
             key={index}
-            className="transform rounded-lg bg-gradient-to-r from-purple-200 to-pink-200 p-6 shadow-md transition duration-300 ease-in-out hover:scale-105 hover:cursor-pointer"
+            className="relative p-6 transform transition-transform duration-500 ease-in-out hover:scale-105 hover:rotate-1 hover:z-10"
+            style={{ transitionDelay: `${index * 100}ms` }}
           >
-            <div className="flex flex-col items-center text-center">
-              {service.icon}
-              <h3 className="mb-2 text-xl font-semibold">{service.title}</h3>
-              <p className="text-gray-600">{service.description}</p>
+            <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-700 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl opacity-80 transition duration-700 ease-in-out hover:rotate-0 hover:skew-y-0 hover:scale-105"></div>
+            <div className="relative px-6 py-8 bg-white/90 backdrop-blur-md shadow-2xl rounded-3xl">
+              <div className="flex flex-col items-center text-center">
+                {service.icon}
+                <h3 className="text-xl font-semibold text-gray-900">{service.title}</h3>
+                <p className="mt-2 text-gray-700">{service.description}</p>
+              </div>
             </div>
           </Link>
         ))}
-      </section>
+      </div>
+    </div>
     );
   };
   

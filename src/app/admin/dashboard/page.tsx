@@ -1,5 +1,4 @@
 import { AdminCards } from "~/app/_components/shared/cards/AdminCard";
-import { LogoCloud } from "~/app/_components/shared/elements/LogoCloud";
 import { Separator } from "~/components/ui/separator";
 
 export default function AdminDashboard() {
@@ -18,7 +17,6 @@ export default function AdminDashboard() {
           </div>
           <Separator className="bg-green-900"/>
     <AdminCards />
-    <LogoCloud />
     </main>
     
     )

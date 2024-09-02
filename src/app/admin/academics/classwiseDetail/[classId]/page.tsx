@@ -1,3 +1,4 @@
+import { ClassesCard } from "~/app/_components/shared/cards/ClassesCard";
 import { ClassAlotmentTable } from "~/app/_components/shared/tables/ClassAlotment";
 import { Separator } from "~/components/ui/separator";
 
@@ -20,6 +21,7 @@ export default function ClassStudentPage({
         </div>
       </div>
       <Separator className="bg-green-900" />
+      <ClassesCard />
       <ClassAlotmentTable classId={params.classId} />
       <Separator className="bg-green-900" />
     </main>

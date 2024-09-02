@@ -14,7 +14,7 @@ export const AlumniCards = () => {
       description:
         "Easily enroll new students and manage their financial records.",
       icon: <UserIcon className="mb-4 h-12 w-12 text-green-500" />,
-      href: "/registration/portal",
+      href: "/registration/faculty/view",
     },
     {
       title: "Academics",
