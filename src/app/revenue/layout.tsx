@@ -1,7 +1,7 @@
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { Footer } from "../_components/footer/footer";
 import { Header } from "../_components/header/header";
-import { HorizontalMenu } from "../_components/menubar/menubar";
+import MainMenu from "../_components/mainmenu/mainmenu";
 
 export const metadata = {
   title: "MSNS-WEB",
@@ -19,8 +19,8 @@ export default function RevenueLayout({
     <body>
     <Header />
       <ScrollArea className="rounded-lg shadow-md">
-      <HorizontalMenu />
       {children}
+      <MainMenu />
     </ScrollArea>
     <Footer />
     </body>
