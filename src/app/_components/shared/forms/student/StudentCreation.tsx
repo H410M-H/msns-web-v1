@@ -3,354 +3,235 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { api } from "~/trpc/react";
-import dayjs from 'dayjs'
+import { useState } from "react";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { Select } from "~/components/ui/select";
 import { toast } from "~/components/ui/use-toast";
 
 const formSchema = z.object({
-  doa: z.date({ required_error: "Field is required." }),
-  studentName: z
-    .string()
-    .min(2, "Name must be at least 2 characters")
-    .max(100, "Name must not exceed 100 characters"),
-  dob: z.date({ required_error: "Field is required." }),
-  fatherName: z
-    .string()
-    .min(2, "Father's name must be at least 2 characters")
-    .max(100, "Father's name must not exceed 100 characters"),
-  studentBForm: z.string({ required_error: "Invalid Student B-Form format (0000-0000000-0)"}),
-  fatherCNIC: z.string({ required_error: "Invalid Father CNIC format (0000-0000000-0)"}),
-  gender: z.string({required_error:'Field is required.'}),
-  caste: z.optional(z.string()),
-  occupation: z
-    .string()
-    .min( 2, "Occupation must be at least 2 characters")
-    .max(100, "Occupation must not exceed 100 characters"),
-  religion: z.string().min(1, "Religion must be at least 2 characters"),
-  residence: z
-    .string()
-    .min(5, "Residence must be at least 5 characters")
-    .max(200, "Residence must not exceed 200 characters"),
-  residence2: z.optional(
-    z
-      .string()
-      .min(5, "Residence must be at least 5 characters")
-      .max(200, "Residence must not exceed 200 characters"),
-  ),
-  contact1: z
-    .string()
-    .regex(/^[0-9,\s]+$/, "Invalid phone number format")
-    .min(10, "Contact number must be at least 10 digits"),
-  contact2: z.optional(
-    z
-      .string()
-      .regex(/^[0-9,\s]+$/, "Invalid phone number format")
-      .min(10, "Contact number must be at least 10 digits"),
-  ),
+  class: z.string().min(1, "Class is required"),
+  group: z.string().optional(),
+  category: z.string().optional(),
+  rollNumber: z.string().min(1, "Roll Number is required"),
+  registrationNumber: z.string().min(1, "Registration Number is required"),
+  fee: z.string().min(1, "Fee is required"),
+  studentMobile: z.string().min(10, "Invalid mobile number"),
+  fatherMobile: z.string().min(10, "Invalid mobile number"),
+  whatsappNumber: z.string().min(10, "Invalid WhatsApp number"),
+  admissionNumber: z.string().min(1, "Admission/GR Number is required"),
+  studentName: z.string().min(2, "Name must be at least 2 characters").max(100, "Name must not exceed 100 characters"),
+  gender: z.string().min(1, "Gender is required"),
+  dateOfBirth: z.string().min(1, "Date of Birth is required"),
+  fatherName: z.string().min(2, "Father's name must be at least 2 characters").max(100, "Father's name must not exceed 100 characters"),
+  studentCNIC: z.string().min(13, "Invalid CNIC number"),
+  fatherCNIC: z.string().min(13, "Invalid CNIC number"),
+  fatherQualification: z.string().optional(),
+  motherName: z.string().optional(),
+  motherCNIC: z.string().optional(),
+  motherQualification: z.string().optional(),
+  fatherProfession: z.string().optional(),
+  bloodGroup: z.string().optional(),
+  guardianName: z.string().optional(),
+  caste: z.string().optional(),
+  family: z.string().min(1, "Family is required"),
+  registrationDate: z.string().min(1, "Registration Date is required"),
+  currentAddress: z.string().min(5, "Current Address must be at least 5 characters"),
+  permanentAddress: z.string().min(5, "Permanent Address must be at least 5 characters"),
+  medicalProblem: z.string().optional(),
 });
 
-export const StudentCreationDialog = () => {
+export default function StudentCreationDialog() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
-  const genderClasses = [
-    {
-      value: "M",
-      label: "Male",
-    },
-    {
-      value: "F",
-      label: "Female",
-    },
-  ];
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const religion = [
-    {
-      value: "M",
-      label: "Muslim",
-    },
-    {
-      value: "C",
-      label: "Christian",
-    },
-    {
-      value: "O",
-      label: "Others",
-    },
-  ];
-
-  const createStudent = api.student.createStudent.useMutation({
-    onSuccess: () => {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    setIsSubmitting(true);
+    try {
+      // Here you would typically send the data to your backend
+      console.log(data);
       toast({
         title: "Success",
-        description: "Student created successfully",
+        description: "Student registered successfully",
       });
-      form.reset();
-    },
-    onError: (error) => {
+    } catch (error) {
       toast({
         title: "Error",
-        description: error.message,
+        description: "Failed to register student",
         variant: "destructive",
       });
-    },
-  });
-  const formSubmitted = (data: z.infer<typeof formSchema>) => {
-    createStudent.mutate({
-      studentName: data.studentName,
-      fatherName: data.fatherName,
-      bform: data.studentBForm,
-      cnic: data.fatherCNIC,
-      dob: dayjs(data.dob).format('YYYY-MM-DD'),
-      doa: dayjs(data.doa).format('YYYY-MM-DD'),
-      gender: data.gender,
-      religion: data.religion,
-      tribe: data.caste ?? "none",
-      occupation: data.occupation,
-      address: data.residence,
-      permanentAddress: data.residence2?? "none",
-      contact: data.contact1,
-      additionalContact: data.contact2 ?? "none",
-    });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-<div className="min-h-screen bg-[url('/jpg/Schoolview.jpg')] bg-cover backdrop-blur-3xl sm:py-12 animate-fade-in">
-  <div className="relative sm:max-w-4xl sm:mx-auto animate-slide-in-up">
-    <div className="relative bg-green-100/40 backdrop-blur-sm shadow-lg sm:rounded-3xl sm:p-20 animate-fade-in-up">
-      <div className="w-full">
-        <h1 className="text-3xl font-serif font-bold text-amber-500 mb-4 transition duration-300 transform hover:scale-105">
-          Create Student
-        </h1>
-        <form onSubmit={form.handleSubmit(formSubmitted)} className="grid grid-cols-1 gap-y-8 gap-10 sm:grid-col lg:grid-cols-2 xl:grid-cols-3">
-          <div className="relative">
-            <input
-              autoComplete="off"
-              id="studentName"
-              {...form.register("studentName")}
-              type="text"
-              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
-              placeholder="Student Name"
-            />
-            <label
-              htmlFor="studentName"
-              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-            >
-              Student Name
-            </label>
-          </div>
-          <div className="relative">
-            <input
-              autoComplete="off"
-              id="fatherName"
-              {...form.register("fatherName")}
-              type="text"
-              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
-              placeholder="Father's Name"
-            />
-            <label
-              htmlFor="fatherName"
-              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-            >
-              Father Name
-            </label>
-          </div>
-          <div className="relative">
-            <input
-              autoComplete="off"
-              id="studentBForm"
-              {...form.register("studentBForm")}
-              type="text"
-              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
-              placeholder="Student B-Form"
-            />
-            <label
-              htmlFor="studentBForm"
-              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-            >
-              Student B-Form
-            </label>
-          </div>
-          <div className="relative">
-            <input
-              autoComplete="off"
-              id="fatherCNIC"
-              {...form.register("fatherCNIC")}
-              type="text"
-              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
-              placeholder="Father CNIC"
-            />
-            <label
-              htmlFor="fatherCNIC"
-              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-            >
-              Father CNIC
-            </label>
-          </div>
-          <div className="relative">
-            <input
-              autoComplete="off"
-              id="dob"
-              type="date"
-              {...form.register("dob")}
-              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
-            />
-            <label
-              htmlFor="dob"
-              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-            >
-              Date of Birth
-            </label>
-          </div>
-          <div className="relative">
-            <input
-              autoComplete="off"
-              id="doa"
-              type="date"
-              {...form.register("doa")}
-              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
-            />
-            <label
-              htmlFor="doa"
-              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-            >
-              Date of Admission
-            </label>
-          </div>
-          <div className="relative">
-            <select
-              id="gender"
-              {...form.register("gender")}
-              className="peer h-10 w-full border-b-2 border-gray-300 text-gray-900 bg-transparent focus:outline-none focus:border-green-600 transition duration-200 ease-in-out"
-            >
-              <option value="" disabled>Select Gender</option>
-              {genderClasses.map((gender) => (
-                <option key={gender.value} value={gender.value}>
-                  {gender.label}
-                </option>
-              ))}
-            </select>
-            <label
-              htmlFor="gender"
-              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-            >
-              Gender
-            </label>
-          </div>
-          <div className="relative">
-            <select
-              id="religion"
-              {...form.register("religion")}
-              className="peer h-10 w-full border-b-2 border-gray-300 text-gray-900 bg-transparent focus:outline-none focus:border-green-600 transition duration-200 ease-in-out"
-            >
-              <option value="" disabled>Select Religion</option>
-              {religion.map((rel) => (
-                <option key={rel.value} value={rel.value}>
-                  {rel.label}
-                </option>
-              ))}
-            </select>
-            <label
-              htmlFor="religion"
-              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-            >
-              Religion
-            </label>
-          </div>
-          <div className="relative">
-            <input
-              autoComplete="off"
-              id="occupation"
-              {...form.register("occupation")}
-              type="text"
-              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
-              placeholder="Occupation"
-            />
-            <label
-              htmlFor="occupation"
-              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-            >
-              Occupation
-            </label>
-          </div>
-          <div className="relative">
-            <input
-              autoComplete="off"
-              id="residence"
-              {...form.register("residence")}
-              type="text"
-              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
-              placeholder="Residence"
-            />
-            <label
-              htmlFor="residence"
-              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-            >
-              Residence
-            </label>
-          </div>
-          <div className="relative">
-            <input
-              autoComplete="off"
-              id="residence2"
-              {...form.register("residence2")}
-              type="text"
-              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
-              placeholder="Permanent Residence (Optional)"
-            />
-            <label
-              htmlFor="residence2"
-              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-            >
-              Permanent Residence (Optional)
-            </label>
-          </div>
-          <div className="relative">
-            <input
-              autoComplete="off"
-              id="contact1"
-              {...form.register("contact1")}
-              type="text"
-              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
-              placeholder="Contact Number 1"
-            />
-            <label
-              htmlFor="contact1"
-              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-            >
-              Contact Number 1
-            </label>
-          </div>
-          <div className="relative">
-            <input
-              autoComplete="off"
-              id="contact2"
-              {...form.register("contact2")}
-              type="text"
-              className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600 bg-transparent transition duration-200 ease-in-out"
-              placeholder="Contact Number 2 (Optional)"
-            />
-            <label
-              htmlFor="contact2"
-              className="absolute left-0 -top-3.5 text-gray-900 text-sm peer-placeholder-shown:text-xs peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-            >
-              Contact Number 2 (Optional)
-            </label>
-          </div>
-          <div className="relative col-span-full">
-            <button
-              type="submit"
-              className="bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-600 transition duration-300 transform hover:scale-105"
-            >
-              Submit
-            </button>
-          </div>
-        </form>
+    <div className="min-h-screen bg-green-100 p-6 justify-center sm:py-12">
+      <div className="mx-auto">
+        <div className="px-4 bg-yellow-100/60 shadow-lg sm:rounded-3xl sm:p-20">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <div className="bg-teal-700 text-white p-2 mb-4">ACADEMIC DATA</div>
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <label htmlFor="class" className="block text-sm font-medium text-gray-700">Class</label>
+                <Select {...form.register("class")}>
+                  <option value="MONTESSORI">Nursery</option>
+                  <option value="MONTESSORI">Prep</option>
+                  <option value="PRIMARY">GRADE - 1</option>
+                  <option value="MIDDLE">GRADE - 1</option>
+                  <option value="MATRICULATION">GRADE - 1</option>
+                  {/* Add more options as needed */}
+                </Select>
+              </div>
+              <div>
+                <label htmlFor="group" className="block text-sm font-medium text-gray-700">Group</label>
+                <Select {...form.register("group")}>
+                  <option value="">Select an option</option>
+                  {/* Add group options */}
+                </Select>
+              </div>
+              <div>
+                <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category</label>
+                <Select {...form.register("category")}>
+                  <option value="">Select an option</option>
+                  {/* Add category options */}
+                </Select>
+              </div>
+              <div>
+                <label htmlFor="rollNumber" className="block text-sm font-medium text-gray-700">Roll Number</label>
+                <Input type="text" {...form.register("rollNumber")} placeholder="0" />
+              </div>
+              <div>
+                <label htmlFor="registrationNumber" className="block text-sm font-medium text-gray-700">Registration Number</label>
+                <Input type="text" {...form.register("registrationNumber")} placeholder="Registration Number" />
+              </div>
+              <div>
+                <label htmlFor="fee" className="block text-sm font-medium text-gray-700">Fee</label>
+                <Input type="text" {...form.register("fee")} placeholder="5,000" />
+              </div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <label htmlFor="studentMobile" className="block text-sm font-medium text-gray-700">Student Mobile</label>
+                <Input type="tel" {...form.register("studentMobile")} placeholder="03311070760" />
+              </div>
+              <div>
+                <label htmlFor="fatherMobile" className="block text-sm font-medium text-gray-700">Father Mobile</label>
+                <Input type="tel" {...form.register("fatherMobile")} placeholder="03311070760" />
+              </div>
+              <div>
+                <label htmlFor="whatsappNumber" className="block text-sm font-medium text-gray-700">Whatsapp Number</label>
+                <Input type="tel" {...form.register("whatsappNumber")} placeholder="03311070760" />
+              </div>
+            </div>
+
+            <div className="bg-red-600 text-white p-2 mb-4">PERSONAL DATA</div>
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <label htmlFor="admissionNumber" className="block text-sm font-medium text-gray-700">Admission/GR Number</label>
+                <Input type="text" {...form.register("admissionNumber")} placeholder="79" />
+              </div>
+              <div>
+                <label htmlFor="studentName" className="block text-sm font-medium text-gray-700">Student Name *</label>
+                <Input type="text" {...form.register("studentName")} placeholder="abc" />
+              </div>
+              <div>
+                <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Gender</label>
+                <Select {...form.register("gender")}>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </Select>
+              </div>
+              <div>
+                <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">Date Of Birth</label>
+                <Input type="date" {...form.register("dateOfBirth")} />
+              </div>
+              <div>
+                <label htmlFor="fatherName" className="block text-sm font-medium text-gray-700">Father Name</label>
+                <Input type="text" {...form.register("fatherName")} placeholder="xyz" />
+              </div>
+              <div>
+                <label htmlFor="studentCNIC" className="block text-sm font-medium text-gray-700">Student CNIC Number</label>
+                <Input type="text" {...form.register("studentCNIC")} placeholder="xxxxxxxxxxx" />
+              </div>
+              <div>
+                <label htmlFor="fatherCNIC" className="block text-sm font-medium text-gray-700">Father CNIC Number</label>
+                <Input type="text" {...form.register("fatherCNIC")} placeholder="123" />
+              </div>
+              <div>
+                <label htmlFor="fatherQualification" className="block text-sm font-medium text-gray-700">Father Qualification</label>
+                <Input type="text" {...form.register("fatherQualification")} placeholder="Father Qualification" />
+              </div>
+              <div>
+                <label htmlFor="motherName" className="block text-sm font-medium text-gray-700">Mother Name</label>
+                <Input type="text" {...form.register("motherName")} placeholder="Mother Name" />
+              </div>
+              <div>
+                <label htmlFor="motherCNIC" className="block text-sm font-medium text-gray-700">Mother CNIC Number</label>
+                <Input type="text" {...form.register("motherCNIC")} placeholder="Mother CNIC Number" />
+              </div>
+              <div>
+                <label htmlFor="motherQualification" className="block text-sm font-medium text-gray-700">Mother Qualification</label>
+                <Input type="text" {...form.register("motherQualification")} placeholder="Mother Qualification" />
+              </div>
+              <div>
+                <label htmlFor="fatherProfession" className="block text-sm font-medium text-gray-700">Father Profession</label>
+                <Select {...form.register("fatherProfession")}>
+                  <option value="">Select profession</option>
+                  {/* Add profession options */}
+                </Select>
+              </div>
+              <div>
+                <label htmlFor="bloodGroup" className="block text-sm font-medium text-gray-700">Blood Group</label>
+                <Select {...form.register("bloodGroup")}>
+                  <option value="O+">O+</option>
+                  {/* Add more blood group options */}
+                </Select>
+              </div>
+              <div>
+                <label htmlFor="guardianName" className="block text-sm font-medium text-gray-700">Guardian Name</label>
+                <Input type="text" {...form.register("guardianName")} placeholder="Guardian Name" />
+              </div>
+              <div>
+                <label htmlFor="caste" className="block text-sm font-medium text-gray-700">Caste</label>
+                <Input type="text" {...form.register("caste")} placeholder="Enter caste" />
+              </div>
+              <div>
+                <label htmlFor="family" className="block text-sm font-medium text-gray-700">Family *</label>
+                <Select {...form.register("family")}>
+                  <option value="xyz(123)">xyz(123)</option>
+                  {/* Add more family options */}
+                </Select>
+              </div>
+              <div>
+                <label htmlFor="registrationDate" className="block text-sm font-medium text-gray-700">Registration Date</label>
+                <Input type="date" {...form.register("registrationDate")} />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="currentAddress" className="block text-sm font-medium text-gray-700">Current Address</label>
+              <Input type="text" {...form.register("currentAddress")} placeholder="Current Address" />
+            </div>
+            <div>
+              <label htmlFor="permanentAddress" className="block text-sm font-medium text-gray-700">Permanent Address</label>
+              <Input type="text" {...form.register("permanentAddress")} placeholder="Permanent Address" />
+            </div>
+            <div>
+              <label htmlFor="medicalProblem" className="block text-sm font-medium text-gray-700">Medical Problem</label>
+              <Input type="text" {...form.register("medicalProblem")} placeholder="Medical Problem" />
+            </div>
+            <div className="flex justify-end space-x-4">
+              <Button type="button" variant="outline">Close</Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Saving..." : "Save"}
+              </Button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-    );
+  );
 }
-
