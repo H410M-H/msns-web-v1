@@ -1,5 +1,4 @@
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { Footer } from "../_components/footer/footer";
 import { Header } from "../_components/header/header";
 import MainMenu from "../_components/mainmenu/mainmenu";
 
@@ -22,7 +21,6 @@ export default function RevenueLayout({
       {children}
       <MainMenu />
     </ScrollArea>
-    <Footer />
     </body>
     </>
   );

@@ -1,14 +1,25 @@
-import Link from "next/link";
+"use client"
+
+import { type ReactNode, useEffect, useState } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card"
+import Link from 'next/link'
+import { Button } from "~/components/ui/button"
+import { ChevronRight, GraduationCap, Book, Users, Calendar } from 'lucide-react'
+
 export default function Home() {
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
+  const { scrollY } = useScroll()
+  const heroOpacity = useTransform(scrollY, [0, 300], [1, 0])
+  const heroScale = useTransform(scrollY, [0, 300], [1, 0.8])
+
   const linkCards = [
     {
       title: "Enroll Now →",
-      description: "M.S. Naz High School® - Web Portal",
-      href: "/signup",
+      href: "/admin/dashboard",
     },
     {
       title: "Our Socials →",
-      description: "Learn more about M.S.N.S® | WEB",
       href: "https://www.instagram.com/msnazhighschool/",
     },
   ];
@@ -20,49 +31,209 @@ export default function Home() {
     "/mp4/clip5.mp4",
   ];
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length)
+    }, 8000)
+    return () => clearInterval(interval)
+  }, [videos.length])
+
   return (
-    <main className="w-full min-h-screen bg-gradient-to-b from-[#BCE7AD] to-[#16c7b8] text-white">
-      <div className="container mx-auto px-4 py-8 space-y-12">
-        {/* Hero Section */}
-        <h1 className="text-5xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-center text-3d">
-          MSNS - <span className="text-[hsl(108,45%,20%)]">LMS</span> Coming SOON!
-        </h1>
-
-        {/* Link Cards Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {linkCards.map((card, index) => (
-            <Link 
-              key={index}
-              className="group relative bg-green-800 rounded-lg shadow-lg overflow-hidden transform transition-all duration-300 ease-out hover:scale-105 flex flex-col justify-center items-center p-6 text-center"
-              href={card.href}
-              target="_blank"
+    <div className="min-h-screen bg-emerald-100 font-serif">
+      {/* Hero Section */}
+      <motion.section
+        className="relative h-[70vh] overflow-hidden"
+        style={{ opacity: heroOpacity, scale: heroScale }}
+      >
+        <video
+          key={currentVideoIndex}
+          className="absolute top-0 left-0 w-full h-full object-cover"
+          autoPlay
+          muted
+          loop
+        >
+          <source src={videos[currentVideoIndex]} type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="text-center text-green-100">
+            <motion.h1
+              className="font-serif text-white text-5xl md:text-7xl font-bold mb-4"
+              initial={{ opacity: 0, y: 20, scale: 0.5 }}
+              animate={{
+                opacity: [0, 1],
+                y: [20, 0],             // Move upwards
+                scale: [0.5, 1.2],        // Scale up
+              }}
+              transition={{
+                duration: 0.8,          // Duration of the animation
+                delay: 0.8,             // Delay before it starts
+                ease: "easeOut",        // Smooth easing
+                type: "keyframes",         // Adds a slight bounce effect
+                stiffness: 100,         // Controls how much bounce
+              }}
             >
-              <div className="absolute inset-0 bg-gradient-to-tr from-pink-700 to-orange-500 opacity-0 group-hover:opacity-75 transition-opacity duration-300"></div>
-              <div className="relative z-10">
-                <h3 className="text-2xl font-bold text-white mb-2 transform transition-all duration-300 group-hover:scale-110">{card.title}</h3>
-                <div className="text-gray-300 transform transition-all duration-300 group-hover:translate-y-2">
-                  {card.description}
-                </div>
-              </div>
-            </Link>
-          ))}
+              M.S. NAZ HIGH SCHOOL
+            </motion.h1>
+            <motion.p
+              className="font-serif text-2xl md:text-3xl mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              PURSUIT OF EXCELLENCE
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            >
+              <Link href={'/about'}>
+                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-300">
+                  Learn More <ChevronRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </motion.div>
+          </div>
         </div>
+      </motion.section>
 
-        {/* Video Grid Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 aspect-[3/4] sm:aspect-[4/3]">
-          {videos.map((src, index) => (
-            <video
-              key={index}
-              src={src}
-              loop
-              muted
-              autoPlay
-              playsInline
-              className="w-full h-full object-cover rounded-lg"
-            />
-          ))}
+      {/* Quick Links Section */}
+      <section className="py-16 px-4 md:px-8">
+        <div className="max-w-6xl mx-auto">
+          <motion.h2
+            className="text-3xl font-bold mb-8 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 1.5 }}
+          >
+            Quick Links
+          </motion.h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {linkCards.map((card, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: index * 0.2 }}
+              >
+                <Link href={card.href}>
+                  <Card className="bg-green-800 text-white hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    <CardHeader>
+                      <CardTitle>{card.title}</CardTitle> 
+                    </CardHeader>
+                  </Card>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
         </div>
-      </div>
-    </main>
-  );
+      </section>
+
+
+      {/* Features Section */}
+      <section className="bg-white py-16 px-4 md:px-8">
+        <div className="max-w-6xl mx-auto">
+          <motion.h2
+            className="text-3xl font-bold mb-12 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            Why Choose M.S. Naz High School?
+          </motion.h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <FeatureCard
+              icon={<GraduationCap className="h-12 w-12 text-primary" />}
+              title="Academic Excellence"
+              description="Our rigorous curriculum prepares students for success in higher education and beyond."
+              delay={0}
+            />
+            <FeatureCard
+              icon={<Users className="h-12 w-12 text-primary" />}
+              title="Dedicated Faculty"
+              description="Experienced teachers committed to nurturing each student's potential."
+              delay={0.2}
+            />
+            <FeatureCard
+              icon={<Book className="h-12 w-12 text-primary" />}
+              title="Diverse Programs"
+              description="A wide range of academic and extracurricular activities to foster well-rounded development."
+              delay={0.4}
+            />
+            <FeatureCard
+              icon={<Calendar className="h-12 w-12 text-primary" />}
+              title="Modern Facilities"
+              description="State-of-the-art classrooms, labs, and sports facilities to enhance learning experiences."
+              delay={0.6}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-green-700 text-primary-foreground py-16 px-4 md:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.h2
+            className="text-3xl font-bold mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            Ready to Join Our Community?
+          </motion.h2>
+          <motion.p
+            className="text-xl mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            Take the first step towards a bright future with M.S. Naz High School.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+              <Link href={'/signup'}>
+                <Button size="lg" className="bg-emerald-500 text-primary-foreground hover:bg-primary/90 transition-colors duration-300">
+                  Apply Now <ChevronRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+          </motion.div>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+interface FeatureCardProps {
+  icon: ReactNode;
+  title: string;
+  description: string;
+  delay: number;
+}
+
+function FeatureCard({ icon, title, description, delay }: FeatureCardProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8, delay }}
+    >
+      <Card className="text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+        <CardContent className="pt-6">
+          <div className="mb-4 flex justify-center">{icon}</div>
+          <CardTitle className="mb-2">{title}</CardTitle>
+          <CardDescription>{description}</CardDescription>
+        </CardContent>
+      </Card>
+    </motion.div>
+  )
 }

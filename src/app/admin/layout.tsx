@@ -1,7 +1,6 @@
 import React, { type ReactNode } from "react";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { Header } from "~/app/_components/header/header";
-import { Footer } from "~/app/_components/footer/footer";
 import MainMenu from "../_components/mainmenu/mainmenu";
 
 interface AdminDashboardLayoutProps {
@@ -16,7 +15,6 @@ const AdminDashboardLayout: React.FC<AdminDashboardLayoutProps> = ({ children })
         <MainMenu />
       {children}
     </ScrollArea>
-    <Footer />
     </body>
   );
 };
