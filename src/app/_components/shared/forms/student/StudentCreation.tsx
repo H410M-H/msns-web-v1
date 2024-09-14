@@ -1,237 +1,415 @@
-"use client";
+'use client'
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { useState } from "react";
-import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import { Select } from "~/components/ui/select";
-import { toast } from "~/components/ui/use-toast";
+import { useState } from 'react'
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { Button } from "~/components/ui/button"
+import { Input } from "~/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select"
+import { toast } from "~/components/ui/use-toast"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form"
+import { Card, CardContent, CardFooter, CardHeader } from "~/components/ui/card"
+import { motion, AnimatePresence } from "framer-motion"
+import { Loader2, ChevronDown, ChevronUp } from "lucide-react"
+import { api } from "~/trpc/react"
 
-const formSchema = z.object({
-  class: z.string().min(1, "Class is required"),
-  group: z.string().optional(),
-  category: z.string().optional(),
-  rollNumber: z.string().min(1, "Roll Number is required"),
+const studentSchema = z.object({
   registrationNumber: z.string().min(1, "Registration Number is required"),
-  fee: z.string().min(1, "Fee is required"),
   studentMobile: z.string().min(10, "Invalid mobile number"),
   fatherMobile: z.string().min(10, "Invalid mobile number"),
-  whatsappNumber: z.string().min(10, "Invalid WhatsApp number"),
-  admissionNumber: z.string().min(1, "Admission/GR Number is required"),
+  admissionNumber: z.string().min(1, "Admission Number is required"),
   studentName: z.string().min(2, "Name must be at least 2 characters").max(100, "Name must not exceed 100 characters"),
-  gender: z.string().min(1, "Gender is required"),
+  gender: z.enum(['MALE', 'FEMALE', 'CUSTOM']),
   dateOfBirth: z.string().min(1, "Date of Birth is required"),
   fatherName: z.string().min(2, "Father's name must be at least 2 characters").max(100, "Father's name must not exceed 100 characters"),
-  studentCNIC: z.string().min(13, "Invalid CNIC number"),
-  fatherCNIC: z.string().min(13, "Invalid CNIC number"),
-  fatherQualification: z.string().optional(),
-  motherName: z.string().optional(),
-  motherCNIC: z.string().optional(),
-  motherQualification: z.string().optional(),
-  fatherProfession: z.string().optional(),
+  studentCNIC: z.string().regex(/^\d{4}-\d{7}-\d$/, "Invalid CNIC format"),
+  fatherCNIC: z.string().regex(/^\d{4}-\d{7}-\d$/, "Invalid CNIC format"),
+  fatherProfession: z.string().min(1, "Father's profession is required"),
   bloodGroup: z.string().optional(),
   guardianName: z.string().optional(),
-  caste: z.string().optional(),
-  family: z.string().min(1, "Family is required"),
+  caste: z.string().min(1, "Caste is required"),
   registrationDate: z.string().min(1, "Registration Date is required"),
   currentAddress: z.string().min(5, "Current Address must be at least 5 characters"),
   permanentAddress: z.string().min(5, "Permanent Address must be at least 5 characters"),
   medicalProblem: z.string().optional(),
-});
+})
+
+type StudentSchema = z.infer<typeof studentSchema>
 
 export default function StudentCreationDialog() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-  });
+  const [expandedSection, setExpandedSection] = useState<'academic' | 'personal' | null>('academic')
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const form = useForm<StudentSchema>({
+    resolver: zodResolver(studentSchema),
+    defaultValues: {
+      gender: 'CUSTOM',
+      bloodGroup: '',
+      guardianName: '',
+      medicalProblem: '',
+    },
+  })
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    setIsSubmitting(true);
-    try {
-      // Here you would typically send the data to your backend
-      console.log(data);
+  const createStudent = api.student.createStudent.useMutation({
+    onSuccess: () => {
       toast({
         title: "Success",
         description: "Student registered successfully",
-      });
-    } catch (error) {
+      })
+      form.reset()
+    },
+    onError: (error) => {
       toast({
         title: "Error",
-        description: "Failed to register student",
+        description: error.message || "An error occurred",
         variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+      })
+    },
+  })
+
+  const onSubmit = (data: StudentSchema) => {
+    createStudent.mutate(data)
+  }
+
+  const toggleSection = (section: 'academic' | 'personal') => {
+    setExpandedSection(expandedSection === section ? null : section)
+  }
 
   return (
-    <div className="min-h-screen bg-green-100 p-6 justify-center sm:py-12">
-      <div className="mx-auto">
-        <div className="px-4 bg-yellow-100/60 shadow-lg sm:rounded-3xl sm:p-20">
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="bg-teal-700 text-white p-2 mb-4">ACADEMIC DATA</div>
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <label htmlFor="class" className="block text-sm font-medium text-gray-700">Class</label>
-                <Select {...form.register("class")}>
-                  <option value="MONTESSORI">Nursery</option>
-                  <option value="MONTESSORI">Prep</option>
-                  <option value="PRIMARY">GRADE - 1</option>
-                  <option value="MIDDLE">GRADE - 1</option>
-                  <option value="MATRICULATION">GRADE - 1</option>
-                  {/* Add more options as needed */}
-                </Select>
-              </div>
-              <div>
-                <label htmlFor="group" className="block text-sm font-medium text-gray-700">Group</label>
-                <Select {...form.register("group")}>
-                  <option value="">Select an option</option>
-                  {/* Add group options */}
-                </Select>
-              </div>
-              <div>
-                <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category</label>
-                <Select {...form.register("category")}>
-                  <option value="">Select an option</option>
-                  {/* Add category options */}
-                </Select>
-              </div>
-              <div>
-                <label htmlFor="rollNumber" className="block text-sm font-medium text-gray-700">Roll Number</label>
-                <Input type="text" {...form.register("rollNumber")} placeholder="0" />
-              </div>
-              <div>
-                <label htmlFor="registrationNumber" className="block text-sm font-medium text-gray-700">Registration Number</label>
-                <Input type="text" {...form.register("registrationNumber")} placeholder="Registration Number" />
-              </div>
-              <div>
-                <label htmlFor="fee" className="block text-sm font-medium text-gray-700">Fee</label>
-                <Input type="text" {...form.register("fee")} placeholder="5,000" />
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <label htmlFor="studentMobile" className="block text-sm font-medium text-gray-700">Student Mobile</label>
-                <Input type="tel" {...form.register("studentMobile")} placeholder="03311070760" />
-              </div>
-              <div>
-                <label htmlFor="fatherMobile" className="block text-sm font-medium text-gray-700">Father Mobile</label>
-                <Input type="tel" {...form.register("fatherMobile")} placeholder="03311070760" />
-              </div>
-              <div>
-                <label htmlFor="whatsappNumber" className="block text-sm font-medium text-gray-700">Whatsapp Number</label>
-                <Input type="tel" {...form.register("whatsappNumber")} placeholder="03311070760" />
-              </div>
-            </div>
+    <div className="min-h-screen bg-gradient-to-b from-green-100 to-blue-100 p-4 sm:p-6 lg:p-8">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="mx-auto w-full max-w-4xl"
+      >
+        <Card className="bg-white/80 backdrop-blur-sm shadow-xl rounded-3xl overflow-hidden">
+          <CardHeader className="bg-teal-600 text-white p-6">
+            <h2 className="text-3xl font-bold">Student Registration Form</h2>
+          </CardHeader>
+          <CardContent className="p-6">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                <div className="space-y-4">
+                  <motion.div
+                    initial={false}
+                    animate={{ height: expandedSection === 'academic' ? 'auto' : 60 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div
+                      className="flex justify-between items-center cursor-pointer bg-teal-100 p-4 rounded-t-lg"
+                      onClick={() => toggleSection('academic')}
+                    >
+                      <h3 className="text-2xl font-semibold text-teal-700">Academic Data</h3>
+                      {expandedSection === 'academic' ? <ChevronUp /> : <ChevronDown />}
+                    </div>
+                    <AnimatePresence>
+                      {expandedSection === 'academic' && (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4 bg-teal-50 rounded-b-lg"
+                        >
+                          <FormField
+                            control={form.control}
+                            name="studentName"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Student Name</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Student Name" {...field} className="transition-all duration-300 focus:ring-2 focus:ring-teal-500" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="registrationNumber"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Registration Number</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Registration Number" {...field} className="transition-all duration-300 focus:ring-2 focus:ring-teal-500" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="admissionNumber"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Admission Number</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Admission Number" {...field} className="transition-all duration-300 focus:ring-2 focus:ring-teal-500" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="gender"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Gender</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                  <FormControl>
+                                    <SelectTrigger className="transition-all duration-300 focus:ring-2 focus:ring-teal-500">
+                                      <SelectValue placeholder="Select gender" />
+                                    </SelectTrigger>
+                                  </FormControl>
+                                  <SelectContent>
+                                    <SelectItem value="MALE">Male</SelectItem>
+                                    <SelectItem value="FEMALE">Female</SelectItem>
+                                    <SelectItem value="CUSTOM">Custom</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="dateOfBirth"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Date of Birth</FormLabel>
+                                <FormControl>
+                                  <Input type="date" {...field} className="transition-all duration-300 focus:ring-2 focus:ring-teal-500" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="registrationDate"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Registration Date</FormLabel>
+                                <FormControl>
+                                  <Input type="date" {...field} className="transition-all duration-300 focus:ring-2 focus:ring-teal-500" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
 
-            <div className="bg-red-600 text-white p-2 mb-4">PERSONAL DATA</div>
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <label htmlFor="admissionNumber" className="block text-sm font-medium text-gray-700">Admission/GR Number</label>
-                <Input type="text" {...form.register("admissionNumber")} placeholder="79" />
-              </div>
-              <div>
-                <label htmlFor="studentName" className="block text-sm font-medium text-gray-700">Student Name *</label>
-                <Input type="text" {...form.register("studentName")} placeholder="abc" />
-              </div>
-              <div>
-                <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Gender</label>
-                <Select {...form.register("gender")}>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </Select>
-              </div>
-              <div>
-                <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">Date Of Birth</label>
-                <Input type="date" {...form.register("dateOfBirth")} />
-              </div>
-              <div>
-                <label htmlFor="fatherName" className="block text-sm font-medium text-gray-700">Father Name</label>
-                <Input type="text" {...form.register("fatherName")} placeholder="xyz" />
-              </div>
-              <div>
-                <label htmlFor="studentCNIC" className="block text-sm font-medium text-gray-700">Student CNIC Number</label>
-                <Input type="text" {...form.register("studentCNIC")} placeholder="xxxxxxxxxxx" />
-              </div>
-              <div>
-                <label htmlFor="fatherCNIC" className="block text-sm font-medium text-gray-700">Father CNIC Number</label>
-                <Input type="text" {...form.register("fatherCNIC")} placeholder="123" />
-              </div>
-              <div>
-                <label htmlFor="fatherQualification" className="block text-sm font-medium text-gray-700">Father Qualification</label>
-                <Input type="text" {...form.register("fatherQualification")} placeholder="Father Qualification" />
-              </div>
-              <div>
-                <label htmlFor="motherName" className="block text-sm font-medium text-gray-700">Mother Name</label>
-                <Input type="text" {...form.register("motherName")} placeholder="Mother Name" />
-              </div>
-              <div>
-                <label htmlFor="motherCNIC" className="block text-sm font-medium text-gray-700">Mother CNIC Number</label>
-                <Input type="text" {...form.register("motherCNIC")} placeholder="Mother CNIC Number" />
-              </div>
-              <div>
-                <label htmlFor="motherQualification" className="block text-sm font-medium text-gray-700">Mother Qualification</label>
-                <Input type="text" {...form.register("motherQualification")} placeholder="Mother Qualification" />
-              </div>
-              <div>
-                <label htmlFor="fatherProfession" className="block text-sm font-medium text-gray-700">Father Profession</label>
-                <Select {...form.register("fatherProfession")}>
-                  <option value="">Select profession</option>
-                  {/* Add profession options */}
-                </Select>
-              </div>
-              <div>
-                <label htmlFor="bloodGroup" className="block text-sm font-medium text-gray-700">Blood Group</label>
-                <Select {...form.register("bloodGroup")}>
-                  <option value="O+">O+</option>
-                  {/* Add more blood group options */}
-                </Select>
-              </div>
-              <div>
-                <label htmlFor="guardianName" className="block text-sm font-medium text-gray-700">Guardian Name</label>
-                <Input type="text" {...form.register("guardianName")} placeholder="Guardian Name" />
-              </div>
-              <div>
-                <label htmlFor="caste" className="block text-sm font-medium text-gray-700">Caste</label>
-                <Input type="text" {...form.register("caste")} placeholder="Enter caste" />
-              </div>
-              <div>
-                <label htmlFor="family" className="block text-sm font-medium text-gray-700">Family *</label>
-                <Select {...form.register("family")}>
-                  <option value="xyz(123)">xyz(123)</option>
-                  {/* Add more family options */}
-                </Select>
-              </div>
-              <div>
-                <label htmlFor="registrationDate" className="block text-sm font-medium text-gray-700">Registration Date</label>
-                <Input type="date" {...form.register("registrationDate")} />
-              </div>
-            </div>
-            <div>
-              <label htmlFor="currentAddress" className="block text-sm font-medium text-gray-700">Current Address</label>
-              <Input type="text" {...form.register("currentAddress")} placeholder="Current Address" />
-            </div>
-            <div>
-              <label htmlFor="permanentAddress" className="block text-sm font-medium text-gray-700">Permanent Address</label>
-              <Input type="text" {...form.register("permanentAddress")} placeholder="Permanent Address" />
-            </div>
-            <div>
-              <label htmlFor="medicalProblem" className="block text-sm font-medium text-gray-700">Medical Problem</label>
-              <Input type="text" {...form.register("medicalProblem")} placeholder="Medical Problem" />
-            </div>
-            <div className="flex justify-end space-x-4">
-              <Button type="button" variant="outline">Close</Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Saving..." : "Save"}
-              </Button>
-            </div>
-          </form>
-        </div>
-      </div>
+                  <motion.div
+                    initial={false}
+                    animate={{ height: expandedSection === 'personal' ? 'auto' : 60 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div
+                      className="flex justify-between items-center cursor-pointer bg-red-100 p-4 rounded-t-lg"
+                      onClick={() => toggleSection('personal')}
+                    >
+                      <h3 className="text-2xl font-semibold text-red-700">Personal Data</h3>
+                      {expandedSection === 'personal' ? <ChevronUp /> : <ChevronDown />}
+                    </div>
+                    <AnimatePresence>
+                      {expandedSection === 'personal' && (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4 bg-red-50 rounded-b-lg"
+                        >
+                          <FormField
+                            control={form.control}
+                            name="studentMobile"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Student Mobile</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Student Mobile" {...field} className="transition-all duration-300 focus:ring-2 focus:ring-red-500" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="fatherName"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Father Name</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Father's Name" {...field} className="transition-all duration-300 focus:ring-2 focus:ring-red-500" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="fatherMobile"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Father Mobile</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Father Mobile" {...field} className="transition-all duration-300 focus:ring-2 focus:ring-red-500" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="studentCNIC"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Student CNIC</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="0000-0000000-0" {...field} className="transition-all duration-300 focus:ring-2 focus:ring-red-500" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="fatherCNIC"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Father CNIC</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="0000-0000000-0" {...field} className="transition-all duration-300 focus:ring-2 focus:ring-red-500" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="fatherProfession"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Father Profession</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Father Profession" {...field} className="transition-all duration-300 focus:ring-2 focus:ring-red-500" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="bloodGroup"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Blood Group</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Blood Group" {...field} className="transition-all duration-300 focus:ring-2 focus:ring-red-500" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="guardianName"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Guardian Name</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Guardian Name" {...field} className="transition-all duration-300 focus:ring-2 focus:ring-red-500" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="caste"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Caste</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Caste" {...field} className="transition-all duration-300 focus:ring-2 focus:ring-red-500" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="currentAddress"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Current Address</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Current Address" {...field} className="transition-all duration-300 focus:ring-2 focus:ring-red-500" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="permanentAddress"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Permanent Address</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Permanent Address" {...field} className="transition-all duration-300 focus:ring-2 focus:ring-red-500" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="medicalProblem"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Medical Problem</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Medical Problem" {...field} className="transition-all duration-300 focus:ring-2 focus:ring-red-500" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                </div>
+              </form>
+            </Form>
+          </CardContent>
+          <CardFooter className="bg-gray-50 p-6 flex justify-end">
+            <Button
+              type="submit"
+              className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-full transition-all duration-300 transform hover:scale-105"
+              disabled={createStudent.isPending}
+              onClick={form.handleSubmit(onSubmit)}
+            >
+              {createStudent.isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Registering...
+                </>
+              ) : (
+                'Register Student'
+              )}
+            </Button>
+          </CardFooter>
+        </Card>
+      </motion.div>
     </div>
-  );
+  )
 }

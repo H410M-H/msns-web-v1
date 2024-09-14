@@ -14,14 +14,10 @@ export default function RegistrationLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
-    <body>
+    <ScrollArea className="rounded-lg shadow-md">
     <Header />
-      <ScrollArea className="rounded-lg shadow-md">
-        <MainMenu />
-      {children}
-    </ScrollArea>
-    </body>
-    </>
+    <MainMenu />
+  {children}
+</ScrollArea>
   );
 }

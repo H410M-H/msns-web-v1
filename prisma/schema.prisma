@@ -19,20 +19,26 @@ model classes {
 
 model students {
   studentId         String         @id @default(uuid())
+  registrationNumber String   @unique
+  studentMobile           String         @default("none")
+  fatherMobile           String         @default("none")
+  admissionNumber    String   @unique
   studentName       String         @default("none")
-  fatherName        String         @default("none")
-  bform             String         @default("0000-0000000-0")
-  cnic              String         @default("0000-0000000-0")
-  dob               String         @default("none")
-  doa               String         @default("none")
   gender            Gender         @default(CUSTOM)
-  religion          Religion       @default(MUSLIM)
-  tribe             String         @default("none")
-  occupation        String         @default("none")
-  address           String         @default("none")
+  dateOfBirth               String         @default("none")
+  fatherName        String         @default("none")
+  studentCNIC             String         @default("0000-0000000-0")
+  fatherCNIC              String         @default("0000-0000000-0")
+  fatherProfession        String         @default("none")
+  bloodGroup         String?         @default("none")
+  guardianName       String?         @default("none")
+  caste             String         @default("none")
+  registrationDate               String         @default("none")
+  currentAddress  String         @default("none")
   permanentAddress  String         @default("none")
-  contact           String         @default("none")
-  additionalContact String         @default("none")
+  medicalProblem     String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
   isAssign          Boolean        @default(false)
   StudentClass      StudentClass[]
 }
@@ -45,8 +51,7 @@ model employees {
   fcnic             String   @default("0000-0000000-0")
   dob               String   @default("none")
   doj               String   @default("none")
-  gender            Gender   @default(CUSTOM)
-  religion          Religion @default(MUSLIM)
+  gender            String   @default("none")
   education         String   @default("none")
   address           String   @default("none")
   permanentAddress  String   @default("none")
@@ -99,11 +104,6 @@ enum Gender {
   CUSTOM
 }
 
-enum Religion {
-  MUSLIM
-  CHRISTIAN
-  OTHERS
-}
 
 enum Role {
   ADMIN

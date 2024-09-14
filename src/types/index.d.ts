@@ -9,20 +9,24 @@ type ClassProps = {
 
 type StudentProps = {
     studentId: string
+    registrationNumber: string
+    studentMobile: string
+    fatherMobile: string
+    admissionNumber: string
     studentName: string
-    fatherName: string
-    bform: string
-    cnic: string,
-    dob: string
-    doa: string
     gender: string
-    religion: string
-    tribe: zstring
-    occupation: string
-    address: string
+    dateOfBirth: string
+    fatherName: string
+    studentCNIC: string
+    fatherCNIC: string
+    fatherProfession?: string
+    bloodGroup?: string
+    guardianName?: string
+    caste?: string
+    registrationDate: string
+    currentAddress: string
     permanentAddress: string
-    contact: string
-    additionalContact: z.string
+    medicalProblem?: string
 }
 
 type EmployeeProps = {
