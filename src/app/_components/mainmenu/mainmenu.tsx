@@ -10,7 +10,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "~/components/ui/dropdown-menu";
-import Link from "next/link"; // Import Link from next/link
+import Link from "next/link";
 
 const menuItems = [
   {
@@ -18,7 +18,7 @@ const menuItems = [
     options: [
       { label: "Academics Management", href: "/admin/academics" },
       { label: "Session Management", href: "/admin/academics/annualSession/sessionalDetails" },
-      { label: "Class Management", href: "/admin/academics/annualSession/sessionalDetails" },
+      { label: "Class Management", href: "/admin/academics/classwiseDetail" },
       { label: "Reports", href: "/admin/analytics" },
     ],
   },
@@ -37,7 +37,7 @@ const menuItems = [
       { label: "Online Portal", href: "/registration/portal" },
       { label: "Student", href: "/registration/student/view" },
       { label: "Faculty", href: "/registration/faculty/view" },
-      { label: "Case Studies", href: "/resources/case-studies" },
+      { label: "Case Studies", href: "/registration" },
     ],
   },
   {

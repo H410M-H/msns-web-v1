@@ -14,14 +14,10 @@ export default function RevenueLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
-    <body>
+    <ScrollArea className="rounded-lg shadow-md">
     <Header />
-      <ScrollArea className="rounded-lg shadow-md">
-      {children}
-      <MainMenu />
-    </ScrollArea>
-    </body>
-    </>
+    <MainMenu />
+  {children}
+</ScrollArea>
   );
 }

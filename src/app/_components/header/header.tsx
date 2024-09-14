@@ -18,10 +18,10 @@ export const Header = () => {
           </div>
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
-              <a href="/home" className="nav-link text-green-800 font-bold hover:text-pink-600 transition-colors duration-300">Home</a>
+              <a href="/landing" className="nav-link text-green-800 font-bold hover:text-pink-600 transition-colors duration-300">Home</a>
               <a href="/about" className="nav-link text-green-800 font-bold hover:text-pink-600 transition-colors duration-300">About</a>
               <a href="/login" className="nav-link text-green-800 font-bold hover:text-pink-600 transition-colors duration-300">Services</a>
-              <a href="#" className="nav-link text-green-800 font-bold hover:text-pink-600 transition-colors duration-300">Contact</a>
+              <a href="/about" className="nav-link text-green-800 font-bold hover:text-pink-600 transition-colors duration-300">Contact</a>
             </div>
           </div>
           <div className="hidden md:block">
