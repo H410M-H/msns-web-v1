@@ -17,13 +17,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body className="flex flex-col min-h-screen">
-      <ScrollArea>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+      <body className="flex min-h-screen flex-col">
+        <ScrollArea>
+          <TRPCReactProvider>{children}</TRPCReactProvider>
         </ScrollArea>
         <Footer />
       </body>
     </html>
-    
   );
 }
