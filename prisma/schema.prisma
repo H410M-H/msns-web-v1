@@ -12,6 +12,7 @@ model classes {
   className    String         @default("none")
   classSlug    String         @default("none")
   category     String         @default("category")
+  fee          Float          @default(0)
   StudentClass StudentClass[]
 
   @@index([className])
@@ -34,6 +35,8 @@ model students {
   contact           String         @default("none")
   additionalContact String         @default("none")
   isAssign          Boolean        @default(false)
+  discount          Float          @default(0)
+  discountbypercent Float          @default(0)
   StudentClass      StudentClass[]
 }
 
