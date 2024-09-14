@@ -137,11 +137,9 @@ export const ClassTable = () => {
           >
             Refresh
           </Button>
-          <ClassDeletionDialog
-            classIds={table
-              .getSelectedRowModel()
-              .rows.map((row) => row.original.classId)}
-          />
+          <ClassDeletionDialog classIds={table.getSelectedRowModel().rows.map(
+        (row) => row.original.classId
+      )} />
         </div>
       </div>
 

@@ -121,9 +121,9 @@ export const ClassCreationDialog = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Montessori">Montessori (Nursery and Prep)</SelectItem>
-                      <SelectItem value="Primary">Primary (One to Five)</SelectItem>
-                      <SelectItem value="Middle">Middle (Six and Seven)</SelectItem>
+                      <SelectItem value="Montessori">MONTESSORI (Nursery and Prep)</SelectItem>
+                      <SelectItem value="Primary">PRIMARY (One to Five)</SelectItem>
+                      <SelectItem value="Middle">MIDDLE (Six and Seven)</SelectItem>
                       <SelectItem value="SSC-I">SSC-I</SelectItem>
                       <SelectItem value="SSC-II">SSC-II</SelectItem>
                     </SelectContent>

@@ -18,6 +18,7 @@ import { Input } from "~/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import { type ColumnDef, type SortingState, useReactTable, getCoreRowModel, getPaginationRowModel, getSortedRowModel, getFilteredRowModel, flexRender } from "@tanstack/react-table";
 import { CSVUploadDialog } from "../forms/student/FileInput";
+import { StudentDeletionDialog } from "../forms/student/StudentDeletion";
 
 type StudentProps = {
   studentId: string;
@@ -171,15 +172,9 @@ export const StudentTable = () => {
           <Button variant={'outline'} type="button" onClick={() => studentsData.refetch()}>
             Refresh
           </Button>
-          <Button 
-            variant="destructive" 
-            type="button" 
-            onClick={() => {
-              // Implement delete functionality here
-              console.log("Delete selected rows", table.getFilteredSelectedRowModel().rows);
-            }}>
-            Delete
-          </Button>
+          <StudentDeletionDialog studentIds={table.getSelectedRowModel().rows.map(
+                    (row) => row.original.studentId
+                  )} />
           <CSVUploadDialog />
           <Button type="button" asChild>
             <Link href={'/registration/student/create'}>Create</Link>
