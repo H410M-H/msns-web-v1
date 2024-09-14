@@ -61,15 +61,15 @@ export default function Home() {
               initial={{ opacity: 0, y: 20, scale: 0.5 }}
               animate={{
                 opacity: [0, 1],
-                y: [20, 0],             // Move upwards
-                scale: [0.5, 1.2],        // Scale up
+                y: [20, 0],
+                scale: [0.5, 1.2],
               }}
               transition={{
-                duration: 0.8,          // Duration of the animation
-                delay: 0.8,             // Delay before it starts
-                ease: "easeOut",        // Smooth easing
-                type: "keyframes",         // Adds a slight bounce effect
-                stiffness: 100,         // Controls how much bounce
+                duration: 0.8,
+                delay: 0.8,
+                ease: "easeOut",
+                type: "keyframes",
+                stiffness: 100,
               }}
             >
               M.S. NAZ HIGH SCHOOL

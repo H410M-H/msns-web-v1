@@ -21,8 +21,8 @@ export default function RootLayout({
       <ScrollArea>
         <TRPCReactProvider>{children}</TRPCReactProvider>
         </ScrollArea>
-      <Footer />
       </body>
+      <Footer />
     </html>
     
   );
