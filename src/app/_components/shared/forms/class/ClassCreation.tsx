@@ -15,7 +15,6 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-
 import {
   Dialog,
   DialogContent,
@@ -27,17 +26,21 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~
 
 const formSchema = z.object({
   className: z.string({ required_error: "Field is required" }),
-  classSlug: z.enum(["ROSE", "TULIP"], {
+  section: z.enum(["ROSE", "TULIP"], {
+    required_error: "Section is required",
+  }),
+  category: z.enum(["Montessori", "Primary", "Middle", "SSC_I", "SSC_II"], {
     required_error: "Category is required",
   }),
-  category: z.enum(["Montessori", "Primary", "Middle", "SSC-I", "SSC-II"], {
-    required_error: "Category is required",
-  }),
+  fee: z.number().min(0, "Fee must be a positive number"),
 });
 
 export const ClassCreationDialog = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      fee: 2800,
+    },
   });
 
   const createClass = api.class.createClass.useMutation({
@@ -47,11 +50,7 @@ export const ClassCreationDialog = () => {
   });
 
   const formSubmitted = (values: z.infer<typeof formSchema>) => {
-    createClass.mutate({
-      className: values.className ?? "none",
-      classSlug: values.classSlug ?? "none",
-      category: values.category ?? "none"
-    });
+    createClass.mutate(values);
   };
 
   return (
@@ -80,7 +79,6 @@ export const ClassCreationDialog = () => {
                     <Input
                       placeholder="Write Class/Grade"
                       {...field}
-                      value={field.value ?? ""}
                     />
                   </FormControl>
                   <FormMessage />
@@ -89,14 +87,14 @@ export const ClassCreationDialog = () => {
             />
             <FormField
               control={form.control}
-              name="classSlug"
+              name="section"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Section</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a category" />
+                        <SelectValue placeholder="Select a section" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -124,10 +122,28 @@ export const ClassCreationDialog = () => {
                       <SelectItem value="Montessori">MONTESSORI (Nursery and Prep)</SelectItem>
                       <SelectItem value="Primary">PRIMARY (One to Five)</SelectItem>
                       <SelectItem value="Middle">MIDDLE (Six and Seven)</SelectItem>
-                      <SelectItem value="SSC-I">SSC-I</SelectItem>
-                      <SelectItem value="SSC-II">SSC-II</SelectItem>
+                      <SelectItem value="SSC_I">SSC-I</SelectItem>
+                      <SelectItem value="SSC_II">SSC-II</SelectItem>
                     </SelectContent>
                   </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="fee"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Fee</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Enter fee amount"
+                      {...field}
+                      onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

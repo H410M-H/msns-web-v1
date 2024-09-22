@@ -55,9 +55,9 @@ const columns: ColumnDef<ClassProps>[] = [
     cell: ({ row }) => <div>{row.getValue("className")}</div>,
   },
   {
-    accessorKey: "classSlug",
-    header: "Name",
-    cell: ({ row }) => <div>{row.getValue("classSlug")}</div>,
+    accessorKey: "section",
+    header: "Section",
+    cell: ({ row }) => <div>{row.getValue("section")}</div>,
   },
   {
     accessorKey: "category",
@@ -71,6 +71,11 @@ const columns: ColumnDef<ClassProps>[] = [
         </span>
       );
     },
+  },
+  {
+    accessorKey: "fee",
+    header: "Fee",
+    cell: ({ row }) => <div>{row.getValue<number>("fee").toFixed(2)}</div>,
   },
 ];
 
@@ -94,17 +99,11 @@ export const ClassTable = () => {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onRowSelectionChange: setRowSelection,
-    initialState: {
-      pagination: {
-        pageSize: 20, // Set the default page size to 20
-      },
-    },
     state: {
       sorting,
       rowSelection,
     },
   });
-  
 
   return (
     <div className="w-full">
@@ -138,8 +137,8 @@ export const ClassTable = () => {
             Refresh
           </Button>
           <ClassDeletionDialog classIds={table.getSelectedRowModel().rows.map(
-        (row) => row.original.classId
-      )} />
+            (row) => row.original.classId
+          )} />
         </div>
       </div>
 
@@ -163,12 +162,13 @@ export const ClassTable = () => {
                   </h3>
                 </div>
                 <span className="rounded-md bg-blue-500 px-2 py-1 text-xs text-white">
-                  {row.original.classSlug}
+                  {row.original.section}
                 </span>
               </div>
               <p className={`text-sm ${categoryColors[row.original.category] ?? "text-gray-800"}`}>
                 {row.original.category}
               </p>
+              <p className="text-sm text-gray-600">Fee: ${row.original.fee.toFixed(2)}</p>
               <div className="mt-2 flex justify-between gap-2">
                 <Button
                   variant="outline"

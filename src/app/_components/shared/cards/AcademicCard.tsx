@@ -1,15 +1,8 @@
-  import { CalendarCog, CircleFadingPlusIcon, FileStackIcon, FileTextIcon, PlusCircleIcon } from "lucide-react";
+  import { CircleFadingPlusIcon, FileStackIcon, FileTextIcon, PlusCircleIcon } from "lucide-react";
   import Link from "next/link";
   
   export const AcademicCards = () => {
     const services = [
-      {
-        title: "Session Management",
-        description:
-          "Easily enroll new students and manage their financial records.",
-        icon: <CalendarCog className="mb-4 h-12 w-12 text-green-500" />,
-        href: "/admin/academics/annualSession/sessionalDetails",
-      },
       {
         title: "User Management",
         description:

@@ -9,14 +9,35 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
 import { api } from "~/trpc/react";
 import Link from "next/link";
-import { ClassDeletionDialog } from "~/app/_components/shared/forms/class/ClassDeletion";
 import { StudentAllotmentDialog } from "~/app/_components/shared/forms/class/StudentAlotment";
+
+type ClassStudentProps = {
+  student: {
+    studentId: string;
+    registrationNumber: string;
+    studentMobile: string;
+    fatherMobile: string;
+    guardianName?: string | null; // Can be string, null, or undefined
+    studentName: string;
+    fatherName: string;
+    // Add other properties as needed...
+  };
+  class: {
+    className: string;
+    fee: number;
+    // Add other properties as needed...
+  };
+  session: {
+    sessionName: string;
+    // Add other properties as needed...
+  };
+};
 
 const columns: ColumnDef<ClassStudentProps>[] = [
   {
@@ -42,21 +63,50 @@ const columns: ColumnDef<ClassStudentProps>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "className",
+    accessorKey: "student.studentName",
+    header: "Student Name",
+    cell: ({ row }) => <div>{row.getValue("student.studentName")}</div>,
+  },
+  {
+    accessorKey: "student.fatherName",
+    header: "Father Name",
+    cell: ({ row }) => <div>{row.getValue("student.fatherName")}</div>,
+  },
+  {
+    accessorKey: "class.className",
     header: "Class",
-    cell: ({ row }) => <div>{row.getValue("className")}</div>,
+    cell: ({ row }) => <div>{row.getValue("class.className")}</div>,
+  },
+  {
+    accessorKey: "session.sessionName",
+    header: "Session",
+    cell: ({ row }) => <div>{row.getValue("session.sessionName")}</div>,
+  },
+  {
+    accessorKey: "class.fee",
+    header: "Fee",
+    cell: ({ row }) => <div>${row.getValue<number>("class.fee").toFixed(2)}</div>,
   },
 ];
 
-export const ClassAlotmentTable = ({classId}:{classId:string}) => {
+export const ClassAlotmentTable = ({ classId }: { classId: string }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
   const [data, setData] = useState<ClassStudentProps[]>([]);
 
-  const students = api.alotment.getStudentsInClass.useQuery({classId:classId});
+  const students = api.alotment.getStudentsInClass.useQuery({ classId });
 
-  useMemo(() => {
-    if (students.data) setData(students.data);
+  useEffect(() => {
+    if (students.data) {
+      const transformedData = students.data.map((item) => ({
+        ...item,
+        student: {
+          ...item.student,
+          guardianName: item.student.guardianName ?? "", // Ensure guardianName is a string
+        },
+      }));
+      setData(transformedData as ClassStudentProps[]);
+    }
   }, [students.data]);
 
   const table = useReactTable({
@@ -86,18 +136,18 @@ export const ClassAlotmentTable = ({classId}:{classId:string}) => {
             {table.getIsAllRowsSelected() ? "Deselect All" : "Select All"}
           </Button>
           <Input
-            placeholder="Search name"
+            placeholder="Search student name"
             value={
-              (table.getColumn("className")?.getFilterValue() as string) ?? ""
+              (table.getColumn("student.studentName")?.getFilterValue() as string) ?? ""
             }
             onChange={(event) =>
-              table.getColumn("className")?.setFilterValue(event.target.value)
+              table.getColumn("student.studentName")?.setFilterValue(event.target.value)
             }
             className="max-w-sm border-blue-500"
           />
         </div>
         <div className="flex items-center gap-2">
-          <StudentAllotmentDialog classId={classId}  />
+          <StudentAllotmentDialog classId={classId} />
           <Button
             variant="outline"
             className="bg-blue-500 text-white hover:bg-blue-600"
@@ -105,11 +155,6 @@ export const ClassAlotmentTable = ({classId}:{classId:string}) => {
           >
             Refresh
           </Button>
-          <ClassDeletionDialog
-            classIds={table
-              .getSelectedRowModel()
-              .rows.map((row) => row.original.classId)}
-          />
         </div>
       </div>
 
@@ -129,14 +174,16 @@ export const ClassAlotmentTable = ({classId}:{classId:string}) => {
                     aria-label="Select row"
                   />
                   <h3 className="text-lg font-semibold text-gray-800">
-                    {row.original.student.studentName} | {row.original.student.fatherName}
+                    {row.original.student.studentName}
                   </h3>
                 </div>
                 <span className="rounded-md bg-blue-500 px-2 py-1 text-xs text-white">
                   {row.original.class.className}
                 </span>
               </div>
-              <p className="text-sm text-gray-600">{row.original.session.sessionName}</p>
+              <p className="text-sm text-gray-600">Father: {row.original.student.fatherName}</p>
+              <p className="text-sm text-gray-600">Session: {row.original.session.sessionName}</p>
+              <p className="text-sm text-gray-600">Fee: ${row.original.class.fee.toFixed(2)}</p>
               <div className="mt-2 flex justify-between gap-2">
                 <Button
                   variant="outline"
@@ -144,29 +191,20 @@ export const ClassAlotmentTable = ({classId}:{classId:string}) => {
                   className="bg-green-500 text-white hover:bg-green-600"
                   asChild
                 >
-                  <Link href={`/admin/academics/classwiseDetail/${row.original.classId}`}>View Details</Link>
+                  <Link href={`/admin/students/${row.original.student.studentId}`}>View Student</Link>
                 </Button>
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="bg-yellow-500 text-white hover:bg-yellow-600"
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    className="bg-red-500 text-white hover:bg-red-600"
-                  >
-                    Delete
-                  </Button>
-                </div>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  className="bg-red-500 text-white hover:bg-red-600"
+                >
+                  Remove
+                </Button>
               </div>
             </div>
           ))
         ) : (
-          <div className="col-span-full py-4 text-center">No results.</div>
+          <div className="col-span-full py-4 text-center">No students allotted to this class.</div>
         )}
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">

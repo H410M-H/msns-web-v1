@@ -10,8 +10,8 @@ datasource db {
 model classes {
   classId      String         @id @default(uuid())
   className    String         @default("none")
-  classSlug    String         @default("none")
-  category     String         @default("category")
+  section      String         @default("ROSE")
+  category     ClassCategory  @default(Montessori)
   fee          Float          @default(0)
   StudentClass StudentClass[]
 
@@ -19,31 +19,31 @@ model classes {
 }
 
 model students {
-  studentId         String         @id @default(uuid())
-  registrationNumber String   @unique
-  studentMobile           String         @default("none")
-  fatherMobile           String         @default("none")
-  admissionNumber    String   @unique
-  studentName       String         @default("none")
-  gender            Gender         @default(CUSTOM)
-  dateOfBirth               String         @default("none")
-  fatherName        String         @default("none")
-  studentCNIC             String         @default("0000-0000000-0")
-  fatherCNIC              String         @default("0000-0000000-0")
-  fatherProfession        String         @default("none")
-  bloodGroup         String?         @default("none")
-  guardianName       String?         @default("none")
-  caste             String         @default("none")
-  registrationDate               String         @default("none")
-  currentAddress  String         @default("none")
-  permanentAddress  String         @default("none")
-  medicalProblem     String?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  isAssign          Boolean        @default(false)
-  discount          Float          @default(0)
-  discountbypercent Float          @default(0)
-  StudentClass      StudentClass[]
+  studentId           String         @id @default(uuid())
+  registrationNumber  String         @unique
+  studentMobile       String         @default("none")
+  fatherMobile        String         @default("none")
+  admissionNumber     String         @unique
+  studentName         String         @default("none")
+  gender              Gender         @default(CUSTOM)
+  dateOfBirth         String         @default("none")
+  fatherName          String         @default("none")
+  studentCNIC         String         @default("0000-0000000-0")
+  fatherCNIC          String         @default("0000-0000000-0")
+  fatherProfession    String         @default("none")
+  bloodGroup          String?        @default("none")
+  guardianName        String?        @default("none")
+  caste               String         @default("none")
+  registrationDate    String         @default("none")
+  currentAddress      String         @default("none")
+  permanentAddress    String         @default("none")
+  medicalProblem      String?
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  isAssign            Boolean        @default(false)
+  discount            Float          @default(0)
+  discountbypercent   Float          @default(0)
+  StudentClass        StudentClass[]
 }
 
 model employees {
@@ -55,6 +55,7 @@ model employees {
   dob               String   @default("none")
   doj               String   @default("none")
   gender            String   @default("none")
+  religion          String   @default("none")
   education         String   @default("none")
   address           String   @default("none")
   permanentAddress  String   @default("none")
@@ -71,15 +72,15 @@ model sessions {
 }
 
 model fees {
-  feeId      String  @id @default(uuid())  // Unique identifier, automatically generated UUID
-  feeName    String                      // Name of the fee structure
-  feeTuition Int                         // Tuition fee amount
-  feePaper   Int                         // Paper fund amount
-  feeSport   Int                         // Sports fund amount
-  feeIdcard  Int                         // ID card fee amount
-  feeComm    Int                         // INFO & CALLS fee amount
-  createdAt  String         @default("none")
-  updatedAt  String         @default("none")
+  feeId      String   @id @default(uuid())
+  feeName    String
+  feeTuition Int
+  feePaper   Int
+  feeSport   Int
+  feeIdcard  Int
+  feeComm    Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model users {
@@ -107,9 +108,16 @@ enum Gender {
   CUSTOM
 }
 
-
 enum Role {
   ADMIN
   TEACHER
   CLERK
+}
+
+enum ClassCategory {
+  Montessori
+  Primary
+  Middle
+  SSC_I
+  SSC_II
 }
