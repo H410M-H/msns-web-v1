@@ -63,8 +63,8 @@ type FeeProps = {
   feeSport: number
   feeIdcard: number
   feeComm: number
-  createdAt: string
-  updatedAt: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 type ClassStudentProps = {

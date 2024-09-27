@@ -26,6 +26,7 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { FeeCreationDialog } from "../forms/fee/FeeCreation";
 import { FeeDeletionDialog } from "../forms/fee/FeeDeletion";
+import dayjs from "dayjs";
 
 const columns: ColumnDef<FeeProps>[] = [
   {
@@ -182,10 +183,10 @@ export const FeeTable = () => {
                   </h3>
                 </div>
                 <span className="rounded-md bg-pink-500 px-2 py-1 text-xs text-white">
-                  {row.original.createdAt}
+                  {dayjs(row.original.createdAt).format('DD-MM-YYYY')}
                 </span>
               </div>
-              <p className="text-sm text-gray-600">{row.original.updatedAt}</p>
+              <p className="text-sm text-gray-600">{dayjs(row.original.updatedAt).format('DD-MM-YYYY')}</p>
               <div className="mt-2 flex justify-between gap-2">
                 <Button
                   variant="outline"

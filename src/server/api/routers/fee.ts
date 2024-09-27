@@ -18,38 +18,6 @@ export const FeeRouter = createTRPCRouter({
     }
   }),
 
-  getGroupedFees: publicProcedure.query(async ({ ctx }) => {
-    try {
-      const fees: FeeProps[] = await ctx.db.fees.findMany();
-      const groupedFees = new Map<string, FeeProps[]>();
-
-      fees.forEach((feeData) => {
-        const key = groupedFees.has(feeData.createdAt);
-        const data = groupedFees.get(feeData.createdAt);
-        if (key && data && data.length !== 0) {
-          data.push(feeData);
-          groupedFees.set(feeData.createdAt, data);
-        } else {
-          groupedFees.set(feeData.createdAt, [feeData]);
-        }
-      });
-
-      const groupedArray = Array.from(groupedFees, ([key, value]) => ({
-        createdAt: key,
-        fees: value,
-      }));
-
-      return groupedArray;
-    } catch (error) {
-      if (error instanceof TRPCClientError) {
-        console.error(error.message);
-        throw new Error(error.message);
-      }
-      console.error(error);
-      throw new Error("Something went wrong.");
-    }
-  }),
-
   createFee: publicProcedure
     .input(
       z.object({
@@ -59,12 +27,6 @@ export const FeeRouter = createTRPCRouter({
         feeSport: z.number().nonnegative(),
         feeIdcard: z.number().nonnegative(),
         feeComm: z.number().nonnegative(),
-        createdAt: z.string().refine((date) => !isNaN(Date.parse(date)), {
-          message: "Invalid date format",
-        }),
-        updatedAt: z.string().refine((date) => !isNaN(Date.parse(date)), {
-          message: "Invalid date format",
-        }),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -77,8 +39,6 @@ export const FeeRouter = createTRPCRouter({
             feeSport: input.feeSport,
             feeIdcard: input.feeIdcard,
             feeComm: input.feeComm,
-            createdAt: input.createdAt,
-            updatedAt: input.updatedAt,
           },
         });
       } catch (error) {
