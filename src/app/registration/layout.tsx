@@ -1,6 +1,5 @@
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { Header } from "../_components/header/header";
-import MainMenu from "../_components/mainmenu/mainmenu";
+import StickyHeader from "../_components/shared/elements/StickyHeader";
 
 export const metadata = {
   title: "MSNS-LMS | Online Registration",
@@ -15,9 +14,8 @@ export default function RegistrationLayout({
 }) {
   return (
     <ScrollArea className="rounded-lg shadow-md">
-    <Header />
-    <MainMenu />
+    <StickyHeader />
   {children}
 </ScrollArea>
-  );
+);
 }

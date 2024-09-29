@@ -1,6 +1,6 @@
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { Header } from "../_components/header/header";
-import MainMenu from "../_components/mainmenu/mainmenu";
+import { Header } from "../_components/shared/header/header";
+import MainMenu from "../_components/shared/mainmenu/mainmenu";
 
 export const metadata = {
   title: "MSNS-WEB",

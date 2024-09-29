@@ -48,19 +48,21 @@ model students {
 
 model employees {
   employeeId        String   @id @default(uuid())
-  employeeName      String   @default("none")
-  fatherName        String   @default("none")
-  cnic              String   @default("0000-0000000-0")
-  fcnic             String   @default("0000-0000000-0")
-  dob               String   @default("none")
-  doj               String   @default("none")
-  gender            String   @default("none")
-  religion          String   @default("none")
-  education         String   @default("none")
-  address           String   @default("none")
-  permanentAddress  String   @default("none")
-  contact           String   @default("none")
-  additionalContact String   @default("none")
+  employeeName       String         @db.VarChar(100)
+  fatherName         String         @db.VarChar(100)
+  gender             Gender
+  dob                DateTime
+  cnic               String         @db.Char(15)
+  maritalStatus      MaritalStatus
+  doj                DateTime
+  designation        Designation
+  residentialAddress String
+  mobileNo           String         @db.VarChar(13)
+  additionalContact  String?        @db.VarChar(13)
+  education          String         @db.VarChar(100)
+
+  @@index([employeeName])
+  @@index([cnic])
 }
 
 model sessions {
@@ -107,13 +109,25 @@ enum Gender {
   FEMALE
   CUSTOM
 }
-
 enum Role {
   ADMIN
   TEACHER
   CLERK
 }
-
+enum MaritalStatus {
+  Married
+  Unmarried
+  Widow
+  Divorced
+}
+enum Designation {
+  Principal
+  Admin
+  Head
+  Clerk
+  Teacher
+  Worker
+}
 enum ClassCategory {
   Montessori
   Primary

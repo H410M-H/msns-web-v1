@@ -8,7 +8,7 @@ export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-50 bg-gradient-to-r from-green-400 to-emerald-100 shadow-md transition-all duration-300">
+    <header className="top-5 z-50 bg-gradient-to-r from-green-400 to-emerald-100 shadow-md transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">

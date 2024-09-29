@@ -1,3 +1,4 @@
+import MainMenu from "~/app/_components/shared/mainmenu/mainmenu";
 import { AlumniCards } from "~/app/_components/shared/cards/AlumniCard";
 import { Separator } from "~/components/ui/separator";
 
@@ -16,6 +17,7 @@ export default function Aumni() {
             </div>
           </div>
           <Separator className="bg-green-900"/>
+          <MainMenu />
           <AlumniCards />
           <Separator className="bg-green-900"/>
     </main>

@@ -35,17 +35,16 @@ type EmployeeProps = {
   employeeId: string
   employeeName: string
   fatherName: string
+  gender: 'Male' | 'Female'
+  dob: Date
   cnic: string
-  fcnic: string
-  dob: string
-  doj: string
-  gender: string
-  religion: string
+  maritalStatus: 'Married' | 'Unmarried' | 'Widow' | 'Divorced'
+  doj: Date
+  designation: 'Principal' | 'Admin' | 'Head' | 'Clerk' | 'Teacher' | 'Worker'
+  residentialAddress: string
+  mobileNo: string
+  additionalContact?: string
   education: string
-  address: string
-  permanentAddress: string
-  contact: string
-  additionalContact: string
 }
 
 type SessionProps = {

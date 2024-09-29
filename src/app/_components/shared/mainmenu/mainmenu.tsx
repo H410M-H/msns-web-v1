@@ -78,7 +78,7 @@ export default function MainMenu() {
       <div className="flex items-center space-x-4">
         <Button
           variant="ghost"
-          className="hover:bg-white/60 transition-all duration-300 ease-in-out"
+          className="hover:bg-white/60 focus:ring-2 focus:ring-offset-2 focus:ring-green-600 transition-all duration-300 ease-in-out"
         >
           <Link href="/admin/dashboard">Dashboard</Link>
         </Button>
@@ -88,13 +88,16 @@ export default function MainMenu() {
             key={item.name}
             className="relative"
             ref={(el) => {
-              menuRefs.current[index] = el; // Assign ref dynamically without returning
+              menuRefs.current[index] = el;
             }}
           >
             <Button
               variant="ghost"
-              className="flex items-center hover:bg-white/60 transition-all duration-300 ease-in-out"
+              className="flex items-center hover:bg-white/60 focus:ring-2 focus:ring-offset-2 focus:ring-green-600 transition-all duration-300 ease-in-out"
               onClick={() => handleMenuClick(item.name)}
+              aria-expanded={openDropdown === item.name}
+              aria-haspopup="menu"
+              aria-controls={`dropdown-${item.name}`}
             >
               {item.name}{" "}
               <ChevronDown
@@ -105,7 +108,10 @@ export default function MainMenu() {
             </Button>
 
             {openDropdown === item.name && (
-              <div className="absolute left-0 mt-2 w-65 rounded-md shadow-lg bg-yellow-200 opacity-90 ring-1 ring-black ring-opacity-5 transition-all duration-300 ease-in-out transform">
+              <div
+                id={`dropdown-${item.name}`}
+                className="absolute left-0 mt-2 w-65 rounded-md shadow-lg bg-yellow-200 opacity-90 ring-1 ring-black ring-opacity-5 transition-all duration-300 ease-in-out transform"
+              >
                 <div
                   className="py-1"
                   role="menu"
@@ -116,8 +122,9 @@ export default function MainMenu() {
                     <Link
                       key={option.label}
                       href={option.href}
-                      className="block px-4 py-2 text-sm text-green-900 hover:bg-purple-100 transition-all duration-300 ease-in-out"
+                      className="block px-4 py-2 text-sm text-green-900 hover:bg-purple-100 focus:bg-purple-200 transition-all duration-300 ease-in-out"
                       role="menuitem"
+                      onClick={() => setOpenDropdown(null)} // Close dropdown on selection
                     >
                       {option.label}
                     </Link>
@@ -143,7 +150,7 @@ export default function MainMenu() {
             <Button
               variant="ghost"
               size="icon"
-              className="hover:bg-white/20 transition-all duration-300 ease-in-out"
+              className="hover:bg-white/20 focus:ring-2 focus:ring-offset-2 focus:ring-green-600 transition-all duration-300 ease-in-out"
             >
               <User className="h-5 w-5 text-white" />
             </Button>
@@ -152,13 +159,13 @@ export default function MainMenu() {
             align="end"
             className="rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-transform duration-300 ease-in-out"
           >
-            <DropdownMenuItem className="hover:bg-purple-100">
+            <DropdownMenuItem className="hover:bg-purple-100 focus:bg-purple-200">
               <Link href="/profile">Profile</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem className="hover:bg-purple-100">
+            <DropdownMenuItem className="hover:bg-purple-100 focus:bg-purple-200">
               <Link href="/settings">Settings</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem className="hover:bg-purple-100">
+            <DropdownMenuItem className="hover:bg-purple-100 focus:bg-purple-200">
               <Link href="/logout">Logout</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
