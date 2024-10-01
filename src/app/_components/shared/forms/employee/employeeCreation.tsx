@@ -17,11 +17,11 @@ import { api } from "~/trpc/react"
 const employeeSchema = z.object({
   employeeName: z.string().min(2, "Name must be at least 2 characters").max(100, "Name must not exceed 100 characters"),
   fatherName: z.string().min(2, "Father's name must be at least 2 characters").max(100, "Father's name must not exceed 100 characters"),
-  gender: z.enum(['Male', 'Female']),
-  dob: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid date format for Date of Birth"),
+  gender: z.enum(['MALE', 'FEMALE']),
+  dob: z.string().min(1, "Date of Birth is required"),
   cnic: z.string().regex(/^\d{5}-\d{7}-\d$/, "Invalid CNIC format"),
   maritalStatus: z.enum(['Married', 'Unmarried', 'Widow', 'Divorced']),
-  doj: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid date format for Date of Joining"),
+  doj: z.string().min(1, "Date of Joining is required"),
   designation: z.enum(['Principal', 'Admin', 'Head', 'Clerk', 'Teacher', 'Worker']),
   residentialAddress: z.string().min(5, "Residential Address must be at least 5 characters"),
   mobileNo: z.string().regex(/^(\+92|0)?3\d{9}$/, "Invalid Pakistani mobile number format"),
@@ -37,7 +37,7 @@ export default function EmployeeCreationDialog() {
   const form = useForm<EmployeeSchema>({
     resolver: zodResolver(employeeSchema),
     defaultValues: {
-      gender: 'Male',
+      gender: 'MALE',
       maritalStatus: 'Unmarried',
       designation: 'Teacher',
     },
@@ -146,8 +146,8 @@ export default function EmployeeCreationDialog() {
                                     </SelectTrigger>
                                   </FormControl>
                                   <SelectContent>
-                                    <SelectItem value="Male">Male</SelectItem>
-                                    <SelectItem value="Female">Female</SelectItem>
+                                    <SelectItem value="MALE">Male</SelectItem>
+                                    <SelectItem value="FEMALE">Female</SelectItem>
                                   </SelectContent>
                                 </Select>
                                 <FormMessage />

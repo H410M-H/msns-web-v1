@@ -7,7 +7,7 @@
     "build": "next build",
     "db:generate": "prisma migrate dev",
     "db:migrate": "prisma migrate deploy",
-    "db:create":"prisma migrate dev --create-only",
+    "db:create": "prisma migrate dev --create-only",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "db:pull": "prisma db pull",
@@ -19,7 +19,7 @@
   "dependencies": {
     "@auth/prisma-adapter": "^1.6.0",
     "@hookform/resolvers": "^3.9.0",
-    "@prisma/client": "^5.14.0",
+    "@prisma/client": "^5.20.0",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",
     "@radix-ui/react-aspect-ratio": "^1.1.0",

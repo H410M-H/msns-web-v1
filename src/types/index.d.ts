@@ -36,10 +36,10 @@ type EmployeeProps = {
   employeeName: string
   fatherName: string
   gender: 'Male' | 'Female'
-  dob: Date
+  dob: string
   cnic: string
   maritalStatus: 'Married' | 'Unmarried' | 'Widow' | 'Divorced'
-  doj: Date
+  doj: string
   designation: 'Principal' | 'Admin' | 'Head' | 'Clerk' | 'Teacher' | 'Worker'
   residentialAddress: string
   mobileNo: string

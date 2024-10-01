@@ -51,10 +51,10 @@ model employees {
   employeeName       String         @db.VarChar(100)
   fatherName         String         @db.VarChar(100)
   gender             Gender
-  dob                DateTime
+  dob                String         @default("none")
   cnic               String         @db.Char(15)
   maritalStatus      MaritalStatus
-  doj                DateTime
+  doj                String         @default("none")
   designation        Designation
   residentialAddress String
   mobileNo           String         @db.VarChar(13)
