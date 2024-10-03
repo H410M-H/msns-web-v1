@@ -60,9 +60,31 @@ model employees {
   mobileNo           String         @db.VarChar(13)
   additionalContact  String?        @db.VarChar(13)
   education          String         @db.VarChar(100)
+  salaryAssignments SalaryAssignment[]
+  salaryIncrements  SalaryIncrement[]
 
   @@index([employeeName])
   @@index([cnic])
+}
+model SalaryAssignment {
+  id           String   @id @default(uuid())
+  employeeId   String
+  employee     employees @relation(fields: [employeeId], references: [employeeId])
+  baseSalary   Float
+  increment    Float
+  totalSalary  Float
+  assignedDate DateTime @default(now())
+  sessionId    String
+  session      sessions  @relation(fields: [sessionId], references: [sessionId])
+}
+
+model SalaryIncrement {
+  id              String   @id @default(uuid())
+  employeeId      String
+  employee        employees @relation(fields: [employeeId], references: [employeeId])
+  incrementAmount Float
+  reason          String
+  effectiveDate   DateTime
 }
 
 model sessions {
@@ -71,6 +93,7 @@ model sessions {
   sessionFrom  String         @default("none")
   sessionTo    String         @default("none")
   StudentClass StudentClass[]
+  SalaryAssignments SalaryAssignment[]
 }
 
 model fees {

@@ -7,6 +7,7 @@ import { EmployeeRouter } from "./routers/employee";
 import { SessionRouter } from "./routers/session";
 import { AlotmentRouter } from "./routers/allotment";
 import { FeeRouter } from "./routers/fee";
+import { SalaryRouter } from "./routers/salary";
 
 
 export const appRouter = createTRPCRouter({
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
     class: ClassRouter,
     student:StudentRouter,
     employee:EmployeeRouter,
+    salary:SalaryRouter,
     session:SessionRouter,
     fee:FeeRouter,
     alotment:AlotmentRouter

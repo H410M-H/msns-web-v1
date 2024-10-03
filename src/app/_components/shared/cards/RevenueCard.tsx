@@ -19,7 +19,7 @@ import {
         title: "Salary Management",
         description: "Create and manage new classes or courses for the school.",
         icon: <HandshakeIcon className="mb-4 h-12 w-12 text-indigo-500" />,
-        href: "",
+        href: "/revenue/salary",
       },
       {
         title: "Fee Collection",

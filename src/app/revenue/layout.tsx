@@ -1,6 +1,4 @@
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { Header } from "../_components/shared/header/header";
-import MainMenu from "../_components/shared/mainmenu/mainmenu";
 
 export const metadata = {
   title: "MSNS-WEB",
@@ -15,8 +13,6 @@ export default function RevenueLayout({
 }) {
   return (
     <ScrollArea className="rounded-lg shadow-md">
-    <Header />
-    <MainMenu />
   {children}
 </ScrollArea>
   );

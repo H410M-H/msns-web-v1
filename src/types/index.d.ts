@@ -1,3 +1,4 @@
+
 type ClassProps = {
   classId: string
   className: string
@@ -45,6 +46,8 @@ type EmployeeProps = {
   mobileNo: string
   additionalContact?: string
   education: string
+  salaryAssignments?: SalaryAssignmentProps[]
+  salaryIncrements?: SalaryIncrementProps[]
 }
 
 type SessionProps = {
@@ -52,6 +55,7 @@ type SessionProps = {
   sessionName: string
   sessionFrom: string
   sessionTo: string
+  salaryAssignments?: SalaryAssignmentProps[]
 }
 
 type FeeProps = {
@@ -81,4 +85,25 @@ type ClassFeeProps = {
   class: ClassProps
   fee: FeeProps
   session: SessionProps
+}
+
+type SalaryAssignmentProps = {
+  id: string
+  employeeId: string
+  employee: EmployeeProps
+  baseSalary: number
+  increment: number
+  totalSalary: number
+  assignedDate: Date
+  sessionId: string
+  session: SessionProps
+}
+
+type SalaryIncrementProps = {
+  id: string
+  employeeId: string
+  employee: EmployeeProps
+  incrementAmount: number
+  reason: string
+  effectiveDate: Date
 }
