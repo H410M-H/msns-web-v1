@@ -1,7 +1,7 @@
 import { SalaryAssignmentForm } from "~/app/_components/shared/forms/employee/SalaryAllotment";
-import { SalaryHistory } from "./SalaryHistory";
 import { Separator } from "~/components/ui/separator";
 import MainMenu from "~/app/_components/shared/mainmenu/mainmenu";
+import { SalaryTable } from "~/app/_components/shared/tables/SalaryTable";
 
 
 export default function EmployeeSalaryPage() {
@@ -18,8 +18,8 @@ export default function EmployeeSalaryPage() {
       </div>
       <Separator className="bg-green-900" />
       <MainMenu />
-        <SalaryAssignmentForm />
-        <SalaryHistory employeeId="example-employee-id" />
-</main>
+      <SalaryAssignmentForm />
+      <SalaryTable />
+      </main>
 );
 }

@@ -1,7 +1,7 @@
-
 import { z } from "zod"
 import { createTRPCRouter, publicProcedure } from "../trpc"
 import { TRPCError } from "@trpc/server"
+import { type Prisma } from "@prisma/client"
 
 const salaryAssignmentSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
@@ -15,6 +15,14 @@ const salaryIncrementSchema = z.object({
   incrementAmount: z.number().positive("Increment amount must be positive"),
   reason: z.string().min(1, "Reason is required"),
   effectiveDate: z.string().transform((str) => new Date(str)),
+})
+
+const getSalariesInputSchema = z.object({
+  page: z.number().int().positive(),
+  pageSize: z.number().int().positive(),
+  searchTerm: z.string(),
+  sortField: z.enum(['employeeName', 'baseSalary', 'totalSalary', 'assignedDate']),
+  sortOrder: z.enum(['asc', 'desc']),
 })
 
 export const SalaryRouter = createTRPCRouter({
@@ -147,6 +155,65 @@ export const SalaryRouter = createTRPCRouter({
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch current salary',
+        })
+      }
+    }),
+
+    getSalaries: publicProcedure
+    .input(getSalariesInputSchema)
+    .query(async ({ ctx, input }) => {
+      try {
+        const { page, pageSize, searchTerm, sortField, sortOrder } = input
+        const skip = (page - 1) * pageSize
+
+        let where: Prisma.SalaryAssignmentWhereInput = {}
+        if (searchTerm) {
+          where = {
+            employee: {
+              employeeName: {
+                contains: searchTerm,
+                mode: 'insensitive',
+              },
+            },
+          }
+        }
+
+        const orderBy: Prisma.SalaryAssignmentOrderByWithRelationInput = 
+          sortField === 'employeeName'
+            ? { employee: { employeeName: sortOrder } }
+            : { [sortField]: sortOrder }
+
+        const [salaries, totalCount] = await Promise.all([
+          ctx.db.salaryAssignment.findMany({
+            skip,
+            take: pageSize,
+            where,
+            orderBy,
+            include: {
+              employee: {
+                select: {
+                  employeeName: true,
+                },
+              },
+              session: {
+                select: {
+                  sessionName: true,
+                },
+              },
+            },
+          }),
+          ctx.db.salaryAssignment.count({ where }),
+        ])
+
+        return {
+          salaries,
+          totalCount,
+        }
+      } catch (error) {
+        console.error(error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to fetch salaries',
         })
       }
     }),

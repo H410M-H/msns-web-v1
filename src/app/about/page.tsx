@@ -1,113 +1,105 @@
-"use client"
-
-import { useState } from 'react';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-
-interface Section {
-  title: string;
-  content: string;
-}
-
-interface TeamMember {
-  name: string;
-  role: string;
-  image: string;
-}
+import { Button } from "~/components/ui/button"
+import { Card, CardContent } from "~/components/ui/card"
+import { BookOpen, Users, Trophy, Lightbulb } from "lucide-react"
+import Image from "next/image"
 
 export default function AboutUs() {
-  const [activeSection, setActiveSection] = useState<number | null>(null);
-
-  const sections: Section[] = [
-    { title: 'About Us', content: 'Welcome to M.S.NAZ HIGH SCHOOL®, where we provide quality education and foster an environment of innovation and excellence.' },
-    { title: 'Our Mission', content: 'Our mission is to empower students with the knowledge and skills necessary to excel in a rapidly changing world, fostering critical thinking, creativity, and a lifelong love for learning.' },
-    { title: 'Our Vision', content: 'Our vision is to be a leading educational institution recognized for academic excellence and innovative teaching practices, preparing students to be leaders and change-makers in their communities and beyond.' },
-    { title: 'Our History', content: 'Established in 2004, M.S.NAZ HIGH SCHOOL® has grown from a small local school to a thriving educational institution with over 400 students. Our commitment to academic excellence and holistic development has been the cornerstone of our success.' },
-  ];
-
-  const teamMembers: TeamMember[] = [
-    { name: 'John Doe', role: 'Principal', image: '/images/team-member-1.jpg' },
-    { name: 'Jane Smith', role: 'Vice Principal', image: '/images/team-member-2.jpg' },
-  ];
-
   return (
-    <div className="container mx-auto px-4 py-8 bg-yellow-200 shadow-lg rounded-lg">
-      {sections.map((section, index) => (
-        <motion.section
-          key={index}
-          className="mb-12"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: index * 0.2 }}
-        >
-          <motion.h2
-            className="bg-white text-4xl font-bold text-green-900 mb-4 cursor-pointer"
-            onClick={() => setActiveSection(activeSection === index ? null : index)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {section.title}
-          </motion.h2>
-          <motion.div
-            initial={false}
-            animate={{ height: activeSection === index ? 'auto' : 0, opacity: activeSection === index ? 1 : 0 }}
-            transition={{ duration: 0.3 }}
-            className="overflow-hidden"
-          >
-            <p className="text-lg text-gray-700">{section.content}</p>
-            {section.title === 'Our History' && (
-              <Image src="/jpg/resultad.jpg" alt="School History" width={400} height={300} className="mt-4 mx-auto rounded-lg shadow-lg" />
-            )}
-          </motion.div>
-        </motion.section>
-      ))}
+    <div className="flex flex-col min-h-screen mt-20">
+      <main className="flex-grow">
+        {/* Hero Section */}
+        <section className="relative h-[50vh] flex items-center justify-center">
+          <Image
+            src="/jpg/FrontView1.jpg?height=1080&width=1920"
+            alt="School building"
+            layout="fill"
+            objectFit="cover"
+            className="absolute inset-0"
+          />
+          <div className="absolute inset-0 bg-black bg-opacity-50" />
+          <div className="relative z-10 text-center text-white">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">About M.S.NAZ HIGH SCHOOL®</h2>
+            <p className="text-xl md:text-2xl mb-8">Nurturing Minds, Shaping Futures</p>
+            <Button size="lg">Learn More</Button>
+          </div>
+        </section>
 
-      <motion.section
-        className="mb-12"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: sections.length * 0.2 }}
-      >
-        <h2 className="text-4xl font-bold text-green-900 mb-4">Our Team</h2>
-        <div className="flex flex-wrap justify-center gap-8">
-          {teamMembers.map((member, index) => (
-            <motion.div
-              key={index}
-              className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 bg-white rounded-lg shadow-lg"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Image src={member.image} alt={member.name} width={200} height={200} className="rounded-full mx-auto" />
-              <h3 className="text-xl font-semibold text-green-900 mt-4 text-center">{member.name}</h3>
-              <p className="text-center text-gray-700">{member.role}</p>
-            </motion.div>
-          ))}
-        </div>
-      </motion.section>
+        {/* Mission Statement */}
+        <section className="py-16 bg-secondary">
+          <div className="container mx-auto px-4">
+            <h3 className="text-3xl font-bold text-center mb-8">Our Mission</h3>
+            <p className="text-xl text-center max-w-3xl mx-auto">
+              At M.S.NAZ High School, we are committed to providing a nurturing and challenging educational environment
+              that empowers students to become lifelong learners, critical thinkers, and responsible global citizens.
+            </p>
+          </div>
+        </section>
 
-      <motion.section
-        className="mb-12"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: (sections.length + 1) * 0.2 }}
-      >
-        <h2 className="text-4xl font-bold text-green-900 mb-4">Contact Us</h2>
-        <div className="bg-white p-6 rounded-lg shadow-lg">
-          <p className="text-lg text-gray-700 mb-4">
-            We would love to hear from you! Whether you have questions, feedback, or want to learn more about M.S.NAZ HIGH SCHOOL®, feel free to get in touch with us.
-          </p>
-          <motion.div
-            className="space-y-2"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            <p className="text-lg text-gray-700"><strong>Email:</strong> info@msnazhighschool.com</p>
-            <p className="text-lg text-gray-700"><strong>Phone:</strong> +92-XXX-XXXXXXX</p>
-            <p className="text-lg text-gray-700"><strong>Address:</strong> 123 School Road, City, Country</p>
-          </motion.div>
-        </div>
-      </motion.section>
+        {/* Key Statistics */}
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <h3 className="text-3xl font-bold text-center mb-12">MSNS by the Numbers</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[
+                { icon: BookOpen, label: "AP Courses", value: "15+" },
+                { icon: Users, label: "Student-Teacher Ratio", value: "18:1" },
+                { icon: Trophy, label: "State Championships", value: "25" },
+                { icon: Lightbulb, label: "Clubs & Activities", value: "50+" },
+              ].map((stat, index) => (
+                <Card key={index}>
+                  <CardContent className="flex flex-col items-center p-6">
+                    <stat.icon className="w-12 h-12 mb-4 text-primary" />
+                    <h4 className="text-2xl font-bold mb-2">{stat.value}</h4>
+                    <p className="text-muted-foreground">{stat.label}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* School Values */}
+        <section className="py-16 bg-muted">
+          <div className="container mx-auto px-4">
+            <h3 className="text-3xl font-bold text-center mb-12">Our Core Values</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                {
+                  title: "Excellence",
+                  description: "We strive for excellence in all aspects of education and personal development.",
+                },
+                {
+                  title: "Inclusivity",
+                  description: "We celebrate diversity and create an inclusive environment for all students.",
+                },
+                {
+                  title: "Innovation",
+                  description: "We embrace innovative teaching methods and technologies to enhance learning.",
+                },
+                {
+                  title: "Integrity",
+                  description: "We uphold the highest standards of integrity in our actions and decisions.",
+                },
+                {
+                  title: "Community",
+                  description: "We foster a strong sense of community and encourage active participation.",
+                },
+                {
+                  title: "Growth Mindset",
+                  description: "We believe in the power of continuous learning and personal growth.",
+                },
+              ].map((value, index) => (
+                <Card key={index}>
+                  <CardContent className="p-6">
+                    <h4 className="text-xl font-bold mb-2">{value.title}</h4>
+                    <p className="text-muted-foreground">{value.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
-  );
+  )
 }

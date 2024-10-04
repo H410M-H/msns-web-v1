@@ -48,24 +48,25 @@ model students {
 
 model employees {
   employeeId        String   @id @default(uuid())
-  employeeName       String         @db.VarChar(100)
-  fatherName         String         @db.VarChar(100)
-  gender             Gender
-  dob                String         @default("none")
-  cnic               String         @db.Char(15)
-  maritalStatus      MaritalStatus
-  doj                String         @default("none")
-  designation        Designation
+  employeeName      String   @db.VarChar(100)
+  fatherName        String   @db.VarChar(100)
+  gender            Gender
+  dob               String   @default("none")
+  cnic              String   @db.Char(15)
+  maritalStatus     MaritalStatus
+  doj               String   @default("none")
+  designation       Designation
   residentialAddress String
-  mobileNo           String         @db.VarChar(13)
-  additionalContact  String?        @db.VarChar(13)
-  education          String         @db.VarChar(100)
+  mobileNo          String   @db.VarChar(13)
+  additionalContact String?  @db.VarChar(13)
+  education         String   @db.VarChar(100)
   salaryAssignments SalaryAssignment[]
   salaryIncrements  SalaryIncrement[]
 
   @@index([employeeName])
   @@index([cnic])
 }
+
 model SalaryAssignment {
   id           String   @id @default(uuid())
   employeeId   String
@@ -75,7 +76,7 @@ model SalaryAssignment {
   totalSalary  Float
   assignedDate DateTime @default(now())
   sessionId    String
-  session      sessions  @relation(fields: [sessionId], references: [sessionId])
+  session      sessions @relation(fields: [sessionId], references: [sessionId])
 }
 
 model SalaryIncrement {
@@ -88,11 +89,11 @@ model SalaryIncrement {
 }
 
 model sessions {
-  sessionId    String         @id @default(uuid())
-  sessionName  String         @default("none")
-  sessionFrom  String         @default("none")
-  sessionTo    String         @default("none")
-  StudentClass StudentClass[]
+  sessionId         String             @id @default(uuid())
+  sessionName       String             @default("none")
+  sessionFrom       String             @default("none")
+  sessionTo         String             @default("none")
+  StudentClass      StudentClass[]
   SalaryAssignments SalaryAssignment[]
 }
 
