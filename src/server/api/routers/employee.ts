@@ -5,7 +5,7 @@ import { z } from "zod"
 const employeeSchema = z.object({
   employeeName: z.string().min(2, "Name must be at least 2 characters").max(100, "Name must not exceed 100 characters"),
   fatherName: z.string().min(2, "Father's name must be at least 2 characters").max(100, "Father's name must not exceed 100 characters"),
-  gender: z.enum(['MALE', 'FEMALE']),
+  gender: z.enum(['MALE', 'FEMALE', 'CUSTOM']),
   dob: z.string().min(1, "Date of Birth is required"),
   cnic: z.string().regex(/^\d{5}-\d{7}-\d$/, "Invalid CNIC format"),
   maritalStatus: z.enum(['Married', 'Unmarried', 'Widow', 'Divorced']),

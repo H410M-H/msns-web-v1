@@ -25,7 +25,7 @@ model students {
   fatherMobile        String         @default("none")
   admissionNumber     String         @unique
   studentName         String         @default("none")
-  gender              Gender         @default(CUSTOM)
+  gender              Gender
   dateOfBirth         String         @default("none")
   fatherName          String         @default("none")
   studentCNIC         String         @default("0000-0000000-0")

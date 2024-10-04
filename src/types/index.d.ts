@@ -36,7 +36,7 @@ type EmployeeProps = {
   employeeId: string
   employeeName: string
   fatherName: string
-  gender: 'Male' | 'Female'
+  gender: "MALE" | "FEMALE" | "CUSTOM"
   dob: string
   cnic: string
   maritalStatus: 'Married' | 'Unmarried' | 'Widow' | 'Divorced'
@@ -44,7 +44,7 @@ type EmployeeProps = {
   designation: 'Principal' | 'Admin' | 'Head' | 'Clerk' | 'Teacher' | 'Worker'
   residentialAddress: string
   mobileNo: string
-  additionalContact?: string
+  additionalContact?: string | null
   education: string
   salaryAssignments?: SalaryAssignmentProps[]
   salaryIncrements?: SalaryIncrementProps[]

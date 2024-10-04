@@ -1,6 +1,4 @@
-// src/components/SalaryAssignmentForm.tsx
-
-'use client'
+"use client"
 
 import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -63,7 +61,7 @@ export function SalaryAssignmentForm() {
         employees.filter((employee) =>
           employee.employeeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
           employee.fatherName.toLowerCase().includes(searchTerm.toLowerCase())
-        )
+        )        
       )
     }
   }, [searchTerm, employees])
