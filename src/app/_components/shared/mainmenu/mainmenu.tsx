@@ -2,14 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Button } from "~/components/ui/button";
-import { ChevronDown, Search, User } from "lucide-react";
+import { ChevronDown, Search } from "lucide-react";
 import { Input } from "~/components/ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "~/components/ui/dropdown-menu";
 import Link from "next/link";
 
 const menuItems = [
@@ -41,11 +35,11 @@ const menuItems = [
     ],
   },
   {
-    name: "Company",
+    name: "Revenue",
     options: [
-      { label: "About Us", href: "/about" },
-      { label: "Careers", href: "/about" },
-      { label: "Press", href: "/about" },
+      { label: "Fee Management", href: "/revenue/fee" },
+      { label: "Salary", href: "/revenue/salary" },
+      { label: "Finance", href: "/revenue/finance" },
       { label: "Contact", href: "/about" },
     ],
   },
@@ -93,8 +87,8 @@ export default function MainMenu() {
           >
             <Button
               variant="ghost"
-              className="flex items-center hover:bg-white/60 focus:ring-2 focus:ring-offset-2 focus:ring-green-600 transition-all duration-300 ease-in-out"
-              onClick={() => handleMenuClick(item.name)}
+              className="flex items-center hover:bg-green-400/60 focus:ring-2 focus:ring-offset-2 focus:ring-green-600 transition-all duration-300 ease-in-out"
+              onMouseOver={() => handleMenuClick(item.name)}
               aria-expanded={openDropdown === item.name}
               aria-haspopup="menu"
               aria-controls={`dropdown-${item.name}`}
@@ -110,7 +104,7 @@ export default function MainMenu() {
             {openDropdown === item.name && (
               <div
                 id={`dropdown-${item.name}`}
-                className="absolute left-0 mt-2 w-65 rounded-md shadow-lg bg-yellow-200 opacity-90 ring-1 ring-black ring-opacity-5 transition-all duration-300 ease-in-out transform"
+                className="absolute z-50 left-0 mt-2 w-65 rounded-md shadow-lg bg-green-100 opacity-90 ring-1 ring-black ring-opacity-5 transition-all duration-300 ease-in-out transform"
               >
                 <div
                   className="py-1"
@@ -122,9 +116,9 @@ export default function MainMenu() {
                     <Link
                       key={option.label}
                       href={option.href}
-                      className="block px-4 py-2 text-sm text-green-900 hover:bg-purple-100 focus:bg-purple-200 transition-all duration-300 ease-in-out"
+                      className="block px-4 py-2 text-base font-medium text-green-900 hover:bg-purple-100 focus:bg-purple-200 transition-all duration-300 ease-in-out"
                       role="menuitem"
-                      onClick={() => setOpenDropdown(null)} // Close dropdown on selection
+                      onClick={() => setOpenDropdown(null)}
                     >
                       {option.label}
                     </Link>
@@ -140,36 +134,10 @@ export default function MainMenu() {
         <div className="relative">
           <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-white" />
           <Input
-            className="pl-8 text-gray-900 placeholder-gray-400 bg-white rounded-full shadow-md focus:ring-2 focus:ring-purple-300 focus:outline-none transition-all duration-300 ease-in-out"
+            className="pl-8 text-green-900 placeholder-gray-400 bg-white rounded-full shadow-md focus:ring-2 focus:ring-purple-300 focus:outline-none transition-all duration-300 ease-in-out"
             placeholder="Search..."
           />
         </div>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-white/20 focus:ring-2 focus:ring-offset-2 focus:ring-green-600 transition-all duration-300 ease-in-out"
-            >
-              <User className="h-5 w-5 text-white" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            className="rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-transform duration-300 ease-in-out"
-          >
-            <DropdownMenuItem className="hover:bg-purple-100 focus:bg-purple-200">
-              <Link href="/profile">Profile</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="hover:bg-purple-100 focus:bg-purple-200">
-              <Link href="/settings">Settings</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="hover:bg-purple-100 focus:bg-purple-200">
-              <Link href="/logout">Logout</Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
     </nav>
   );

@@ -1,4 +1,4 @@
-  import { CircleFadingPlusIcon, FileStackIcon, FileTextIcon, PlusCircleIcon } from "lucide-react";
+  import { CircleFadingPlusIcon, PlusCircleIcon } from "lucide-react";
   import Link from "next/link";
   
   export const AcademicCards = () => {
@@ -9,19 +9,6 @@
           "Easily enroll new students and manage their financial records.",
         icon: <PlusCircleIcon className="mb-4 h-12 w-12 text-blue-500" />,
         href: "/registration/portal",
-      },
-      {
-        title: "Time Table/ Datesheet",
-        description:
-          "Easily enroll new students and manage their financial records.",
-        icon: <FileStackIcon className="mb-4 h-12 w-12 text-blue-500" />,
-        href: "",
-      },
-      {
-        title: "Exams & Results",
-        description: "Create and manage new classes or courses for the school.",
-        icon: <FileTextIcon className="mb-4 h-12 w-12 text-indigo-500" />,
-        href: "",
       },
       {
         title: "Events & Activities",
