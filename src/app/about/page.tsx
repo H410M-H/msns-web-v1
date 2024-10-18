@@ -1,37 +1,52 @@
+"use client"
+
 import { Button } from "~/components/ui/button"
 import { Card, CardContent } from "~/components/ui/card"
 import { BookOpen, Users, Trophy, Lightbulb } from "lucide-react"
-import Image from "next/image"
+import { CldImage } from "next-cloudinary"
+import { motion } from "framer-motion"
 
 export default function AboutUs() {
   return (
-    <div className="flex flex-col min-h-screen mt-20">
+    <section className="flex flex-col min-h-screen mt-20">
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="relative h-[50vh] flex items-center justify-center">
-          <Image
-            src="https://pern-my.sharepoint.com/:f:/g/personal/20011556-085_uog_edu_pk/Eu86FAqrIRZOjQ27hA4s-toBmzzrNbjXS-SHz147yZC0qw?e=J2ygwD?height=1080&width=1920"
+          <CldImage
+            src="FrontView1_alaabu"
             alt="School building"
-            layout="fill"
-            objectFit="cover"
+            fill
+            style={{ objectFit: 'cover' }}
             className="absolute inset-0"
           />
           <div className="absolute inset-0 bg-black bg-opacity-50" />
-          <div className="relative z-10 text-center text-white">
+          <motion.div
+            className="relative z-10 text-center text-white"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
             <h2 className="text-4xl md:text-5xl font-bold mb-4">About M.S.NAZ HIGH SCHOOL®</h2>
             <p className="text-xl md:text-2xl mb-8">Nurturing Minds, Shaping Futures</p>
-            <Button size="lg">Learn More</Button>
-          </div>
+            <Button size="lg" className="transition transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-primary">
+              Learn More
+            </Button>
+          </motion.div>
         </section>
 
         {/* Mission Statement */}
         <section className="py-16 bg-secondary">
           <div className="container mx-auto px-4">
             <h3 className="text-3xl font-bold text-center mb-8">Our Mission</h3>
-            <p className="text-xl text-center max-w-3xl mx-auto">
-              At M.S.NAZ High School, we are committed to providing a nurturing and challenging educational environment
-              that empowers students to become lifelong learners, critical thinkers, and responsible global citizens.
-            </p>
+            <motion.p
+              className="text-xl text-center max-w-3xl mx-auto"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              At M.S.NAZ High School, we are committed to providing a nurturing and challenging educational environment that empowers students to become lifelong learners, critical thinkers, and responsible global citizens.
+            </motion.p>
           </div>
         </section>
 
@@ -46,13 +61,21 @@ export default function AboutUs() {
                 { icon: Trophy, label: "State Championships", value: "25" },
                 { icon: Lightbulb, label: "Clubs & Activities", value: "50+" },
               ].map((stat, index) => (
-                <Card key={index}>
-                  <CardContent className="flex flex-col items-center p-6">
-                    <stat.icon className="w-12 h-12 mb-4 text-primary" />
-                    <h4 className="text-2xl font-bold mb-2">{stat.value}</h4>
-                    <p className="text-muted-foreground">{stat.label}</p>
-                  </CardContent>
-                </Card>
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <Card>
+                    <CardContent className="flex flex-col items-center p-6">
+                      <stat.icon className="w-12 h-12 mb-4 text-primary" />
+                      <h4 className="text-2xl font-bold mb-2">{stat.value}</h4>
+                      <p className="text-muted-foreground">{stat.label}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -89,17 +112,25 @@ export default function AboutUs() {
                   description: "We believe in the power of continuous learning and personal growth.",
                 },
               ].map((value, index) => (
-                <Card key={index}>
-                  <CardContent className="p-6">
-                    <h4 className="text-xl font-bold mb-2">{value.title}</h4>
-                    <p className="text-muted-foreground">{value.description}</p>
-                  </CardContent>
-                </Card>
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <Card>
+                    <CardContent className="p-6">
+                      <h4 className="text-xl font-bold mb-2">{value.title}</h4>
+                      <p className="text-muted-foreground">{value.description}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               ))}
             </div>
           </div>
         </section>
       </main>
-    </div>
+    </section>
   )
 }

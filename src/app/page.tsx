@@ -25,10 +25,10 @@ export default function Home() {
   ];
 
   const videos = [
-    "https://pern-my.sharepoint.com/:v:/g/personal/20011556-085_uog_edu_pk/ERzP6utvgYpJldo7HxKRgIsB3WNjfPkBbLsqCIrE8kghUw?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=LUAcNR",
-    "https://pern-my.sharepoint.com/:v:/g/personal/20011556-085_uog_edu_pk/EWzYzKsi849FicV0Xr3gB64BaQQiSd6RBerMy1dBoeLHvA?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=nSbfvd",
-    "https://pern-my.sharepoint.com/:v:/g/personal/20011556-085_uog_edu_pk/EfDsPrBss0RJvBXtgOejRk0BMPlk1BJSz-UEbtMsGIbNtQ?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=2tb4Nu",
-    "https://pern-my.sharepoint.com/:v:/g/personal/20011556-085_uog_edu_pk/EQ-pkRhvc21El8XYKaMFZj0BBnrDH3od-5FCSdJuE4qF3Q?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=UkbDgv",
+    "https://res.cloudinary.com/dvvbxrs55/video/upload/f_auto,q_auto,w_auto/v1729269611/clip1_awtegx",
+    "https://res.cloudinary.com/dvvbxrs55/video/upload/f_auto,q_auto,w_auto/v1729269805/clip4_stlpus",
+    "https://res.cloudinary.com/dvvbxrs55/video/upload/f_auto,q_auto,w_auto/v1729269773/clip3_cshxdl",
+    "https://res.cloudinary.com/dvvbxrs55/video/upload/f_auto,q_auto,w_auto/v1729267740/clip5_szbx9z",
   ];
 
   useEffect(() => {
@@ -51,8 +51,10 @@ export default function Home() {
           autoPlay
           muted
           loop
+          playsInline
         >
-          <source src={videos[currentVideoIndex]} type="https://pern-my.sharepoint.com/:f:/g/personal/20011556-085_uog_edu_pk/Ev7Re3vrLE1JvlyCnIu04rQBdKuGUMVpq9tCrLKkio4rIg?e=r1xWE6" />
+          <source src={videos[currentVideoIndex]} type="video/mp4" />
+          Your browser does not support the video tag.
         </video>
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="text-center text-green-100">
@@ -131,7 +133,6 @@ export default function Home() {
         </div>
       </section>
 
-
       {/* Features Section */}
       <section className="bg-white py-16 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">
@@ -200,11 +201,11 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-              <Link href={'/signup'}>
-                <Button size="lg" className="bg-emerald-500 text-primary-foreground hover:bg-primary/90 transition-colors duration-300">
-                  Apply Now <ChevronRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
+            <Link href={'/signup'}>
+              <Button size="lg" className="bg-emerald-500 text-primary-foreground hover:bg-primary/90 transition-colors duration-300">
+                Apply Now <ChevronRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
           </motion.div>
         </div>
       </section>

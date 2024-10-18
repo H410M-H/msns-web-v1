@@ -1,6 +1,6 @@
 "use client";
 
-import Image from 'next/image'
+import { CldImage } from 'next-cloudinary';
 import { useState } from 'react'
 
 export const Header = () => {
@@ -13,7 +13,7 @@ export const Header = () => {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <Image src="https://pern-my.sharepoint.com/:i:/g/personal/20011556-085_uog_edu_pk/ES_o1KrfBLpLkrocXkQMqpoBzv4pgNIKc_RY9Vlpp3ByZA?e=7GC16Y" width={36} height={16} alt="Company Logo" />
+              <CldImage src="Official_LOGO_grn_ic9ldd" width={36} height={16} alt="Company Logo" />
             </div>
           </div>
           <div className="hidden md:block">
