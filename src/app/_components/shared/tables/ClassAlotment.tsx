@@ -191,7 +191,7 @@ export const ClassAlotmentTable = ({ classId }: { classId: string }) => {
                   className="bg-green-500 text-white hover:bg-green-600"
                   asChild
                 >
-                  <Link href={`/admin/students/${row.original.student.studentId}`}>View Student</Link>
+                  <Link href={`/registration/students/${row.original.student.studentId}`}>View Student</Link>
                 </Button>
                 <Button
                   variant="destructive"

@@ -23,7 +23,6 @@ type StudentProps = {
   bloodGroup?: string | null
   guardianName?: string
   caste?: string
-  registrationDate: string
   currentAddress: string
   permanentAddress: string
   medicalProblem?: string

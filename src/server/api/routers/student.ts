@@ -3,10 +3,8 @@ import { createTRPCRouter, publicProcedure } from "../trpc"
 import { z } from "zod"
 
 const studentSchema = z.object({
-  registrationNumber: z.string(),
   studentMobile: z.string(),
   fatherMobile: z.string(),
-  admissionNumber: z.string(),
   studentName: z.string(),
   gender: z.enum(['MALE', 'FEMALE', 'CUSTOM']),
   dateOfBirth: z.string(),
@@ -17,7 +15,6 @@ const studentSchema = z.object({
   bloodGroup: z.string().optional(),
   guardianName: z.string().optional(),
   caste: z.string(),
-  registrationDate: z.string(),
   currentAddress: z.string(),
   permanentAddress: z.string(),
   medicalProblem: z.string().optional(),
@@ -55,24 +52,44 @@ export const StudentRouter = createTRPCRouter({
   }),
 
   createStudent: publicProcedure
-    .input(studentSchema)
-    .mutation(async ({ ctx, input }) => {
-      try {
-        await ctx.db.students.create({
-          data: {
-            ...input,
-            dateOfBirth: new Date(input.dateOfBirth).toISOString(),
-            registrationDate: new Date(input.registrationDate).toISOString(),
-          }
-        })
-      } catch (error) {
-        console.error(error)
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Something went wrong'
-        })
+  .input(studentSchema)
+  .mutation(async ({ ctx, input }) => {
+    try {
+      const currentYear = new Date().getFullYear().toString().slice(-2)
+      const latestStudent = await ctx.db.students.findFirst({
+        where: {
+          registrationNumber: {
+            startsWith: `MSNS${currentYear}`,
+          },
+        },
+        orderBy: {
+          registrationNumber: 'desc',
+        },
+      })
+      let newRegNumber
+      if (latestStudent) {
+        const latestNumber = parseInt(latestStudent.registrationNumber.slice(-4))
+        newRegNumber = `MSNS${currentYear}${(latestNumber + 1).toString().padStart(4, '0')}`
+      } else {
+        newRegNumber = `MSNS${currentYear}0001`
       }
-    }),
+      const newStudent = await ctx.db.students.create({
+        data: {
+          ...input,
+          registrationNumber: newRegNumber,
+          admissionNumber: newRegNumber, // Assuming admission number is the same as registration number
+          dateOfBirth: new Date(input.dateOfBirth).toISOString(),
+        }
+      })
+      return newStudent
+    } catch (error) {
+      console.error(error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Something went wrong'
+      })
+    }
+  }),
 
   deleteStudentsByIds: publicProcedure
     .input(z.object({
