@@ -15,14 +15,14 @@
         description:
           "Easily enroll new Employees and manage their financial records.",
         icon: <UserPlusIcon className="mb-4 h-12 w-12 text-green-500" />,
-        href: "/admin/academics/classwiseDetail",
+        href: "/student/academics",
       },
       {
         title: "Section & Class Management",
         description:
           "Easily enroll new students and manage their financial records.",
         icon: <Boxes className="mb-4 h-12 w-12 text-green-500" />,
-        href: "/student/academics",
+        href: "/admin/academics/classwiseDetail",
       },
       {
         title: "Sessional Reports",

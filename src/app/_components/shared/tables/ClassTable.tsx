@@ -19,11 +19,11 @@ import { ClassCreationDialog } from "~/app/_components/shared/forms/class/ClassC
 import { ClassDeletionDialog } from "~/app/_components/shared/forms/class/ClassDeletion";
 
 const categoryColors: Record<string, string> = {
-  Montessori: "bg-red-200 text-red-800",
-  Primary: "bg-blue-200 text-blue-800",
-  Middle: "bg-green-200 text-green-800",
-  "SSC-I": "bg-yellow-200 text-yellow-800",
-  "SSC-II": "bg-purple-200 text-purple-800",
+  Montessori: " text-red-800",
+  Primary: "text-blue-800",
+  Middle: "text-green-800",
+  "SSC-I": "text-yellow-800",
+  "SSC-II": "text-purple-800",
 };
 
 const columns: ColumnDef<ClassProps>[] = [
@@ -87,7 +87,7 @@ export const ClassTable = () => {
   const classesData = api.class.getClasses.useQuery();
 
   useMemo(() => {
-    if (classesData.data) setData(classesData.data);
+    if (classesData.data) setData(classesData.data as ClassProps[]); // Force-casting to the correct type
   }, [classesData.data]);
 
   const table = useReactTable({

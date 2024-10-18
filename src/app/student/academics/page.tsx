@@ -4,7 +4,7 @@ import { Separator } from "~/components/ui/separator";
 export default function Classes() {
   return (
     <main className="min-h-screen bg-yellow-100/50 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
-      <div className="container mx-auto py-6">
+      <div className="container mx-auto pt-20">
       <Separator className="bg-green-900"/>
         <div className="relative overflow-hidden">
           <h1 className="py-4 text-center font-serif text-5xl font-bold tracking-tight">

@@ -34,7 +34,6 @@ model students {
   bloodGroup          String?        @default("none")
   guardianName        String?        @default("none")
   caste               String         @default("none")
-  registrationDate    String         @default("none")
   currentAddress      String         @default("none")
   permanentAddress    String         @default("none")
   medicalProblem      String?

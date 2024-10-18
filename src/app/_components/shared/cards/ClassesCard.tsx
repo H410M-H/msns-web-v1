@@ -41,13 +41,13 @@ export const ClassesCard = () => {
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button variant="outline" className="bg-blue-500 text-white hover:bg-blue-600">
-              <Link href={`/admin/classwiseDetail/${classItem.classId}`}>Manage</Link>
+              <Link href={`/admin/academics/classwiseDetail/${classItem.classId}`}>Manage</Link>
             </Button>
             <Button
               variant="outline"
               className="bg-green-500 text-white hover:bg-green-600"
             >
-              <Link href={`/admin/classwiseDetail/${classItem.category}`}>Enroll Students</Link>
+              <Link href={`/admin/academics/classwiseDetail/${classItem.category}`}>Enroll Students</Link>
               </Button>
           </CardFooter>
         </Card>

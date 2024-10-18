@@ -1,11 +1,13 @@
-import Image from 'next/image'
+"use client"
+
+import { CldImage } from "next-cloudinary";
 
 export const Footer = () => {
   return (
     <footer className="bg-gradient-to-r from-yellow-200 to-pink-200 shadow-inner rounded-t-xl p-10">
     <div className="container mx-auto flex flex-wrap items-center justify-between">
       <div className="w-full sm:w-1/3 mb-6 sm:mb-0">
-        <Image src="/logo/logo.png" alt="Company Logo" width={100} height={100}/>
+        <CldImage src="Official_LOGO_grn_ic9ldd" alt="Company Logo" width={100} height={100}/>
         <p className="text-green-800 font-serif font-medium pt-4">
           Transforming ideas into digital solutions with innovative technologies and creative strategies.
         </p>
@@ -14,8 +16,8 @@ export const Footer = () => {
         <div className="w-full md:w-1/3 mb-6 md:mb-0">
           <h5 className="text-green-800 font-bold mb-3">Quick Links</h5>
           <ul className="space-y-2">
-            <li><a href="#" className="text-green-600 hover:text-pink-600 transition-colors duration-300">Home</a></li>
-            <li><a href="#" className="text-green-600 hover:text-pink-600 transition-colors duration-300">About Us</a></li>
+            <li><a href="/home" className="text-green-600 hover:text-pink-600 transition-colors duration-300">Home</a></li>
+            <li><a href="/about" className="text-green-600 hover:text-pink-600 transition-colors duration-300">About Us</a></li>
             <li><a href="#" className="text-green-600 hover:text-pink-600 transition-colors duration-300">Services</a></li>
             <li><a href="#" className="text-green-600 hover:text-pink-600 transition-colors duration-300">Contact</a></li>
           </ul>

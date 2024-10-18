@@ -84,11 +84,6 @@ const columns: ColumnDef<StudentProps>[] = [
     cell: ({ row }) => <div>{row.getValue("dateOfBirth")}</div>,
   },
   {
-    accessorKey: "registrationDate",
-    header: "Session",
-    cell: ({ row }) => <div>{row.getValue("registrationDate")}</div>,
-  },
-  {
     accessorKey: "studentCNIC",
     header: "Student B-Form #",
     cell: ({ row }) => <div>{row.getValue("studentCNIC")}</div>,
