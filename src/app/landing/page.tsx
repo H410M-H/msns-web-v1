@@ -25,10 +25,10 @@ export default function HomePage() {
     ];
 
     const videos = [
-        "/mp4/clip1.mp4",
-        "/mp4/clip4.mp4",
-        "/mp4/clip3.mp4",
-        "/mp4/clip5.mp4",
+        "https://pern-my.sharepoint.com/:v:/g/personal/20011556-085_uog_edu_pk/ERzP6utvgYpJldo7HxKRgIsB3WNjfPkBbLsqCIrE8kghUw?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=2tNvb1",
+        "https://pern-my.sharepoint.com/:v:/g/personal/20011556-085_uog_edu_pk/EWzYzKsi849FicV0Xr3gB64BaQQiSd6RBerMy1dBoeLHvA?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=UD8zpL",
+        "https://pern-my.sharepoint.com/:v:/g/personal/20011556-085_uog_edu_pk/EfDsPrBss0RJvBXtgOejRk0BMPlk1BJSz-UEbtMsGIbNtQ?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=YZmk7b",
+        "https://pern-my.sharepoint.com/:v:/g/personal/20011556-085_uog_edu_pk/EQ-pkRhvc21El8XYKaMFZj0BBnrDH3od-5FCSdJuE4qF3Q?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=EX1HEN",
     ];
 
     useEffect(() => {
@@ -52,7 +52,7 @@ export default function HomePage() {
                     muted
                     loop
                 >
-                    <source src={videos[currentVideoIndex]} type="video/mp4" />
+                    <source src={videos[currentVideoIndex]} type="https://pern-my.sharepoint.com/:f:/g/personal/20011556-085_uog_edu_pk/Ev7Re3vrLE1JvlyCnIu04rQBdKuGUMVpq9tCrLKkio4rIg?e=FOvxaQ" />
                 </video>
                 <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                     <div className="text-center text-green-100">

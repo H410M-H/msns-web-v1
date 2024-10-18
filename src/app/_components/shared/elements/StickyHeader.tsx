@@ -37,7 +37,7 @@ export default function Component() {
         <Link href="/landing"
         className="flex items-center">
             <Image
-              src="/logo/logo.png" // Add the image path in the public folder
+              src="https://pern-my.sharepoint.com/:i:/g/personal/20011556-085_uog_edu_pk/ES_o1KrfBLpLkrocXkQMqpoBzv4pgNIKc_RY9Vlpp3ByZA?e=7GC16Y" // Add the image path in the public folder
               alt="Logo"
               width={50}
               height={50}

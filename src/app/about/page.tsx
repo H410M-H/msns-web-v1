@@ -10,7 +10,7 @@ export default function AboutUs() {
         {/* Hero Section */}
         <section className="relative h-[50vh] flex items-center justify-center">
           <Image
-            src="/jpg/FrontView1.jpg?height=1080&width=1920"
+            src="https://pern-my.sharepoint.com/:f:/g/personal/20011556-085_uog_edu_pk/Eu86FAqrIRZOjQ27hA4s-toBmzzrNbjXS-SHz147yZC0qw?e=J2ygwD?height=1080&width=1920"
             alt="School building"
             layout="fill"
             objectFit="cover"

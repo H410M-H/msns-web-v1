@@ -13,7 +13,7 @@ const SignupPage = () => {
           <div className="max-w-lg mx-auto">
             <div className="flex flex-col items-center">
               <Image
-                src="/logo/off_logo_green.png"
+                src="https://pern-my.sharepoint.com/:i:/g/personal/20011556-085_uog_edu_pk/EYzkXGPY-WJGsY5DeptwjGQBMcbFeCCGQbyIzahI1OxHNQ?e=AzQFai"
                 alt="logo"
                 width={250}
                 height={250}
