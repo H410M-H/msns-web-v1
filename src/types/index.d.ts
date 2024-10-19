@@ -3,7 +3,7 @@ type ClassProps = {
   classId: string
   className: string
   section: string
-  category: "Montessori" | "Primary" | "Middle" | "SSC-I" | "SSC-II"
+  category: "Montessori" | "Primary" | "Middle" | "SSC_I" | "SSC_II"
   fee: number
 }
 
@@ -21,11 +21,11 @@ type StudentProps = {
   fatherCNIC: string
   fatherProfession?: string
   bloodGroup?: string | null
-  guardianName?: string
-  caste?: string
+  guardianName?: string | null
+  caste?: string | null
   currentAddress: string
   permanentAddress: string
-  medicalProblem?: string
+  medicalProblem?: string | null
   isAssign: boolean
   discount: number
   discountbypercent: number
@@ -43,10 +43,10 @@ type EmployeeProps = {
   designation: 'Principal' | 'Admin' | 'Head' | 'Clerk' | 'Teacher' | 'Worker'
   residentialAddress: string
   mobileNo: string
-  additionalContact?: string | null
+  additionalContact?: string | null 
   education: string
-  salaryAssignments?: SalaryAssignmentProps[]
-  salaryIncrements?: SalaryIncrementProps[]
+  salaryAssignments?: SalaryAssignmentProps[] | null
+  salaryIncrements?: SalaryIncrementProps[] | null
 }
 
 type SessionProps = {
@@ -54,7 +54,7 @@ type SessionProps = {
   sessionName: string
   sessionFrom: string
   sessionTo: string
-  salaryAssignments?: SalaryAssignmentProps[]
+  salaryAssignments?: SalaryAssignmentProps[] | null
 }
 
 type FeeProps = {

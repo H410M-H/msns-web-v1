@@ -108,7 +108,7 @@ export const ClassFeeTable = ({classId}:{classId:string}) => {
           <ClassDeletionDialog
             classIds={table
               .getSelectedRowModel()
-              .rows.map((row) => row.original.classId)}
+              .rows.map((row) => row.original.class.classId)}
           />
         </div>
       </div>
@@ -144,7 +144,7 @@ export const ClassFeeTable = ({classId}:{classId:string}) => {
                   className="bg-green-500 text-white hover:bg-green-600"
                   asChild
                 >
-                  <Link href={`/admin/academics/classwiseDetail/${row.original.classId}`}>View Details</Link>
+                  <Link href={`/admin/academics/classwiseDetail/${row.original.class.classId}`}>View Details</Link>
                 </Button>
                 <div className="flex gap-2">
                   <Button
