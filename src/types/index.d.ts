@@ -21,11 +21,11 @@ type StudentProps = {
   fatherCNIC: string
   fatherProfession?: string
   bloodGroup?: string | null
-  guardianName?: string
+  guardianName?: string | null
   caste?: string
   currentAddress: string
   permanentAddress: string
-  medicalProblem?: string
+  medicalProblem?: string | null
   isAssign: boolean
   discount: number
   discountbypercent: number
@@ -71,6 +71,7 @@ type FeeProps = {
 
 type ClassStudentProps = {
   scId: string
+  classId: string
   student: StudentProps
   class: ClassProps
   session: SessionProps
