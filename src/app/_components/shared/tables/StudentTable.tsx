@@ -27,7 +27,6 @@ type StudentProps = {
   fatherName: string;
   gender: 'MALE' | 'FEMALE' | 'CUSTOM';
   dateOfBirth: string;
-  registrationDate: string;
   studentCNIC: string;
   fatherCNIC: string;
   fatherMobile: string;
